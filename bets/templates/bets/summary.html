@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Free Bets Maximizer - Summary</title>
+		
+	</head>
+	
+    <body>
+		<h1>Free Bets Maximizer - Accounts Summary</h1>
+		<table name="bookie-summary">
+			<tr>
+				<th>Bookie</th>
+				<th>Free Bet Amount</th> 
+				<th>Username</th>
+				<th>Status</th>
+				<th>Balance</th> 
+				<th>Profit</th>
+				<th>Banked</th>
+			</tr>
+			<tr>
+				<td>Bet365</td>
+				<td>25</td> 
+				<td>
+					<input type="text" name="bet365-username" placeholder="username" />
+					<p id="bet365-username-text" hidden></>
+				</td>
+				<td>Complete</td>
+				<td>0</td> 
+				<td>22.57</td>
+				<td>True</td>
+			</tr>
+		</table>
+		
+		<script src="{% static 'jquery-3.3.1.min.js' %}"></script>
+		<script src="{% static 'summary.js' %}"></script>
+
+		<script>
+			$(document).ready(function () {
+				window.BetsSummary.initialize();
+			});
+		</script>
+	</body>
+	
+</html>

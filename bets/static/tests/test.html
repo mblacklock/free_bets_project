@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Javascript tests</title>
+  <link rel="stylesheet" href="qunit-2.6.1.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture">
+  
+	<input name="bet365-username" placeholder="username" />
+	<p id="bet365-username-text" hidden></>
+	
+  </div>
+  
+  <script src="../jquery-3.3.1.min.js"></script>
+  <script src="../summary.js"></script>
+  <script src="qunit-2.6.1.js"></script>
+
+  <script>
+
+console.log('qunit tests start');
+
+QUnit.test("smoke test", function (assert) {
+  assert.equal(1, 1, "Maths works!");
+});
+
+QUnit.test("username box should be hidden on enter", function (assert) {
+	window.BetsSummary.initialize();
+	var e = jQuery.Event("keypress");
+	e.which = 13; // # Some key code value
+	$('input[name="bet365-username"]').trigger(e);
+	assert.equal($('input[name="bet365-username"]').is(':visible'), false);
+});
+
+QUnit.test("username box should NOT be hidden on any other keypress", function (assert) {
+	window.BetsSummary.initialize();
+	var e = jQuery.Event("keypress");
+	e.which = 12; // # Some key code value
+	$('input[name="bet365-username"]').trigger(e);
+	assert.equal($('input[name="bet365-username"]').is(':visible'), true);
+});
+
+QUnit.test("username text should be visible on enter", function (assert) {
+	window.BetsSummary.initialize();
+	var e = jQuery.Event("keypress");
+	e.which = 13; // # Some key code value
+	$('input[name="bet365-username"]').trigger(e);
+	assert.equal($('#bet365-username-text').is(':visible'), true);
+});
+
+QUnit.test("username text should update on enter", function (assert) {
+	window.BetsSummary.initialize();
+	var e = jQuery.Event("keypress");
+	e.which = 13; // # Some key code value
+	$('input[name="bet365-username"]').val('testuser');
+	
+	$('input[name="bet365-username"]').trigger(e);
+	
+	assert.equal($('#bet365-username-text').val(), 'testuser');
+});
+
+  </script>
+</body>
+</html>
