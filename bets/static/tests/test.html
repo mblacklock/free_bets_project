@@ -10,8 +10,60 @@
   <div id="qunit"></div>
   <div id="qunit-fixture">
   
-	<input name="bet365-username" placeholder="username" />
-	<p id="bet365-username-text" hidden></>
+	<table name="bookie-summary">
+		<tr data-id="1">
+			<td>Bet365</td>
+			<td>25</td> 
+			<td id='username'>
+				<input class="input" placeholder="username" />
+				<p class="text" hidden></p>
+				<button class="edit btn btn-primary btn-sm" type="button" hidden>
+					edit
+				</button>
+			</td>
+			<td id='status'>
+				<select id="status">
+					<option value="signup">Signup</option>
+					<option value="deposit">Deposit</option>
+					<option value="initial">Initial Bet</option>
+					<option value="free">Free Bet</option>
+					<option value="complete">Complete</option>
+				</select>
+			</td>
+			<td id='balance'>
+				<input class="input" />
+				<p class="text" hidden></p>
+				<button class="edit" class="btn btn-primary btn-sm" type="button" hidden>
+					edit
+				</button>
+			</td>
+			<td id='profit'>22.57</td>
+			<td id='banked'>True</td>
+		</tr>
+		<tr data-id="2">
+			<td>Bet365</td>
+			<td>25</td> 
+			<td id='username'>
+				<input class="input" placeholder="username" />
+				<p class="text" hidden></p>
+				<button class="edit btn btn-primary btn-sm" type="button" hidden>
+					edit
+				</button>
+			</td>
+			<td id='status'>
+				<select id="status">
+					<option value="signup">Signup</option>
+					<option value="deposit">Deposit</option>
+					<option value="initial">Initial Bet</option>
+					<option value="free">Free Bet</option>
+					<option value="complete">Complete</option>
+				</select>
+			</td>
+			<td id='balance'>0</td> 
+			<td id='profit'>22.57</td>
+			<td id='banked'>True</td>
+		</tr>
+	</table>
 	
   </div>
   
@@ -31,36 +83,113 @@ QUnit.test("username box should be hidden on enter", function (assert) {
 	window.BetsSummary.initialize();
 	var e = jQuery.Event("keypress");
 	e.which = 13; // # Some key code value
-	$('input[name="bet365-username"]').trigger(e);
-	assert.equal($('input[name="bet365-username"]').is(':visible'), false);
+	$("tr[data-id='1'] #username .input").trigger(e);
+	
+	assert.equal($("tr[data-id='1'] #username .input").is(':visible'), false);
 });
 
 QUnit.test("username box should NOT be hidden on any other keypress", function (assert) {
 	window.BetsSummary.initialize();
 	var e = jQuery.Event("keypress");
 	e.which = 12; // # Some key code value
-	$('input[name="bet365-username"]').trigger(e);
-	assert.equal($('input[name="bet365-username"]').is(':visible'), true);
+	$("tr[data-id='1'] #username .input").trigger(e);
+	
+	assert.equal($("tr[data-id='1'] #username .input").is(':visible'), true);
 });
 
 QUnit.test("username text should be visible on enter", function (assert) {
 	window.BetsSummary.initialize();
+	$("#username .text").hide();
 	var e = jQuery.Event("keypress");
 	e.which = 13; // # Some key code value
-	$('input[name="bet365-username"]').trigger(e);
-	assert.equal($('#bet365-username-text').is(':visible'), true);
+	$("tr[data-id='1'] #username .input").trigger(e);
+	
+	assert.equal($("tr[data-id='1'] #username .text").is(':visible'), true);
 });
 
 QUnit.test("username text should update on enter", function (assert) {
 	window.BetsSummary.initialize();
 	var e = jQuery.Event("keypress");
 	e.which = 13; // # Some key code value
-	$('input[name="bet365-username"]').val('testuser');
+	$("tr[data-id='1'] #username .input").val('testuser');
+	$("tr[data-id='1'] #username .input").trigger(e);
 	
-	$('input[name="bet365-username"]').trigger(e);
-	
-	assert.equal($('#bet365-username-text').val(), 'testuser');
+	assert.equal($("tr[data-id='1'] #username .text").text(), 'testuser');
 });
+
+QUnit.test("username edit button should be visible on enter", function (assert) {
+	window.BetsSummary.initialize();
+	var e = jQuery.Event("keypress");
+	e.which = 13; // # Some key code value
+	$("tr[data-id='1'] #username .input").trigger(e);
+	
+	assert.equal($("tr[data-id='1'] #username .edit").is(':visible'), true);
+});
+
+QUnit.test("username edit button should be hidden when clicked", function (assert) {
+	window.BetsSummary.initialize();
+	$("tr[data-id='1'] #username .edit").show();
+	$("tr[data-id='1'] #username .edit").click();
+	
+	assert.equal($("tr[data-id='1'] #username .edit").is(':visible'), false);
+});
+
+QUnit.test("username text should be hidden when edit btn clicked", function (assert) {
+	window.BetsSummary.initialize();	
+	$("tr[data-id='1'] #username .text").show();
+	$("tr[data-id='1'] #username .edit").click();
+	
+	assert.equal($("tr[data-id='1'] #username .text").is(':visible'), false);
+});
+
+QUnit.test("username box should be visible when edit btn clicked", function (assert) {
+	window.BetsSummary.initialize();
+	$("tr[data-id='1'] #username .input").hide();	
+	$("tr[data-id='1'] #username .edit").click();
+	
+	assert.equal($("tr[data-id='1'] #username .input").is(':visible'), true);
+});
+
+QUnit.test("username box should contain existing username when edit btn clicked", function (assert) {
+	window.BetsSummary.initialize();	
+	$("tr[data-id='1'] #username .text").text('testuser');
+	$("tr[data-id='1'] #username .edit").click();
+	
+	assert.equal($("tr[data-id='1'] #username .input").attr('placeholder'), 'testuser');
+});
+
+QUnit.test("username 1 box should NOT affect 2", function (assert) {
+	window.BetsSummary.initialize();
+	var e = jQuery.Event("keypress");
+	e.which = 13; // # Some key code value
+	$("tr[data-id='1'] #username .input").val('testuser');
+	$("tr[data-id='1'] #username .input").trigger(e);
+	
+	assert.notEqual($("tr[data-id='2'] #username .text").text(), 'testuser');
+	assert.equal($("tr[data-id='2'] #username .input").is(':visible'), true);
+	assert.equal($("tr[data-id='2'] #username .text").is(':visible'), false);
+	assert.equal($("tr[data-id='2'] #username .edit").is(':visible'), false);
+	
+});
+
+QUnit.test("username 1 edit button click does not affect 2", function (assert) {
+	window.BetsSummary.initialize();
+	$("tr[data-id='1'] #username .text").text('testuser');
+	$("tr[data-id='1'] #username .edit").click();
+	
+	assert.notEqual($("tr[data-id='2'] #username .input").attr('placeholder'), 'testuser');
+	
+});
+
+QUnit.test("balance box should be hidden on enter", function (assert) {
+	window.BetsSummary.initialize();
+	var e = jQuery.Event("keypress");
+	e.which = 13; // # Some key code value
+	$("tr[data-id='1'] #balance .input").trigger(e);
+	
+	assert.equal($("tr[data-id='1'] #balance .input").is(':visible'), false);
+});
+
 
   </script>
 </body>

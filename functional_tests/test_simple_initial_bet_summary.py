@@ -1,26 +1,11 @@
-from selenium import webdriver
-from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
-import os, time
+from selenium.webdriver.support.select import Select
 
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+import time
 
-class NewVisitorAccountSummaryTest(StaticLiveServerTestCase):
+from functional_tests.base import FunctionalTest
 
-    def setUp(self):
-        self.browser = webdriver.Firefox()
-
-        self.staging_server = os.environ.get('STAGING_SERVER')
-        if self.staging_server:
-            self.live_server_url = 'http://' + self.staging_server
-            reset_database(self.staging_server)
-            
-    def tearDown(self):
-        self.browser.refresh()
-        self.browser.quit()
-        super().tearDown()
-
-    ###################################################################
+class NewVisitorAccountSummaryTest(FunctionalTest):
 
     def test_can_view_edit_and_retrieve_summary(self):
         # Edith has heard about a cool new online free bets app. She goes
@@ -39,28 +24,32 @@ class NewVisitorAccountSummaryTest(StaticLiveServerTestCase):
             'bookie-summary'
         )
 
-        # Edith notices an input box for her username for one of the bookies. She enters her username
+        # Edith notices an input box for her username for the first bookie. She enters her username
         # When she hits enter, the page updates, and now the page lists her username
-        self.browser.find_element_by_css_selector('input[name="bet365-username"]').send_keys('edith66')
-        self.browser.find_element_by_css_selector('input[name="bet365-username"]').send_keys(Keys.ENTER)
-        time.sleep(3)
-        self.assertEqual(self.browser.find_element_by_css_selector('input[name="bet365-username"]').is_displayed(), False)
-        self.assertEqual(self.browser.find_element_by_id('bet365-username-text').is_displayed(), True)
-        self.assertEqual(self.browser.find_element_by_id('bet365-username-text').text, 'edith66')
-
         # The input text box is replaced by an edit button
+        self.enterInput('1', 'username', 'edith66')        
 
         # Edith clicks on it and the label is replaced by an input box, prepopulated with her username
+        self.clickEdit('1', 'username', 'edith66')
 
         # She changes her username and it updates
+        self.enterInput('1', 'username', 'bombedith21')
         
-        # Edith then notices a status box, it has several options
+        # Edith then notices a status dropdown box, it has several options
+        select_box = self.findElement('1', 'status')
+        options = [x for x in select_box.find_elements_by_tag_name("option")]
+        self.assertNotEqual(len(options),0)
 
         # She selects one of the options and the status changes
+        select_box.find_element_by_css_selector('option[value="initial"]').click()
+        self.assertEqual(Select(select_box).first_selected_option.text, "Initial Bet")
 
-        # Edith then notices balance and profit input boxes.
+        # Edith then notices balance and profit input boxes.        
         # She notes they work the same as the username box
-
+        self.enterInput('1', 'balance', '20.57')
+        self.clickEdit('1', 'balance', '18.67')
+        self.enterInput('1', 'profit', '-12.90')
+        self.clickEdit('1', 'profit', '1.45')
         # There is also a checkbox labelled banked
 
         # Edith clicks it and all boxes are greyed out (except the checkbox)
