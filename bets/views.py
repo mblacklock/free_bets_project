@@ -11,7 +11,10 @@ def home_page(request):
     return render(request, 'home.html')
 
 def view_summary(request, summary_id):
-    return render(request, 'bets/summary.html')
+    summary = Summary.objects.get(id=summary_id)
+    items = [item for item in summary.item_set.all()]
+    
+    return render(request, 'bets/summary.html', {'summary': summary, 'items': items})
 
 def new_summary(request):
     summary = Summary.create_new()

@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from bets.models import Affiliate, Item
+from bets.models import Affiliate, Item, Summary
 
 # Create your tests here.
 
@@ -10,15 +10,11 @@ class HomePageTest(TestCase):
         response = self.client.get('/')
         self.assertTemplateUsed(response, 'home.html')
 
-    #def test_can_save_a_POST_request(self):
-     #   response = self.client.post('/')
-      #  self.assertRedirects(response, '/summary/create_new')
-
 class ExistingSummaryPageTest(TestCase):
 
-    def test_uses_summary_template(self):
-        #response = self.client.get(f'/summary/{summary.id}/')
-        response = self.client.get('/summary/1/')
+    def test_uses_existing_summary_template(self):
+        summary = Summary.objects.create()
+        response = self.client.get(f'/summary/{summary.id}/')
         self.assertTemplateUsed(response, 'bets/summary.html')
 
 

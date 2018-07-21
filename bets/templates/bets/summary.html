@@ -2,95 +2,99 @@
 {% load staticfiles %}
 
 {% block title %}Accounts Summary{% endblock %}
-		
+
 	
-{% block heading %}Accounts Summary{% endblock %}
+{% block heading %}Add in summary.name{% endblock %}
 
 {% block body %}
 	<table name="bookie-summary">
 		<tr>
 			<th>Bookie</th>
-			<th>Bookie</th>
-			<th>Bookie</th>
-			<th>Bookie</th>
-			<th>Bookie</th>
-			<th>Bookie</th>
-			<th>Bookie</th>
+			<th>Free Bet</th>
+			<th>Username</th>
+			<th>Status</th>
+			<th>Balance</th>
+			<th>Profit</th>
+			<th>Banked</th>
 		</tr>
-		<tr data-id="1">
-			<td>Bet365</td>
-			<td>25</td> 
-			<td id='username'>
-				<input class="input" placeholder="username" />
-				<p class="text" hidden></p>
-				<button class="edit btn btn-primary btn-sm" type="button" hidden>
-					edit
-				</button>
-			</td>
-			<td id="status">
-				<select class="status">
-					<option value="signup">Signup</option>
-					<option value="deposit">Deposit</option>
-					<option value="initial">Initial Bet</option>
-					<option value="free">Free Bet</option>
-					<option value="complete">Complete</option>
-				</select>
-			</td>
-			<td id='balance'>
-				<input class="input" />
-				<p class="text" hidden></p>
-				<button class="edit" class="btn btn-primary btn-sm" type="button" hidden>
-					edit
-				</button>
-			</td>
-			<td id='profit'>
-				<input class="input" />
-				<p class="text" hidden></p>
-				<button class="edit" class="btn btn-primary btn-sm" type="button" hidden>
-					edit
-				</button>
-			</td>
-			<td id="banked">
-				<input type="checkbox" class="banked" />
-			</td>
-		</tr>
-		<tr data-id="2">
-			<td>Bet365</td>
-			<td>25</td> 
-			<td id='username'>
-				<input class="input" placeholder="username" />
-				<p class="text" hidden></p>
-				<button class="edit btn btn-primary btn-sm" type="button" hidden>
-					edit
-				</button>
-			</td>
-			<td id="status">
-				<select class="status">
-					<option value="signup">Signup</option>
-					<option value="deposit">Deposit</option>
-					<option value="initial">Initial Bet</option>
-					<option value="free">Free Bet</option>
-					<option value="complete">Complete</option>
-				</select>
-			</td>
-			<td id='balance'>
-				<input class="input" />
-				<p class="text" hidden></p>
-				<button class="edit" class="btn btn-primary btn-sm" type="button" hidden>
-					edit
-				</button>
-			</td> 
-			<td id='profit'>
-				<input class="input" />
-				<p class="text" hidden></p>
-				<button class="edit" class="btn btn-primary btn-sm" type="button" hidden>
-					edit
-				</button>
-			</td>
-			<td id="banked">
-				<input type="checkbox" class="banked" />
-			</td>
-		</tr>
+		{% for item in items %}
+			<tr data-id="{{ forloop.counter }}" data-name="{{ item.affiliate.name }}">
+				<td>{{ item.affiliate.name }}</td>
+				<td>{{ item.affiliate.freebet }}</td> 
+				<td id='username'>
+					{% if item.username == '' %}
+						<input class="input" placeholder="username"/>
+						<p class="text" hidden></p>
+						<button class="edit btn btn-primary btn-sm" type="button" hidden>
+							edit
+						</button>
+					{% else %}
+						<input class="input" hidden />
+						<p class="text">{{ item.username }}</p>
+						<button class="edit btn btn-primary btn-sm" type="button">
+							edit
+						</button>
+					{% endif %}
+				</td>
+				<td id="status">
+					<select class="status">
+						<option value="signup" 
+							{% if item.status == "signup" %}selected="selected"{% endif %}>
+							Signup
+						</option>
+						<option value="deposit" 
+							{% if item.status == "deposit" %}selected="selected"{% endif %}>
+							Deposit
+						</option>
+						<option value="initial" 
+							{% if item.status == "initial" %}selected="selected"{% endif %}>
+							Initial Bet
+						</option>
+						<option value="free" 
+							{% if item.status == "free" %}selected="selected"{% endif %}>
+							Free Bet
+						</option>
+						<option value="complete" 
+							{% if item.status == "complete" %}selected="selected"{% endif %}>
+							Complete
+						</option>
+					</select>
+				</td>
+				<td id='balance'>
+					{% if item.balance|stringformat:".2f" == "0.00" %}
+						<input class="input"/>
+						<p class="text" hidden></p>
+						<button class="edit btn btn-primary btn-sm" type="button" hidden>
+							edit
+						</button>
+					{% else %}
+						<input class="input" hidden />
+						<p class="text">{{ item.balance }}</p>
+						<button class="edit" class="btn btn-primary btn-sm" type="button" >
+							edit
+						</button>
+					{% endif %}
+				</td>
+				<td id='profit'>
+					{% if item.profit|stringformat:".2f" == "0.00" %}
+						<input class="input"/>
+						<p class="text" hidden></p>
+						<button class="edit" class="btn btn-primary btn-sm" type="button" hidden>
+							edit
+						</button>
+					{% else %}
+						<input class="input" hidden />
+						<p class="text">{{ item.profit }}</p>
+						<button class="edit" class="btn btn-primary btn-sm" type="button">
+							edit
+						</button>
+					{% endif %}
+				</td>
+				<td id="banked">
+					<input type="checkbox" class="banked" {% if item.banked == True %}checked{% endif %}/>
+				</td>
+			</tr>
+		{% endfor %}
 	</table>
 {% endblock %}
 

@@ -5,6 +5,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 import time, os
 
+from bets.models import Affiliate
+
 MAX_WAIT = 5
 
 def wait(fn):  
@@ -39,6 +41,10 @@ class FunctionalTest(StaticLiveServerTestCase):
     def wait_for(self, fn):
         return fn()
     ######################################
+    def initiateDatabase(self):
+        aff1 = Affiliate.objects.create(name='Aff1')
+        aff2 = Affiliate.objects.create(name='Aff2')
+    
     def findElement(self, rowID, element):
         row = self.browser.find_element_by_css_selector('tr[data-id="'+rowID+'"]')
         return row.find_element_by_id(element)

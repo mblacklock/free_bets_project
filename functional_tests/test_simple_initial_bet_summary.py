@@ -9,6 +9,7 @@ from functional_tests.base import FunctionalTest
 class NewVisitorAccountSummaryTest(FunctionalTest):
 
     def test_can_start_summary_for_single_user(self):
+        self.initiateDatabase()
         # Edith has heard about a cool new online free bets app. She goes
         # to check out its homepage
         self.browser.get(self.live_server_url)
@@ -76,6 +77,7 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
 
     def test_multiple_users_can_start_and_retrieve_summaries_at_different_urls(self):
 
+        self.initiateDatabase()
         # Edith starts a new summary and edits the first row
         self.browser.get(self.live_server_url)
         self.browser.find_element_by_name('new_summary').click()
@@ -88,7 +90,7 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
 
         # She notices that her list has a unique URL
         edith_list_url = self.browser.current_url
-        self.assertRegex(edith_list_url, '/summary/.+') 
+        self.assertRegex(edith_list_url, '/summary/.+')
 
         # Now a new user, Francis, comes along to the site.
 
