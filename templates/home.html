@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Start a new account{% endblock %}
+	
+{% block heading %}Start a new account{% endblock %}
+
+{% block body %}
+	<form action="" method="POST">
+		{% csrf_token %}
+        <input type="submit" name="new_summary" value="Create new account" />
+    </form>
+{% endblock %}

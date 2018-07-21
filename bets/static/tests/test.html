@@ -22,7 +22,7 @@
 				</button>
 			</td>
 			<td id='status'>
-				<select id="status">
+				<select class="status">
 					<option value="signup">Signup</option>
 					<option value="deposit">Deposit</option>
 					<option value="initial">Initial Bet</option>
@@ -37,8 +37,16 @@
 					edit
 				</button>
 			</td>
-			<td id='profit'>22.57</td>
-			<td id='banked'>True</td>
+			<td id='profit'>
+				<input class="input" />
+				<p class="text" hidden></p>
+				<button class="edit" class="btn btn-primary btn-sm" type="button" hidden>
+					edit
+				</button>
+			</td>
+			<td id='banked'>
+				<input type="checkbox" class="banked" />
+			</td>
 		</tr>
 		<tr data-id="2">
 			<td>Bet365</td>
@@ -51,7 +59,7 @@
 				</button>
 			</td>
 			<td id='status'>
-				<select id="status">
+				<select class="status">
 					<option value="signup">Signup</option>
 					<option value="deposit">Deposit</option>
 					<option value="initial">Initial Bet</option>
@@ -59,9 +67,23 @@
 					<option value="complete">Complete</option>
 				</select>
 			</td>
-			<td id='balance'>0</td> 
-			<td id='profit'>22.57</td>
-			<td id='banked'>True</td>
+			<td id='balance'>
+				<input class="input" />
+				<p class="text" hidden></p>
+				<button class="edit" class="btn btn-primary btn-sm" type="button" hidden>
+					edit
+				</button>
+			</td>
+			<td id='profit'>
+				<input class="input" />
+				<p class="text" hidden></p>
+				<button class="edit" class="btn btn-primary btn-sm" type="button" hidden>
+					edit
+				</button>
+			</td>
+			<td id='banked'>
+				<input type="checkbox" class="banked" />
+			</td>
 		</tr>
 	</table>
 	
@@ -188,6 +210,68 @@ QUnit.test("balance box should be hidden on enter", function (assert) {
 	$("tr[data-id='1'] #balance .input").trigger(e);
 	
 	assert.equal($("tr[data-id='1'] #balance .input").is(':visible'), false);
+});
+
+QUnit.test("edit buttons disabled when banked clicked", function (assert) {
+	window.BetsSummary.initialize();	
+	$("tr[data-id='1'] #username .edit").show();
+	$("tr[data-id='1'] #profit .edit").show();
+	$("tr[data-id='1'] #balance .edit").show();
+	
+	$("tr[data-id='1'] .banked").click();
+	
+	assert.equal($("tr[data-id='1'] .banked").is(':checked'), true);
+	assert.equal($("tr[data-id='1'] #username .edit").is(':disabled'), true);
+	assert.equal($("tr[data-id='1'] #balance .edit").is(':disabled'), true);
+	assert.equal($("tr[data-id='1'] #profit .edit").is(':disabled'), true);
+});
+
+QUnit.test("input boxes disabled when banked clicked", function (assert) {
+	window.BetsSummary.initialize();	
+	$("tr[data-id='1'] #username .input").show();
+	$("tr[data-id='1'] #profit .input").show();
+	$("tr[data-id='1'] #balance .input").show();
+	
+	$("tr[data-id='1'] .banked").click();
+	
+	assert.equal($("tr[data-id='1'] #username .input").is(':disabled'), true);
+	assert.equal($("tr[data-id='1'] #balance .input").is(':disabled'), true);
+	assert.equal($("tr[data-id='1'] #profit .input").is(':disabled'), true);
+});
+
+QUnit.test("status dropdown disabled when banked clicked", function (assert) {
+	window.BetsSummary.initialize();	
+	$("tr[data-id='1'] #status .status").show();
+	
+	$("tr[data-id='1'] .banked").click();
+	
+	assert.equal($("tr[data-id='1'] #status .status").is(':disabled'), true);
+});
+
+QUnit.test("other rows not affected when banked clicked", function (assert) {
+	window.BetsSummary.initialize();	
+	$("tr[data-id='1'] #username .input").show();
+	$("tr[data-id='2'] #username .input").show();
+	
+	$("tr[data-id='1'] .banked").click();
+	
+	assert.equal($("tr[data-id='1'] #username .input").is(':disabled'), true);
+	assert.equal($("tr[data-id='2'] #username .input").is(':disabled'), false);
+});
+
+QUnit.test("edit buttons reenabled when banked unclicked", function (assert) {
+	window.BetsSummary.initialize();	
+	$("tr[data-id='1'] #username .edit").prop('enabled', false);
+	$("tr[data-id='1'] #profit .edit").prop('enabled', false);
+	$("tr[data-id='1'] #balance .edit").prop('enabled', false);
+	$("tr[data-id='1'] .banked").prop('checked', true);
+	
+	$("tr[data-id='1'] .banked").click();
+	
+	assert.equal($("tr[data-id='1'] .banked").is(':checked'), false);
+	assert.equal($("tr[data-id='1'] #username .edit").is(':enabled'), true);
+	assert.equal($("tr[data-id='1'] #balance .edit").is(':enabled'), true);
+	assert.equal($("tr[data-id='1'] #profit .edit").is(':enabled'), true);
 });
 
 

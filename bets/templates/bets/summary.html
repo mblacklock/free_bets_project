@@ -1,108 +1,107 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 {% load staticfiles %}
 
-<html lang="en">
-
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Free Bets Maximizer - Summary</title>
+{% block title %}Accounts Summary{% endblock %}
 		
-	</head>
 	
-    <body>
-		<h1>Free Bets Maximizer - Accounts Summary</h1>
-		<table name="bookie-summary">
-			<tr>
-				<th>Bookie</th>
-				<th>Bookie</th>
-				<th>Bookie</th>
-				<th>Bookie</th>
-				<th>Bookie</th>
-				<th>Bookie</th>
-				<th>Bookie</th>
-			</tr>
-			<tr data-id="1">
-				<td>Bet365</td>
-				<td>25</td> 
-				<td id='username'>
-					<input class="input" placeholder="username" />
-					<p class="text" hidden></p>
-					<button class="edit btn btn-primary btn-sm" type="button" hidden>
-						edit
-					</button>
-				</td>
-				<td>
-					<select id="status">
-						<option value="signup">Signup</option>
-						<option value="deposit">Deposit</option>
-						<option value="initial">Initial Bet</option>
-						<option value="free">Free Bet</option>
-						<option value="complete">Complete</option>
-					</select>
-				</td>
-				<td id='balance'>
-					<input class="input" />
-					<p class="text" hidden></p>
-					<button class="edit" class="btn btn-primary btn-sm" type="button" hidden>
-						edit
-					</button>
-				</td>
-				<td id='profit'>
-					<input class="input" />
-					<p class="text" hidden></p>
-					<button class="edit" class="btn btn-primary btn-sm" type="button" hidden>
-						edit
-					</button>
-				</td>
-				<td id='banked'>True</td>
-			</tr>
-			<tr data-id="2">
-				<td>Bet365</td>
-				<td>25</td> 
-				<td id='username'>
-					<input class="input" placeholder="username" />
-					<p class="text" hidden></p>
-					<button class="edit btn btn-primary btn-sm" type="button" hidden>
-						edit
-					</button>
-				</td>
-				<td>
-					<select id="status">
-						<option value="signup">Signup</option>
-						<option value="deposit">Deposit</option>
-						<option value="initial">Initial Bet</option>
-						<option value="free">Free Bet</option>
-						<option value="complete">Complete</option>
-					</select>
-				</td>
-				<td id='balance'>
-					<input class="input" />
-					<p class="text" hidden></p>
-					<button class="edit" class="btn btn-primary btn-sm" type="button" hidden>
-						edit
-					</button>
-				</td> 
-				<td id='profit'>
-					<input class="input" />
-					<p class="text" hidden></p>
-					<button class="edit" class="btn btn-primary btn-sm" type="button" hidden>
-						edit
-					</button>
-				</td>
-				<td id='banked'>True</td>
-			</tr>
-		</table>
-		
-		<script src="{% static 'jquery-3.3.1.min.js' %}"></script>
-		<script src="{% static 'summary.js' %}"></script>
+{% block heading %}Accounts Summary{% endblock %}
 
-		<script>
-			$(document).ready(function () {
-				window.BetsSummary.initialize();
-			});
-		</script>
-	</body>
+{% block body %}
+	<table name="bookie-summary">
+		<tr>
+			<th>Bookie</th>
+			<th>Bookie</th>
+			<th>Bookie</th>
+			<th>Bookie</th>
+			<th>Bookie</th>
+			<th>Bookie</th>
+			<th>Bookie</th>
+		</tr>
+		<tr data-id="1">
+			<td>Bet365</td>
+			<td>25</td> 
+			<td id='username'>
+				<input class="input" placeholder="username" />
+				<p class="text" hidden></p>
+				<button class="edit btn btn-primary btn-sm" type="button" hidden>
+					edit
+				</button>
+			</td>
+			<td id="status">
+				<select class="status">
+					<option value="signup">Signup</option>
+					<option value="deposit">Deposit</option>
+					<option value="initial">Initial Bet</option>
+					<option value="free">Free Bet</option>
+					<option value="complete">Complete</option>
+				</select>
+			</td>
+			<td id='balance'>
+				<input class="input" />
+				<p class="text" hidden></p>
+				<button class="edit" class="btn btn-primary btn-sm" type="button" hidden>
+					edit
+				</button>
+			</td>
+			<td id='profit'>
+				<input class="input" />
+				<p class="text" hidden></p>
+				<button class="edit" class="btn btn-primary btn-sm" type="button" hidden>
+					edit
+				</button>
+			</td>
+			<td id="banked">
+				<input type="checkbox" class="banked" />
+			</td>
+		</tr>
+		<tr data-id="2">
+			<td>Bet365</td>
+			<td>25</td> 
+			<td id='username'>
+				<input class="input" placeholder="username" />
+				<p class="text" hidden></p>
+				<button class="edit btn btn-primary btn-sm" type="button" hidden>
+					edit
+				</button>
+			</td>
+			<td id="status">
+				<select class="status">
+					<option value="signup">Signup</option>
+					<option value="deposit">Deposit</option>
+					<option value="initial">Initial Bet</option>
+					<option value="free">Free Bet</option>
+					<option value="complete">Complete</option>
+				</select>
+			</td>
+			<td id='balance'>
+				<input class="input" />
+				<p class="text" hidden></p>
+				<button class="edit" class="btn btn-primary btn-sm" type="button" hidden>
+					edit
+				</button>
+			</td> 
+			<td id='profit'>
+				<input class="input" />
+				<p class="text" hidden></p>
+				<button class="edit" class="btn btn-primary btn-sm" type="button" hidden>
+					edit
+				</button>
+			</td>
+			<td id="banked">
+				<input type="checkbox" class="banked" />
+			</td>
+		</tr>
+	</table>
+{% endblock %}
+
+{% block scripts %}
+	<script src="{% static 'jquery-3.3.1.min.js' %}"></script>
+	<script src="{% static 'summary.js' %}"></script>
+
+	<script>
+		$(document).ready(function () {
+			window.BetsSummary.initialize();
+		});
+	</script>
+{% endblock %}
 	
-</html>

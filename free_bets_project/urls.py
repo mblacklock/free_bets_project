@@ -19,7 +19,7 @@ from django.urls import path, include
 from bets import urls as bets_urls, views as bets_views
 
 urlpatterns = [
-    path('', bets_views.summary_page, name='summary'),
+    path('', bets_views.home_page, name='home'),
     path('admin/', admin.site.urls),
     path('summary/', include(bets_urls)),
 ]

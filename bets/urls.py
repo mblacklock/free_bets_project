@@ -19,5 +19,6 @@ from django.urls import path
 from bets import views
 
 urlpatterns = [
-    path('', views.summary_page, name='summary_page'),
+    path('create_new', views.new_summary, name='new_summary'),
+    path('<summary_id>/', views.view_summary, name='view_summary'),
 ]
