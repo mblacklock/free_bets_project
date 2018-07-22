@@ -5,8 +5,15 @@ from bets.models import Affiliate, Item, Summary
 # Register your models here.
 
 class AffiliateAdmin(admin.ModelAdmin):
-    pass
+    fields = ['name', 'url', 'freebet']
+    list_display = ('name', 'url', 'freebet')
 
-admin.site.register(Affiliate)
-admin.site.register(Item)
-admin.site.register(Summary)
+class ItemInline(admin.TabularInline):
+    model = Item
+    extra = 0
+    
+class SummaryAdmin(admin.ModelAdmin):
+    inlines = [ItemInline]
+
+admin.site.register(Affiliate, AffiliateAdmin)
+admin.site.register(Summary, SummaryAdmin)

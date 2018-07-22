@@ -26,12 +26,23 @@ class Summary(models.Model):
         [Item.objects.create(affiliate=aff, summary=summary) for aff in Affiliate.objects.all()]
         return summary
 
+    def __str__(self):
+        if self.name:
+            return self.name
+        else:
+            return 'Summary ' + str(self.id)
+    
+    class Meta:
+        verbose_name_plural = 'Summaries'
+
 class Item(models.Model):
     affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
     summary = models.ForeignKey(Summary, on_delete=models.CASCADE)
 
     username = models.CharField(max_length=200, default='', blank=True)
-    status = models.CharField(max_length=30, default='deposit')
+    status = models.CharField(max_length=30, default='signup',
+                              choices=[('signup', 'signup'), ('deposit', 'deposit'),
+                                       ('initial', 'initial'), ('free', 'free'), ('complete', 'complete')])
     balance = models.DecimalField(default=Decimal('0.00'), max_digits=6, decimal_places=2, validators=[MinValueValidator(Decimal('0.00'))])
     profit = models.DecimalField(default=Decimal('0.00'), max_digits=6, decimal_places=2)
     banked = models.BooleanField(default=False)
@@ -39,3 +50,6 @@ class Item(models.Model):
 
     class Meta:
         unique_together = ('affiliate', 'summary')
+
+    def __str__(self):
+        return self.affiliate.name
