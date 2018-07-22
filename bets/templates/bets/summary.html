@@ -7,7 +7,7 @@
 {% block heading %}Add in summary.name{% endblock %}
 
 {% block body %}
-	<table name="bookie-summary">
+	<table name="bookie-summary" data-id="{{ summary.id }}">
 		<tr>
 			<th>Bookie</th>
 			<th>Free Bet</th>
@@ -101,6 +101,7 @@
 {% block scripts %}
 	<script src="{% static 'jquery-3.3.1.min.js' %}"></script>
 	<script src="{% static 'summary.js' %}"></script>
+	<script src="{% static 'summary-ajax.js' %}"></script>	
 
 	<script>
 		$(document).ready(function () {
