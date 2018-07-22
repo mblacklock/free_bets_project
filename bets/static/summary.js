@@ -1,19 +1,26 @@
 window.BetsSummary = {};
 window.BetsSummary.initialize = function () {
 		
-	$('.input').keypress(function(e) {
+	$('.input').on('keypress', function(e) {
 		if(e.which == 13) {
-			var summary_id = $('[name="bookie-summary"]').attr('data-id');
-			var id = $(this).parent().parent().attr('data-id');
+			
 			var el = $(this).parent().attr('id');
-			var affiliate = $(this).parent().parent().attr('data-name');
+			if((el == 'balance' || el == 'profit') && $.isNumeric($(this).val()) == false ) {
+				console.log('dsfsdfs');
+				$('.has-error').show();
+			} else {
+				$('.has-error').hide();
+				var summary_id = $('[name="bookie-summary"]').attr('data-id');
+				var id = $(this).parent().parent().attr('data-id');
+				var affiliate = $(this).parent().parent().attr('data-name');
 			
-			update_function(summary_id, affiliate, el, $(this).val());
+				update_function(summary_id, affiliate, el, $(this).val());
 			
-			$(this).hide();
-			$("tr[data-id='"+id+"'] #"+el+" .text").text($(this).val());
-			$("tr[data-id='"+id+"'] #"+el+" .text").show();
-			$("tr[data-id='"+id+"'] #"+el+" .edit").show();
+				$(this).hide();
+				$("tr[data-id='"+id+"'] #"+el+" .text").text($(this).val());
+				$("tr[data-id='"+id+"'] #"+el+" .text").show();
+				$("tr[data-id='"+id+"'] #"+el+" .edit").show();
+			}
 		}
 	});
 	

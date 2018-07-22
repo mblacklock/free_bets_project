@@ -10,6 +10,7 @@
   <div id="qunit"></div>
   <div id="qunit-fixture">
   
+	<div class="has-error" hidden>Error text</div>
 	<table name="bookie-summary">
 		<tr data-id="1">
 			<td>Bet365</td>
@@ -208,6 +209,7 @@ QUnit.test("balance box should be hidden on enter", function (assert) {
 	window.BetsSummary.initialize();
 	var e = jQuery.Event("keypress");
 	e.which = 13; // # Some key code value
+	$("tr[data-id='1'] #balance .input").val('13');
 	$("tr[data-id='1'] #balance .input").trigger(e);
 	
 	assert.equal($("tr[data-id='1'] #balance .input").is(':visible'), false);
@@ -275,6 +277,45 @@ QUnit.test("edit buttons reenabled when banked unclicked", function (assert) {
 	assert.equal($("tr[data-id='1'] #profit .edit").is(':enabled'), true);
 });
 
+QUnit.test("error thrown if balance or profit non-numeric", function (assert) {
+	window.BetsSummary.initialize();
+	var e = jQuery.Event("keypress");
+	e.which = 13; // # 
+	$("tr[data-id='1'] #profit .input").val('A');
+	$("tr[data-id='1'] #profit .input").trigger(e);
+	
+	assert.equal($('.has-error').is(':visible'), true);
+});
+
+QUnit.test("input box stays visible if balance or profit non-numeric", function (assert) {
+	window.BetsSummary.initialize();
+	var e = jQuery.Event("keypress");
+	e.which = 13; // # 
+	$("tr[data-id='1'] #balance .input").val('A');
+	$("tr[data-id='1'] #balance .input").trigger(e);
+	
+	assert.equal($("tr[data-id='1'] #balance .input").is(':visible'), true);
+});
+
+QUnit.test("text label stays hidden if balance or profit non-numeric", function (assert) {
+	window.BetsSummary.initialize();
+	var e = jQuery.Event("keypress");
+	e.which = 13; // # 
+	$("tr[data-id='1'] #balance .input").val('A');
+	$("tr[data-id='1'] #balance .input").trigger(e);
+	
+	assert.equal($("tr[data-id='1'] #balance .text").is(':visible'), false);
+});
+
+QUnit.test("errors should be hidden if successfully submitted", function (assert) {
+	window.BetsSummary.initialize();
+	$('.has-error').show();
+	var e = jQuery.Event("keypress");
+	e.which = 13; // # 
+	$("tr[data-id='1'] #balance .input").val('123');
+	$("tr[data-id='1'] #balance .input").trigger(e); 
+	assert.equal($('.has-error').is(':visible'), false);
+});
 
   </script>
 </body>
