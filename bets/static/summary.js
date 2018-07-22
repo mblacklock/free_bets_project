@@ -37,18 +37,31 @@ window.BetsSummary.initialize = function () {
 		
 	});
 	
+	$('.status').change(function() {
+		var summary_id = $('[name="bookie-summary"]').attr('data-id');
+		var affiliate_name = $(this).parent().parent().attr('data-name');
+		var id = $(this).parent().parent().attr("data-id");
+		
+		update_function(summary_id, affiliate_name, 'status', $(this).val())
+	});
+	
 	$('.banked').click( function() {
-		var id;
-		id = $(this).parent().parent().attr("data-id");
-		if($(this).is(":checked") == true) {
+		var summary_id = $('[name="bookie-summary"]').attr('data-id');
+		var affiliate_name = $(this).parent().parent().attr('data-name');
+		var id = $(this).parent().parent().attr("data-id");
+		
+		if($(this).is(":checked")) {
 			$("tr[data-id='"+id+"'] .input").prop("disabled", true);
 			$("tr[data-id='"+id+"'] .edit").prop("disabled", true);
 			$("tr[data-id='"+id+"'] .status").prop("disabled", true);
+			
+			update_function(summary_id, affiliate_name, 'banked', 'True')
 		}
 		else {
 			$("tr[data-id='"+id+"'] .input").prop("disabled", false);
 			$("tr[data-id='"+id+"'] .edit").prop("disabled", false);
 			$("tr[data-id='"+id+"'] .status").prop("disabled", false);
+			update_function(summary_id, affiliate_name, 'banked', 'False')
 		}		
 	});
 };
