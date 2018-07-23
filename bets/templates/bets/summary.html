@@ -4,7 +4,23 @@
 {% block title %}Accounts Summary{% endblock %}
 
 	
-{% block heading %}Add in summary.name{% endblock %}
+{% block heading %}Accounts Summary:
+	<div id='summary_name'>
+		{% if summary.name == '' %}
+			<input class="input" placeholder="Summary Name"/>
+			<p class="text" hidden></p>
+			<button class="edit btn btn-primary btn-sm" type="button" hidden>
+				edit
+			</button>
+		{% else %}
+			<input class="input" hidden />
+			<p class="text">{{ summary.name }}</p>
+			<button class="edit btn btn-primary btn-sm" type="button">
+				edit
+			</button>
+		{% endif %}
+	</div>
+{% endblock %}
 
 {% block body %}
 	<div class="has-error" hidden>Error: entered value must be a valid number</div>

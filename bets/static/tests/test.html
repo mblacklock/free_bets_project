@@ -10,6 +10,14 @@
   <div id="qunit"></div>
   <div id="qunit-fixture">
   
+	<div id='summary_name'>
+		<input class="input" placeholder="Summary Name"/>
+		<p class="text" hidden></p>
+		<button class="edit btn btn-primary btn-sm" type="button" hidden>
+			edit
+		</button>
+	</div>
+  
 	<div class="has-error" hidden>Error text</div>
 	<table name="bookie-summary">
 		<tr data-id="1">
@@ -316,6 +324,35 @@ QUnit.test("errors should be hidden if successfully submitted", function (assert
 	$("tr[data-id='1'] #balance .input").trigger(e); 
 	assert.equal($('.has-error').is(':visible'), false);
 });
+
+QUnit.test("summary_name input should be hidden on enter", function (assert) {
+	window.BetsSummary.initialize();
+	var e = jQuery.Event("keypress");
+	e.which = 13; // # Some key code value
+	$("#summary_name .input").val();
+	$("#summary_name .input").trigger(e);
+	
+	assert.equal($("#summary_name .input").is(':visible'), false);
+});
+
+QUnit.test("summary_name text should be visible on enter", function (assert) {
+	window.BetsSummary.initialize();
+	var e = jQuery.Event("keypress");
+	e.which = 13; // # Some key code value
+	$("#summary_name .input").val();
+	$("#summary_name .input").trigger(e);
+	
+	assert.equal($("#summary_name .text").is(':visible'), true);
+});
+
+QUnit.test("summary_name edit button should be hidden when clicked", function (assert) {
+	window.BetsSummary.initialize();
+	$("#summary_name .edit").show();
+	$("#summary_name .edit").click();
+	
+	assert.equal($("#summary_name .edit").is(':visible'), false);
+});
+
 
   </script>
 </body>

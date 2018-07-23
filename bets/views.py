@@ -29,19 +29,29 @@ def update_ajax(request, param):
         summary = Summary.objects.get(id=summary_id)
         if summary:
             name = request.GET['affiliate_name']
-            affiliate = Affiliate.objects.get(name=name)
-            item = Item.objects.get(summary=summary, affiliate=affiliate)
+            
+            if name != 'summary_name':
+                affiliate = Affiliate.objects.get(name=name)
+                item = Item.objects.get(summary=summary, affiliate=affiliate)
 
-            if param == 'username':
-                item.username = request.GET['value']
-            elif param == 'status':
-                item.status = request.GET['value']
-            elif param == 'balance':
-                item.balance = request.GET['value']
-            elif param == 'profit':
-                item.profit = request.GET['value']
-            elif param == 'banked':
-                item.banked = request.GET['value']
-            item.save()
-    return HttpResponse(item)
+                if param == 'username':
+                    item.username = request.GET['value']
+                elif param == 'status':
+                    item.status = request.GET['value']
+                elif param == 'balance':
+                    item.balance = request.GET['value']
+                elif param == 'profit':
+                    item.profit = request.GET['value']
+                elif param == 'banked':
+                    item.banked = request.GET['value']
+                item.save()
+                return HttpResponse(item)
+    
+            else:
+                summary.name = request.GET['value']
+                summary.save()
+                return HttpResponse(summary)
+
+        return HttpResponse(None)
+                
             

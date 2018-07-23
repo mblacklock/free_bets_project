@@ -25,6 +25,14 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
         header_text = self.browser.find_element_by_tag_name('h1').text  
         self.assertIn('Free Bets', header_text)
 
+        # Edith see that the newly created summary has an input box to enter a title
+        # She enters a name and hits enter, it updates and is replaced by an edit button
+        self.enterSummaryName("Edith's Summary")
+        
+        # She clicks edit and is able to change her summary name
+        self.clickEditSummaryName("Edith's Summary")
+        self.enterSummaryName("Bombedith's Summary")
+            
         # She notices a table of bookmakers
         table = self.browser.find_element_by_tag_name('table')
         self.assertEqual(

@@ -62,3 +62,12 @@ class AjaxViewsTests(TestCase):
         
         self.assertEqual(Item.objects.get(affiliate=aff1).banked, True)
 
+    def test_update_summary_name_updates_summary_name(self):
+        aff1 = Affiliate.objects.create(name='Aff1')
+        aff2 = Affiliate.objects.create(name='Aff2')
+        self.client.post('/summary/create_new')
+        summary = Summary.objects.first()
+   
+        self.client.get(f'/summary/update/summary_name', {'summary_id': summary.id, 'affiliate_name': 'summary_name', 'value': 'test'})
+        
+        self.assertEqual(Summary.objects.first().name, 'test')

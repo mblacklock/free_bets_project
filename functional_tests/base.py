@@ -104,6 +104,20 @@ class FunctionalTest(StaticLiveServerTestCase):
         )
 
     @wait
+    def enterSummaryName(self, text):
+        name = self.browser.find_element_by_css_selector('#summary_name')
+        name.find_element_by_class_name('input').clear()
+        name.find_element_by_class_name('input').send_keys(text)
+        name.find_element_by_class_name('input').send_keys(Keys.ENTER)
+        self.checkIsDisplayed(name, 'input', False)
+        self.checkIsDisplayed(name, 'text', True)
+        self.checkIsDisplayed(name, 'edit', True)
+        self.assertEqual(
+           name.find_element_by_class_name('text').text
+               , text
+        )
+
+    @wait
     def clickEdit(self, rowID, element, text):
         el = self.findElement(rowID, element)
         el.find_element_by_class_name('edit').click()
@@ -113,6 +127,19 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.checkIsDisplayed(el, 'input', True)
         self.assertEqual(
             el.find_element_by_class_name('input').get_attribute('placeholder')
+            ,text
+        )
+
+    @wait
+    def clickEditSummaryName(self, text):
+        name = self.browser.find_element_by_css_selector('#summary_name')
+        name.find_element_by_class_name('edit').click()
+
+        self.checkIsDisplayed(name, 'edit', False)
+        self.checkIsDisplayed(name, 'text', False)
+        self.checkIsDisplayed(name, 'input', True)
+        self.assertEqual(
+            name.find_element_by_class_name('input').get_attribute('placeholder')
             ,text
         )
 
