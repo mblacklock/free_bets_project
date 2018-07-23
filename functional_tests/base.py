@@ -55,9 +55,9 @@ class FunctionalTest(StaticLiveServerTestCase):
         check.find_element_by_class_name('banked').click()
         
         row = self.browser.find_element_by_css_selector('tr[data-id="'+rowID+'"]')
-        self.checkIsEnabled(row, 'input', False)
-        self.checkIsEnabled(row, 'edit', False)
-        self.checkIsEnabled(row, 'status', False)
+        self.checkboxIsEnabled(row, 'input', False)
+        self.checkboxIsEnabled(row, 'edit', False)
+        self.checkboxIsEnabled(row, 'status', False)
 
     @wait
     def unclickCheckbox(self, rowID):
@@ -65,9 +65,9 @@ class FunctionalTest(StaticLiveServerTestCase):
         check.find_element_by_class_name('banked').click()
         
         row = self.browser.find_element_by_css_selector('tr[data-id="'+rowID+'"]')
-        self.checkIsEnabled(row, 'input', True)
-        self.checkIsEnabled(row, 'edit', True)
-        self.checkIsEnabled(row, 'status', True)
+        self.checkboxIsEnabled(row, 'input', True)
+        self.checkboxIsEnabled(row, 'edit', True)
+        self.checkboxIsEnabled(row, 'status', True)
   
     @wait
     def checkIsDisplayed(self, element, item, state):
@@ -84,9 +84,16 @@ class FunctionalTest(StaticLiveServerTestCase):
         )
 
     @wait
-    def checkIsEnabled(self, row, item, state):
+    def checkboxIsEnabled(self, row, item, state):
         elements = row.find_elements_by_class_name(item)
         [self.assertEqual(element.is_enabled(), state) for element in elements]
+
+    @wait
+    def checkInputIsEnabled(self, element, item, state):
+        self.assertEqual(
+            element.find_element_by_class_name(item).is_enabled()
+            , state
+        )
 
     @wait
     def enterInput(self, rowID, element, text):
@@ -109,11 +116,10 @@ class FunctionalTest(StaticLiveServerTestCase):
         name.find_element_by_class_name('input').clear()
         name.find_element_by_class_name('input').send_keys(text)
         name.find_element_by_class_name('input').send_keys(Keys.ENTER)
-        self.checkIsDisplayed(name, 'input', False)
-        self.checkIsDisplayed(name, 'text', True)
+        self.checkInputIsEnabled(name, 'input', False)
         self.checkIsDisplayed(name, 'edit', True)
         self.assertEqual(
-           name.find_element_by_class_name('text').text
+           name.find_element_by_class_name('input').get_attribute('placeholder')
                , text
         )
 
@@ -136,8 +142,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         name.find_element_by_class_name('edit').click()
 
         self.checkIsDisplayed(name, 'edit', False)
-        self.checkIsDisplayed(name, 'text', False)
-        self.checkIsDisplayed(name, 'input', True)
+        self.checkInputIsEnabled(name, 'input', True)
         self.assertEqual(
             name.find_element_by_class_name('input').get_attribute('placeholder')
             ,text

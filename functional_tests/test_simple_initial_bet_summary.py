@@ -22,7 +22,7 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
         
         # She notices the page title and header mention free bets
         self.assertIn('Free Bets', self.browser.title)
-        header_text = self.browser.find_element_by_tag_name('h1').text  
+        header_text = self.browser.find_element_by_tag_name('h2').text  
         self.assertIn('Free Bets', header_text)
 
         # Edith see that the newly created summary has an input box to enter a title
@@ -32,6 +32,8 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
         # She clicks edit and is able to change her summary name
         self.clickEditSummaryName("Edith's Summary")
         self.enterSummaryName("Bombedith's Summary")
+
+        self.fail('Finish the test!')
             
         # She notices a table of bookmakers
         table = self.browser.find_element_by_tag_name('table')

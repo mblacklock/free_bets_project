@@ -10,11 +10,10 @@
   <div id="qunit"></div>
   <div id="qunit-fixture">
   
-	<div id='summary_name'>
-		<input class="input" placeholder="Summary Name"/>
-		<p class="text hidden"></p>
-		<button class="edit btn btn-primary btn-sm hidden" type="button">
-			edit
+	<div id='summary_name' class="input-group my-5 col-3">
+		<input class="input form-control" type="text" placeholder="Summary Name">
+		<button class="edit btn btn-light hidden" type="button">
+			<i class="far fa-edit"></i>edit
 		</button>
 	</div>
   
@@ -330,24 +329,24 @@ QUnit.test("errors should be hidden if successfully submitted", function (assert
 	assert.equal($('.has-error').is(':visible'), false);
 });
 
-QUnit.test("summary_name input should be hidden on enter", function (assert) {
+QUnit.test("summary_name input should be disabled on enter", function (assert) {
 	window.BetsSummary.initialize();
 	var e = jQuery.Event("keypress");
 	e.which = 13; // # Some key code value
 	$("#summary_name .input").val();
 	$("#summary_name .input").trigger(e);
 	
-	assert.equal($("#summary_name .input").is(':visible'), false);
+	assert.equal($("#summary_name .input").is(':disabled'), true);
 });
 
-QUnit.test("summary_name text should be visible on enter", function (assert) {
+QUnit.test("summary_name placeholder should equal value on enter", function (assert) {
 	window.BetsSummary.initialize();
 	var e = jQuery.Event("keypress");
 	e.which = 13; // # Some key code value
-	$("#summary_name .input").val();
+	$("#summary_name .input").val('test');
 	$("#summary_name .input").trigger(e);
 	
-	assert.equal($("#summary_name .text").is(':visible'), true);
+	assert.equal($("#summary_name .input").attr('placeholder'), 'test');
 });
 
 QUnit.test("summary_name edit button should be hidden when clicked", function (assert) {
@@ -356,6 +355,21 @@ QUnit.test("summary_name edit button should be hidden when clicked", function (a
 	$("#summary_name .edit").click();
 	
 	assert.equal($("#summary_name .edit").is(':visible'), false);
+});
+
+QUnit.test("summary_name input should be enabled on click", function (assert) {
+	window.BetsSummary.initialize();
+	$("#summary_name .edit").click();
+	
+	assert.equal($("#summary_name .input").is(':disabled'), false);
+});
+
+QUnit.test("summary_name placeholder should equal value on click", function (assert) {
+	window.BetsSummary.initialize();
+	$("#summary_name .input").val('test');
+	$("#summary_name .edit").click();
+
+	assert.equal($("#summary_name .input").attr('placeholder'), 'test');
 });
 
 

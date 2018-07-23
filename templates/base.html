@@ -11,18 +11,20 @@
 		<link href="{% static 'base.css' %}" rel="stylesheet">
 		<link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+		{% block css %}{% endblock %}
 	</head>
 	
     <body>
-		<h1>Free Bets Maximizer - {% block heading %}{% endblock %}</h1>
-		
-		{% block body %}{% endblock %}
-		
-		<!-- Placed at the end of the document so the pages load faster -->
-		<script src="{% static 'jquery-3.3.1.min.js' %}"></script>
-		<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+		<div class="container">
+			<h2>Free Bets Maximizer - {% block heading %}{% endblock %}</h2>
+			
+			{% block body %}{% endblock %}
+			
+			<!-- Placed at the end of the document so the pages load faster -->
+			<script src="{% static 'jquery-3.3.1.min.js' %}"></script>
+			<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+		</div>
 		{% block scripts %}{% endblock %}
-		
 	</body>
 	
 </html>

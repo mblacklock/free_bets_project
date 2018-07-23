@@ -1,28 +1,25 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
+{% block css %}
+	<!-- Custom styles for this template -->
+    <link href="{% static 'grid.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block title %}Accounts Summary{% endblock %}
 
 	
-{% block heading %}Accounts Summary:
-	<div id='summary_name'>
-		{% if summary.name == '' %}
-			<input class="input" placeholder="Summary Name"/>
-			<p class="text hidden"></p>
-			<button class="edit hidden btn btn-primary btn-sm" type="button">
-				edit
-			</button>
-		{% else %}
-			<input class="input hidden" />
-			<p class="text">{{ summary.name }}</p>
-			<button class="edit btn btn-light btn-sm" type="button">
-				<i class="far fa-edit"></i>
-			</button>
-		{% endif %}
-	</div>
-{% endblock %}
+{% block heading %}Accounts Summary{% endblock %}
 
 {% block body %}
+	<div id='summary_name' class="input-group my-5 col-3">
+		<input class="input form-control" type="text" 
+			placeholder={% if summary.name == '' %}"Summary Name"{% else %}"{{ summary.name }}" disabled{% endif %}>
+		<button class="edit btn btn-light {% if summary.name == '' %}hidden{% endif %}" type="button">
+			<i class="far fa-edit"></i>edit
+		</button>
+	</div>
+	
 	<div class="has-error hidden">Error: entered value must be a valid number</div>
 	<table name="bookie-summary" data-id="{{ summary.id }}">
 		<tr>
