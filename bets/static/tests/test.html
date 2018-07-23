@@ -12,8 +12,8 @@
   
 	<div id='summary_name'>
 		<input class="input" placeholder="Summary Name"/>
-		<p class="text" hidden></p>
-		<button class="edit btn btn-primary btn-sm" type="button" hidden>
+		<p class="text hidden"></p>
+		<button class="edit btn btn-primary btn-sm hidden" type="button">
 			edit
 		</button>
 	</div>
@@ -147,6 +147,11 @@ QUnit.test("username text should update on enter", function (assert) {
 	$("tr[data-id='1'] #username .input").trigger(e);
 	
 	assert.equal($("tr[data-id='1'] #username .text").text(), 'testuser');
+});
+
+QUnit.test("username edit button should be initially hidden", function (assert) {
+	window.BetsSummary.initialize();
+	assert.equal($("tr[data-id='1'] #username .edit").is(':visible'), false);
 });
 
 QUnit.test("username edit button should be visible on enter", function (assert) {
