@@ -11,9 +11,9 @@
 {% block heading %}Accounts Summary{% endblock %}
 
 {% block body %}
-	<div id='summary_name' class="input-group my-5 col-3">
+	<div id='summary_name' class="input-group my-5 col-4">
 		<input class="input form-control" type="text" 
-			placeholder={% if summary.name == '' %}"Summary Name"{% else %}"{{ summary.name }}" disabled{% endif %}>
+			value={% if summary.name == '' %}"Summary Name"{% else %}"{{ summary.name }}" disabled{% endif %}>
 		<button class="edit btn btn-light {% if summary.name == '' %}hidden{% endif %}" type="button">
 			<i class="far fa-edit"></i>edit
 		</button>
@@ -39,7 +39,7 @@
 				<td>
 					<div id='username' class="input-group">
 						<input class="input form-control" type="text" size="2"
-							placeholder={% if item.username == '' %}"username"{% else %}"{{ item.username }}" disabled{% endif %}>
+							value={% if item.username == '' %}"username"{% else %}"{{ item.username }}" disabled{% endif %}>
 						<button class="edit btn btn-light {% if item.username == '' %}hidden{% endif %}" type="button">
 							<i class="far fa-edit"></i>
 						</button>
@@ -72,7 +72,7 @@
 				<td>
 					<div id='balance' class="input-group">
 						<input class="input form-control" type="text" size="1"
-							placeholder={% if item.balance|stringformat:".2f" == "0.00" %}""{% else %}"{{ item.balance }}" disabled{% endif %}>
+							value={% if item.balance|stringformat:".2f" == "0.00" %}""{% else %}"{{ item.balance }}" disabled{% endif %}>
 						<button class="edit btn btn-light {% if item.balance|stringformat:".2f" == "0.00" %}hidden{% endif %}" type="button">
 							<i class="far fa-edit"></i>
 						</button>
@@ -81,7 +81,7 @@
 				<td>
 					<div id='profit' class="input-group">
 						<input class="input form-control" type="text" size="1"
-							placeholder={% if item.profit|stringformat:".2f" == "0.00" %}""{% else %}"{{ item.profit }}" disabled{% endif %}>
+							value={% if item.profit|stringformat:".2f" == "0.00" %}""{% else %}"{{ item.profit }}" disabled{% endif %}>
 						<button class="edit btn btn-light {% if item.profit|stringformat:".2f" == "0.00" %}hidden{% endif %}" type="button">
 							<i class="far fa-edit"></i>
 						</button>

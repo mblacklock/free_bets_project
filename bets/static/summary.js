@@ -21,7 +21,7 @@ window.BetsSummary.initialize = function () {
 				var summary_id = $('[name="bookie-summary"]').attr('data-id');
 				$('.alert-warning').hide();
 				update_function(summary_id, affiliate, el, $(this).val());
-				$(tab + "#"+el+" .input").attr("placeholder", $(this).val());
+				$(tab + "#"+el+" .input").val($(this).val());
 				$(tab + "#"+el+" .input").prop('disabled', true);
 				$(tab + "#"+el+" .edit").show();
 			}
@@ -37,7 +37,6 @@ window.BetsSummary.initialize = function () {
 			var tab = "tr[data-id='"+id+"'] ";
 		}
 			$(this).hide();
-			$(tab + "#"+el+" .input").attr("placeholder", $(tab + "#"+el+" .input").val());
 			$(tab + "#"+el+" .input").prop('disabled', false);		
 	});
 	
@@ -62,9 +61,15 @@ window.BetsSummary.initialize = function () {
 			update_function(summary_id, affiliate_name, 'banked', 'True')
 		}
 		else {
-			// NEED TO CHANGE TO REFLECT ORIGINAL STATUSES
-			$("tr[data-id='"+id+"'] .input").prop("disabled", false);
-			$("tr[data-id='"+id+"'] .edit").prop("disabled", false);
+			if($("tr[data-id='"+id+"'] .input").val() == "") {
+				$("tr[data-id='"+id+"'] .input").prop("disabled", false);
+				$("tr[data-id='"+id+"'] .edit").prop("disabled", false);
+				$("tr[data-id='"+id+"'] .edit").hide();
+			} else {
+				$("tr[data-id='"+id+"'] .input").prop("disabled", true);
+				$("tr[data-id='"+id+"'] .edit").prop("disabled", false);
+				$("tr[data-id='"+id+"'] .edit").show();
+			}
 			$("tr[data-id='"+id+"'] .status").prop("disabled", false);
 			update_function(summary_id, affiliate_name, 'banked', 'False')
 		}		

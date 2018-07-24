@@ -5,7 +5,7 @@ from functional_tests.base import FunctionalTest
 class ItemValidationTest(FunctionalTest):
 
     def get_error_element(self):
-        return self.browser.find_element_by_css_selector('.has-error')
+        return self.browser.find_element_by_css_selector('.alert-warning')
 
     def test_cannot_submit_non_numeric_balance_or_profit(self):
         self.initiateDatabase()
@@ -21,10 +21,10 @@ class ItemValidationTest(FunctionalTest):
 
         # An error message is displayed
         body = self.browser.find_element_by_css_selector('body')
-        self.checkIsDisplayed(body, 'has-error', True)
+        self.checkIsDisplayed(body, 'alert-warning', True)
         
         # She corrects the error and resubmits. The error disappears
         # And she can submit it successfully
         
         self.enterInput('1', 'balance', '-10.43')
-        self.checkIsDisplayed(body, 'has-error', False)
+        self.checkIsDisplayed(body, 'alert-warning', False)

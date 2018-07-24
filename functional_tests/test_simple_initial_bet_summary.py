@@ -113,10 +113,10 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
         self.browser.find_element_by_name('new_summary').click()
         
         input_list = self.browser.find_elements_by_css_selector('.input')
-        placeholders = [item.get_attribute("placeholder") for item in input_list]
-        self.assertNotIn('edith66', placeholders)
-        self.assertNotIn('20.57', placeholders)
-        self.assertNotIn('-12.90', placeholders)
+        values = [item.get_attribute("value") for item in input_list]
+        self.assertNotIn('edith66', values)
+        self.assertNotIn('20.57', values)
+        self.assertNotIn('-12.90', values)
 
         # Francis starts a new summary by filling in the second row.
         self.enterInput('2', 'username', 'francis27')
@@ -131,10 +131,10 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
 
         # Again, there is no trace of Edith's list
         input_list = self.browser.find_elements_by_css_selector('.input')
-        placeholders = [item.get_attribute("placeholder") for item in input_list]
-        self.assertNotIn('edith66', placeholders)
-        self.assertNotIn('20.57', placeholders)
-        self.assertNotIn('-12.90', placeholders)
+        values = [item.get_attribute("value") for item in input_list]
+        self.assertNotIn('edith66', values)
+        self.assertNotIn('20.57', values)
+        self.assertNotIn('-12.90', values)
 
         # Francis shuts down his browser
         self.browser.quit()
@@ -145,15 +145,15 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
 
         # It is as she left it
         input_list = self.browser.find_elements_by_css_selector('.input')
-        placeholders = [item.get_attribute("placeholder") for item in input_list]
-        self.assertIn('edith66', placeholders)
-        self.assertIn('20.57', placeholders)
-        self.assertIn('-12.90', placeholders)
+        values = [item.get_attribute("value") for item in input_list]
+        self.assertIn('edith66', values)
+        self.assertIn('20.57', values)
+        self.assertIn('-12.90', values)
 
         # and does not contain any of Francis' list
-        self.assertNotIn('francis27', placeholders)
-        self.assertNotIn('11.23', placeholders)
-        self.assertNotIn('8.68', placeholders)
+        self.assertNotIn('francis27', values)
+        self.assertNotIn('11.23', values)
+        self.assertNotIn('8.68', values)
 
         # Edith shuts down her browser
         self.browser.quit()
@@ -164,15 +164,15 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
 
         # It is as he left it
         input_list = self.browser.find_elements_by_css_selector('.input')
-        placeholders = [item.get_attribute("placeholder") for item in input_list]
-        self.assertIn('francis27', placeholders)
-        self.assertIn('11.23', placeholders)
-        self.assertIn('8.68', placeholders)
+        values = [item.get_attribute("value") for item in input_list]
+        self.assertIn('francis27', values)
+        self.assertIn('11.23', values)
+        self.assertIn('8.68', values)
 
         # and does not contain any of Edith's' list
-        self.assertNotIn('edith66', placeholders)
-        self.assertNotIn('20.57', placeholders)
-        self.assertNotIn('-12.90', placeholders)
+        self.assertNotIn('edith66', values)
+        self.assertNotIn('20.57', values)
+        self.assertNotIn('-12.90', values)
 
         # Satisfied, they both go back to sleep
 

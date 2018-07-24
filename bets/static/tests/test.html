@@ -133,14 +133,14 @@ QUnit.test("username input should NOT be disabled on any other keypress", functi
 	assert.equal($("tr[data-id='1'] #username .input").is(':disabled'), false);
 });
 
-QUnit.test("username placeholder should equal value on enter", function (assert) {
+QUnit.test("username value should equal value on enter", function (assert) {
 	window.BetsSummary.initialize();
 	var e = jQuery.Event("keypress");
 	e.which = 13; // # Some key code value
 	$("tr[data-id='1'] #username .input").val('testuser');
 	$("tr[data-id='1'] #username .input").trigger(e);
 	
-	assert.equal($("tr[data-id='1'] #username .input").attr('placeholder'), 'testuser');
+	assert.equal($("tr[data-id='1'] #username .input").val(), 'testuser');
 });
 
 QUnit.test("username edit button should be initially hidden", function (assert) {
@@ -165,12 +165,12 @@ QUnit.test("username edit button should be hidden when clicked", function (asser
 	assert.equal($("tr[data-id='1'] #username .edit").is(':visible'), false);
 });
 
-QUnit.test("username input placeholder should be updated when edit btn clicked", function (assert) {
+QUnit.test("username input value should be updated when edit btn clicked", function (assert) {
 	window.BetsSummary.initialize();	
 	$("tr[data-id='1'] #username .input").val('testuser');
 	$("tr[data-id='1'] #username .edit").click();
 	
-	assert.equal($("tr[data-id='1'] #username .input").attr('placeholder'), 'testuser');
+	assert.equal($("tr[data-id='1'] #username .input").val(), 'testuser');
 });
 
 QUnit.test("username input should be enabled when edit btn clicked", function (assert) {
@@ -181,8 +181,6 @@ QUnit.test("username input should be enabled when edit btn clicked", function (a
 	assert.equal($("tr[data-id='1'] #username .input").is(':disabled'), false);
 });
 
-
-
 QUnit.test("username 1 input should NOT affect 2", function (assert) {
 	window.BetsSummary.initialize();
 	var e = jQuery.Event("keypress");
@@ -190,7 +188,7 @@ QUnit.test("username 1 input should NOT affect 2", function (assert) {
 	$("tr[data-id='1'] #username .input").val('testuser');
 	$("tr[data-id='1'] #username .input").trigger(e);
 	
-	assert.notEqual($("tr[data-id='2'] #username .input").attr('placeholder'), 'testuser');
+	assert.notEqual($("tr[data-id='2'] #username .input").val(), 'testuser');
 	assert.equal($("tr[data-id='2'] #username .input").is(':disabled'), false);
 	assert.equal($("tr[data-id='2'] #username .edit").is(':visible'), false);
 	
@@ -198,10 +196,10 @@ QUnit.test("username 1 input should NOT affect 2", function (assert) {
 
 QUnit.test("username 1 edit button click does not affect 2", function (assert) {
 	window.BetsSummary.initialize();
-	$("tr[data-id='1'] #username .input").attr('placeholder', 'testuser');
+	$("tr[data-id='1'] #username .input").val('testuser');
 	$("tr[data-id='1'] #username .edit").click();
 	
-	assert.notEqual($("tr[data-id='2'] #username .input").attr('placeholder'), 'testuser');
+	assert.notEqual($("tr[data-id='2'] #username .input").val(), 'testuser');
 	
 });
 
@@ -262,7 +260,7 @@ QUnit.test("other rows not affected when banked clicked", function (assert) {
 	assert.equal($("tr[data-id='2'] #username .input").is(':disabled'), false);
 });
 
-QUnit.test("edit buttons reenabled when banked unclicked", function (assert) {
+QUnit.test("edit buttons reenable when banked unclicked", function (assert) {
 	window.BetsSummary.initialize();	
 	$("tr[data-id='1'] #username .edit").prop('enabled', false);
 	$("tr[data-id='1'] #profit .edit").prop('enabled', false);
@@ -275,6 +273,43 @@ QUnit.test("edit buttons reenabled when banked unclicked", function (assert) {
 	assert.equal($("tr[data-id='1'] #username .edit").is(':enabled'), true);
 	assert.equal($("tr[data-id='1'] #balance .edit").is(':enabled'), true);
 	assert.equal($("tr[data-id='1'] #profit .edit").is(':enabled'), true);
+});
+
+QUnit.test("input boxes not reenabled when banked unclicked if value not empty ", function (assert) {
+	window.BetsSummary.initialize();	
+	$("tr[data-id='1'] #username .input").prop('enabled', true);
+	$("tr[data-id='1'] #profit .input").prop('enabled', true);
+	$("tr[data-id='1'] #balance .input").prop('enabled', true);
+	$("tr[data-id='1'] #username .input").val('test');
+	$("tr[data-id='1'] #profit .input").val('test');
+	$("tr[data-id='1'] #balance .input").val('test');
+	$("tr[data-id='1'] .banked").prop('checked', true);
+	
+	$("tr[data-id='1'] .banked").click();
+	
+	assert.equal($("tr[data-id='1'] .banked").is(':checked'), false);
+	assert.equal($("tr[data-id='1'] #username .input").is(':enabled'), false);
+	assert.equal($("tr[data-id='1'] #balance .input").is(':enabled'), false);
+	assert.equal($("tr[data-id='1'] #profit .input").is(':enabled'), false);
+});
+
+QUnit.test("edit buttons shown when banked unclicked if item val is not empty", function (assert) {
+	window.BetsSummary.initialize();	
+	$("tr[data-id='1'] #username .edit").hide();
+	$("tr[data-id='1'] #profit .edit").hide();
+	$("tr[data-id='1'] #balance .edit").hide();
+	
+	$("tr[data-id='1'] #username .input").val('test');
+	$("tr[data-id='1'] #profit .input").val('test');
+	$("tr[data-id='1'] #balance .input").val('test');
+
+	$("tr[data-id='1'] .banked").prop('checked', true);
+	$("tr[data-id='1'] .banked").click();
+	
+	assert.equal($("tr[data-id='1'] .banked").is(':checked'), false);
+	assert.equal($("tr[data-id='1'] #username .edit").is(':visible'), true);
+	assert.equal($("tr[data-id='1'] #balance .edit").is(':visible'), true);
+	assert.equal($("tr[data-id='1'] #profit .edit").is(':visible'), true);
 });
 
 QUnit.test("error thrown if balance or profit non-numeric", function (assert) {
@@ -317,14 +352,14 @@ QUnit.test("summary_name input should be disabled on enter", function (assert) {
 	assert.equal($("#summary_name .input").is(':disabled'), true);
 });
 
-QUnit.test("summary_name placeholder should equal value on enter", function (assert) {
+QUnit.test("summary_name value should equal value on enter", function (assert) {
 	window.BetsSummary.initialize();
 	var e = jQuery.Event("keypress");
 	e.which = 13; // # Some key code value
 	$("#summary_name .input").val('test');
 	$("#summary_name .input").trigger(e);
 	
-	assert.equal($("#summary_name .input").attr('placeholder'), 'test');
+	assert.equal($("#summary_name .input").val(), 'test');
 });
 
 QUnit.test("summary_name edit button should be hidden when clicked", function (assert) {
@@ -342,12 +377,12 @@ QUnit.test("summary_name input should be enabled on click", function (assert) {
 	assert.equal($("#summary_name .input").is(':disabled'), false);
 });
 
-QUnit.test("summary_name placeholder should equal value on click", function (assert) {
+QUnit.test("summary_name value should equal value on click", function (assert) {
 	window.BetsSummary.initialize();
 	$("#summary_name .input").val('test');
 	$("#summary_name .edit").click();
 
-	assert.equal($("#summary_name .input").attr('placeholder'), 'test');
+	assert.equal($("#summary_name .input").val(), 'test');
 });
 
 

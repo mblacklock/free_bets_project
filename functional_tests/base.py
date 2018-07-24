@@ -65,7 +65,6 @@ class FunctionalTest(StaticLiveServerTestCase):
         check.find_element_by_class_name('banked').click()
         
         row = self.browser.find_element_by_css_selector('tr[data-id="'+rowID+'"]')
-        self.checkboxIsEnabled(row, 'input', True)
         self.checkboxIsEnabled(row, 'edit', True)
         self.checkboxIsEnabled(row, 'status', True)
   
@@ -105,7 +104,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.checkInputIsEnabled(el, 'input', False)
         self.checkIsDisplayed(el, 'edit', True)
         self.assertEqual(
-           el.find_element_by_class_name('input').get_attribute('placeholder')
+           el.find_element_by_class_name('input').get_attribute('value')
                , text
         )
 
@@ -118,7 +117,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.checkInputIsEnabled(name, 'input', False)
         self.checkIsDisplayed(name, 'edit', True)
         self.assertEqual(
-           name.find_element_by_class_name('input').get_attribute('placeholder')
+           name.find_element_by_class_name('input').get_attribute('value')
                , text
         )
 
@@ -130,7 +129,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.checkIsDisplayed(el, 'edit', False)
         self.checkInputIsEnabled(el, 'input', True)
         self.assertEqual(
-            el.find_element_by_class_name('input').get_attribute('placeholder')
+            el.find_element_by_class_name('input').get_attribute('value')
             ,text
         )
 
@@ -142,7 +141,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.checkIsDisplayed(name, 'edit', False)
         self.checkInputIsEnabled(name, 'input', True)
         self.assertEqual(
-            name.find_element_by_class_name('input').get_attribute('placeholder')
+            name.find_element_by_class_name('input').get_attribute('value')
             ,text
         )
 
