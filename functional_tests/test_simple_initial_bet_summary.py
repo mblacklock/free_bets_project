@@ -32,8 +32,6 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
         # She clicks edit and is able to change her summary name
         self.clickEditSummaryName("Edith's Summary")
         self.enterSummaryName("Bombedith's Summary")
-
-        self.fail('Finish the test!')
             
         # She notices a table of bookmakers
         table = self.browser.find_element_by_tag_name('table')
@@ -61,6 +59,7 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
         # She selects one of the options and the status changes
         self.changeStatus('1', 'initial', 'Initial Bet')
 
+
         # Edith then notices balance and profit input boxes.        
         # She notes they work the same as the username box
         self.enterInput('1', 'balance', '20.57')
@@ -86,7 +85,6 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
         # She goes to sleep, delighted
 
     def test_multiple_users_can_start_and_retrieve_summaries_at_different_urls(self):
-
         self.initiateDatabase()
         # Edith starts a new summary and edits the first row
         self.browser.get(self.live_server_url)
@@ -114,10 +112,11 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
         self.browser.get(self.live_server_url)
         self.browser.find_element_by_name('new_summary').click()
         
-        page_text = self.browser.find_element_by_tag_name('body').text
-        self.assertNotIn('edith66', page_text)
-        self.assertNotIn('20.57', page_text)
-        self.assertNotIn('-12.90', page_text)
+        input_list = self.browser.find_elements_by_css_selector('.input')
+        placeholders = [item.get_attribute("placeholder") for item in input_list]
+        self.assertNotIn('edith66', placeholders)
+        self.assertNotIn('20.57', placeholders)
+        self.assertNotIn('-12.90', placeholders)
 
         # Francis starts a new summary by filling in the second row.
         self.enterInput('2', 'username', 'francis27')
@@ -131,10 +130,11 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
         self.assertNotEqual(francis_list_url, edith_list_url)
 
         # Again, there is no trace of Edith's list
-        page_text = self.browser.find_element_by_tag_name('body').text
-        self.assertNotIn('edith66', page_text)
-        self.assertNotIn('20.57', page_text)
-        self.assertNotIn('-12.90', page_text)
+        input_list = self.browser.find_elements_by_css_selector('.input')
+        placeholders = [item.get_attribute("placeholder") for item in input_list]
+        self.assertNotIn('edith66', placeholders)
+        self.assertNotIn('20.57', placeholders)
+        self.assertNotIn('-12.90', placeholders)
 
         # Francis shuts down his browser
         self.browser.quit()
@@ -144,15 +144,16 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
         self.browser.get(edith_list_url)
 
         # It is as she left it
-        page_text = self.browser.find_element_by_tag_name('body').text
-        self.assertIn('edith66', page_text)
-        self.assertIn('20.57', page_text)
-        self.assertIn('-12.90', page_text)
+        input_list = self.browser.find_elements_by_css_selector('.input')
+        placeholders = [item.get_attribute("placeholder") for item in input_list]
+        self.assertIn('edith66', placeholders)
+        self.assertIn('20.57', placeholders)
+        self.assertIn('-12.90', placeholders)
 
         # and does not contain any of Francis' list
-        self.assertNotIn('francis27', page_text)
-        self.assertNotIn('11.23', page_text)
-        self.assertNotIn('8.68', page_text)
+        self.assertNotIn('francis27', placeholders)
+        self.assertNotIn('11.23', placeholders)
+        self.assertNotIn('8.68', placeholders)
 
         # Edith shuts down her browser
         self.browser.quit()
@@ -162,15 +163,16 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
         self.browser.get(francis_list_url)
 
         # It is as he left it
-        page_text = self.browser.find_element_by_tag_name('body').text
-        self.assertIn('francis27', page_text)
-        self.assertIn('11.23', page_text)
-        self.assertIn('8.68', page_text)
+        input_list = self.browser.find_elements_by_css_selector('.input')
+        placeholders = [item.get_attribute("placeholder") for item in input_list]
+        self.assertIn('francis27', placeholders)
+        self.assertIn('11.23', placeholders)
+        self.assertIn('8.68', placeholders)
 
         # and does not contain any of Edith's' list
-        self.assertNotIn('edith66', page_text)
-        self.assertNotIn('20.57', page_text)
-        self.assertNotIn('-12.90', page_text)
+        self.assertNotIn('edith66', placeholders)
+        self.assertNotIn('20.57', placeholders)
+        self.assertNotIn('-12.90', placeholders)
 
         # Satisfied, they both go back to sleep
 

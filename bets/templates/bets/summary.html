@@ -8,7 +8,6 @@
 
 {% block title %}Accounts Summary{% endblock %}
 
-	
 {% block heading %}Accounts Summary{% endblock %}
 
 {% block body %}
@@ -20,8 +19,9 @@
 		</button>
 	</div>
 	
-	<div class="has-error hidden">Error: entered value must be a valid number</div>
-	<table name="bookie-summary" data-id="{{ summary.id }}">
+	<div class="alert alert-warning hidden">Error: entered value must be a valid number</div>
+	
+	<table name="bookie-summary" class="table table-striped" data-id="{{ summary.id }}">
 		<tr>
 			<th>Bookie</th>
 			<th>Free Bet</th>
@@ -31,27 +31,22 @@
 			<th>Profit</th>
 			<th>Banked</th>
 		</tr>
+		
 		{% for item in items %}
 			<tr data-id="{{ forloop.counter }}" data-name="{{ item.affiliate.name }}">
-				<td>{{ item.affiliate.name }}</td>
+				<th>{{ item.affiliate.name }}</th>
 				<td>{{ item.affiliate.freebet }}</td> 
-				<td id='username'>
-					{% if item.username == '' %}
-						<input class="input" placeholder="username"/>
-						<p class="text hidden"></p>
-						<button class="edit hidden" type="button">
-							edit
+				<td>
+					<div id='username' class="input-group">
+						<input class="input form-control" type="text" size="2"
+							placeholder={% if item.username == '' %}"username"{% else %}"{{ item.username }}" disabled{% endif %}>
+						<button class="edit btn btn-light {% if item.username == '' %}hidden{% endif %}" type="button">
+							<i class="far fa-edit"></i>
 						</button>
-					{% else %}
-						<input class="input hidden" />
-						<p class="text">{{ item.username }}</p>
-						<button class="edit" type="button">
-							edit
-						</button>
-					{% endif %}
+					</div>
 				</td>
 				<td id="status">
-					<select class="status">
+					<select class="status form-control" style="width:auto;">
 						<option value="signup" 
 							{% if item.status == "signup" %}selected="selected"{% endif %}>
 							Signup
@@ -74,35 +69,23 @@
 						</option>
 					</select>
 				</td>
-				<td id='balance'>
-					{% if item.balance|stringformat:".2f" == "0.00" %}
-						<input class="input"/>
-						<p class="text hidden"></p>
-						<button class="edit hidden" type="button">
-							edit
+				<td>
+					<div id='balance' class="input-group">
+						<input class="input form-control" type="text" size="1"
+							placeholder={% if item.balance|stringformat:".2f" == "0.00" %}""{% else %}"{{ item.balance }}" disabled{% endif %}>
+						<button class="edit btn btn-light {% if item.balance|stringformat:".2f" == "0.00" %}hidden{% endif %}" type="button">
+							<i class="far fa-edit"></i>
 						</button>
-					{% else %}
-						<input class="input hidden"/>
-						<p class="text">{{ item.balance }}</p>
-						<button class="edit" type="button" >
-							edit
-						</button>
-					{% endif %}
+					</div>
 				</td>
-				<td id='profit'>
-					{% if item.profit|stringformat:".2f" == "0.00" %}
-						<input class="input"/>
-						<p class="text hidden"></p>
-						<button class="edit hidden" type="button">
-							edit
+				<td>
+					<div id='profit' class="input-group">
+						<input class="input form-control" type="text" size="1"
+							placeholder={% if item.profit|stringformat:".2f" == "0.00" %}""{% else %}"{{ item.profit }}" disabled{% endif %}>
+						<button class="edit btn btn-light {% if item.profit|stringformat:".2f" == "0.00" %}hidden{% endif %}" type="button">
+							<i class="far fa-edit"></i>
 						</button>
-					{% else %}
-						<input class="input hidden"/>
-						<p class="text">{{ item.profit }}</p>
-						<button class="edit" type="button">
-							edit
-						</button>
-					{% endif %}
+					</div>
 				</td>
 				<td id="banked">
 					<input type="checkbox" class="banked" {% if item.banked == True %}checked{% endif %}/>

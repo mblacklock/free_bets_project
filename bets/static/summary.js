@@ -7,24 +7,23 @@ window.BetsSummary.initialize = function () {
 			var el = $(this).parent().attr('id');
 			
 			if((el == 'balance' || el == 'profit') && $.isNumeric($(this).val()) == false ) {
-					$('.has-error').show();
+					$('.alert-warning').show();
+					$(this).val("");
 			} else {
-				var summary_id = $('[name="bookie-summary"]').attr('data-id');
 				if(el == 'summary_name') {
 					var affiliate = 'summary_name';
 					var tab = '';
 				} else {
-					var id = $(this).parent().parent().attr('data-id');
-					var affiliate = $(this).parent().parent().attr('data-name');
+					var id = $(this).closest('tr').attr('data-id');
+					var affiliate = $(this).closest('tr').attr('data-name');
 					var tab = "tr[data-id='"+id+"'] ";
-				
 				}
-				$('.has-error').hide();
+				var summary_id = $('[name="bookie-summary"]').attr('data-id');
+				$('.alert-warning').hide();
 				update_function(summary_id, affiliate, el, $(this).val());
 				$(tab + "#"+el+" .input").attr("placeholder", $(this).val());
 				$(tab + "#"+el+" .input").prop('disabled', true);
 				$(tab + "#"+el+" .edit").show();
-			
 			}
 		}
 	});
@@ -34,7 +33,7 @@ window.BetsSummary.initialize = function () {
 		if (el == 'summary_name') {
 			var tab = '';
 		}  else {
-			var id = $(this).parent().parent().attr("data-id");
+			var id = $(this).closest('tr').attr("data-id");
 			var tab = "tr[data-id='"+id+"'] ";
 		}
 			$(this).hide();
@@ -63,6 +62,7 @@ window.BetsSummary.initialize = function () {
 			update_function(summary_id, affiliate_name, 'banked', 'True')
 		}
 		else {
+			// NEED TO CHANGE TO REFLECT ORIGINAL STATUSES
 			$("tr[data-id='"+id+"'] .input").prop("disabled", false);
 			$("tr[data-id='"+id+"'] .edit").prop("disabled", false);
 			$("tr[data-id='"+id+"'] .status").prop("disabled", false);

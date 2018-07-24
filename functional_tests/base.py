@@ -102,11 +102,10 @@ class FunctionalTest(StaticLiveServerTestCase):
         el.find_element_by_class_name('input').send_keys(text)
         el.find_element_by_class_name('input').send_keys(Keys.ENTER)
         
-        self.checkIsDisplayed(el, 'input', False)
-        self.checkIsDisplayed(el, 'text', True)
+        self.checkInputIsEnabled(el, 'input', False)
         self.checkIsDisplayed(el, 'edit', True)
         self.assertEqual(
-           el.find_element_by_class_name('text').text
+           el.find_element_by_class_name('input').get_attribute('placeholder')
                , text
         )
 
@@ -129,8 +128,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         el.find_element_by_class_name('edit').click()
 
         self.checkIsDisplayed(el, 'edit', False)
-        self.checkIsDisplayed(el, 'text', False)
-        self.checkIsDisplayed(el, 'input', True)
+        self.checkInputIsEnabled(el, 'input', True)
         self.assertEqual(
             el.find_element_by_class_name('input').get_attribute('placeholder')
             ,text
