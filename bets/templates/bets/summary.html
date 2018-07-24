@@ -12,8 +12,8 @@
 
 {% block body %}
 	<div id='summary_name' class="input-group my-5 col-4">
-		<input class="input form-control" type="text" 
-			value={% if summary.name == '' %}"Summary Name"{% else %}"{{ summary.name }}" disabled{% endif %}>
+		<input class="input form-control" type="text" placeholder="Summary Name"
+			value={% if summary.name == '' %}""{% else %}"{{ summary.name }}" disabled{% endif %}>
 		<button class="edit btn btn-light {% if summary.name == '' %}hidden{% endif %}" type="button">
 			<i class="far fa-edit"></i>edit
 		</button>
@@ -21,32 +21,35 @@
 	
 	<div class="alert alert-warning hidden">Error: entered value must be a valid number</div>
 	
-	<table name="bookie-summary" class="table table-striped" data-id="{{ summary.id }}">
-		<tr>
-			<th>Bookie</th>
-			<th>Free Bet</th>
-			<th>Username</th>
-			<th>Status</th>
-			<th>Balance</th>
-			<th>Profit</th>
-			<th>Banked</th>
-		</tr>
+	<table name="bookie-summary" class="table text-center" data-id="{{ summary.id }}">
+		<thead class="thead-light">
+			<tr>
+				<th class="text-left">Bookie</th>
+				<th>Free Bet</th>
+				<th>Username</th>
+				<th>Status</th>
+				<th>Balance</th>
+				<th>Profit</th>
+				<th>Banked</th>
+			</tr>
+		</thead>
 		
 		{% for item in items %}
 			<tr data-id="{{ forloop.counter }}" data-name="{{ item.affiliate.name }}">
-				<th>{{ item.affiliate.name }}</th>
+				<th class="text-left">{{ item.affiliate.name }}</th>
 				<td>{{ item.affiliate.freebet }}</td> 
 				<td>
 					<div id='username' class="input-group">
 						<input class="input form-control" type="text" size="2"
-							value={% if item.username == '' %}"username"{% else %}"{{ item.username }}" disabled{% endif %}>
-						<button class="edit btn btn-light {% if item.username == '' %}hidden{% endif %}" type="button">
+							value={% if item.username == '' %}""{% else %}"{{ item.username }}" disabled{% endif %} 
+							{% if item.banked %}disabled{% endif %}>
+						<button class="edit btn btn-light {% if item.username == '' %}hidden{% endif %}" type="button" {% if item.banked %}disabled{% endif %}>
 							<i class="far fa-edit"></i>
 						</button>
 					</div>
 				</td>
 				<td id="status">
-					<select class="status form-control" style="width:auto;">
+					<select class="status custom-select" style="width:auto;" {% if item.banked %}disabled{% endif %}>
 						<option value="signup" 
 							{% if item.status == "signup" %}selected="selected"{% endif %}>
 							Signup
@@ -72,23 +75,30 @@
 				<td>
 					<div id='balance' class="input-group">
 						<input class="input form-control" type="text" size="1"
-							value={% if item.balance|stringformat:".2f" == "0.00" %}""{% else %}"{{ item.balance }}" disabled{% endif %}>
-						<button class="edit btn btn-light {% if item.balance|stringformat:".2f" == "0.00" %}hidden{% endif %}" type="button">
+							value={% if item.balance|stringformat:".2f" == "0.00" %}""{% else %}"{{ item.balance }}" disabled{% endif %}
+							{% if item.banked %}disabled{% endif %}>
+						<button class="edit btn btn-light {% if item.balance|stringformat:".2f" == "0.00" %}hidden{% endif %}" type="button"
+							{% if item.banked %}disabled{% endif %}>
 							<i class="far fa-edit"></i>
 						</button>
 					</div>
 				</td>
 				<td>
 					<div id='profit' class="input-group">
-						<input class="input form-control" type="text" size="1"
-							value={% if item.profit|stringformat:".2f" == "0.00" %}""{% else %}"{{ item.profit }}" disabled{% endif %}>
-						<button class="edit btn btn-light {% if item.profit|stringformat:".2f" == "0.00" %}hidden{% endif %}" type="button">
+						<input class="input form-control {% if '-' in item.profit|stringformat:".2f" %}negative{% else %}positive{% endif %}" type="text" size="1"
+							value={% if item.profit|stringformat:".2f" == "0.00" %}""{% else %}"{{ item.profit }}" disabled{% endif %}
+							{% if item.banked %}disabled{% endif %}>
+						<button class="edit btn btn-light {% if item.profit|stringformat:".2f" == "0.00" %}hidden{% endif %}" type="button"
+							{% if item.banked %}disabled{% endif %}>
 							<i class="far fa-edit"></i>
 						</button>
 					</div>
 				</td>
-				<td id="banked">
-					<input type="checkbox" class="banked" {% if item.banked == True %}checked{% endif %}/>
+				<td>
+					<div id="banked" class="custom-control custom-checkbox">
+						<input type="checkbox" class="banked custom-control-input" id="customCheck{{ forloop.counter }}" {% if item.banked == True %}checked{% endif %}>
+						<label class="custom-control-label" for="customCheck{{ forloop.counter }}">.</label>
+					</div>
 				</td>
 			</tr>
 		{% endfor %}

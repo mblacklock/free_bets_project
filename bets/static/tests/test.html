@@ -262,9 +262,9 @@ QUnit.test("other rows not affected when banked clicked", function (assert) {
 
 QUnit.test("edit buttons reenable when banked unclicked", function (assert) {
 	window.BetsSummary.initialize();	
-	$("tr[data-id='1'] #username .edit").prop('enabled', false);
-	$("tr[data-id='1'] #profit .edit").prop('enabled', false);
-	$("tr[data-id='1'] #balance .edit").prop('enabled', false);
+	$("tr[data-id='1'] #username .edit").prop('disabled', true);
+	$("tr[data-id='1'] #profit .edit").prop('disabled', true);
+	$("tr[data-id='1'] #balance .edit").prop('disabled', true);
 	$("tr[data-id='1'] .banked").prop('checked', true);
 	
 	$("tr[data-id='1'] .banked").click();
@@ -275,41 +275,19 @@ QUnit.test("edit buttons reenable when banked unclicked", function (assert) {
 	assert.equal($("tr[data-id='1'] #profit .edit").is(':enabled'), true);
 });
 
-QUnit.test("input boxes not reenabled when banked unclicked if value not empty ", function (assert) {
+QUnit.test("edit buttons reenable when banked unclicked", function (assert) {
 	window.BetsSummary.initialize();	
-	$("tr[data-id='1'] #username .input").prop('enabled', true);
-	$("tr[data-id='1'] #profit .input").prop('enabled', true);
-	$("tr[data-id='1'] #balance .input").prop('enabled', true);
-	$("tr[data-id='1'] #username .input").val('test');
-	$("tr[data-id='1'] #profit .input").val('test');
-	$("tr[data-id='1'] #balance .input").val('test');
+	$("tr[data-id='1'] #username .edit").prop('disabled', true);
+	$("tr[data-id='1'] #profit .edit").prop('disabled', true);
+	$("tr[data-id='1'] #balance .edit").prop('disabled', true);
 	$("tr[data-id='1'] .banked").prop('checked', true);
 	
 	$("tr[data-id='1'] .banked").click();
 	
 	assert.equal($("tr[data-id='1'] .banked").is(':checked'), false);
-	assert.equal($("tr[data-id='1'] #username .input").is(':enabled'), false);
-	assert.equal($("tr[data-id='1'] #balance .input").is(':enabled'), false);
-	assert.equal($("tr[data-id='1'] #profit .input").is(':enabled'), false);
-});
-
-QUnit.test("edit buttons shown when banked unclicked if item val is not empty", function (assert) {
-	window.BetsSummary.initialize();	
-	$("tr[data-id='1'] #username .edit").hide();
-	$("tr[data-id='1'] #profit .edit").hide();
-	$("tr[data-id='1'] #balance .edit").hide();
-	
-	$("tr[data-id='1'] #username .input").val('test');
-	$("tr[data-id='1'] #profit .input").val('test');
-	$("tr[data-id='1'] #balance .input").val('test');
-
-	$("tr[data-id='1'] .banked").prop('checked', true);
-	$("tr[data-id='1'] .banked").click();
-	
-	assert.equal($("tr[data-id='1'] .banked").is(':checked'), false);
-	assert.equal($("tr[data-id='1'] #username .edit").is(':visible'), true);
-	assert.equal($("tr[data-id='1'] #balance .edit").is(':visible'), true);
-	assert.equal($("tr[data-id='1'] #profit .edit").is(':visible'), true);
+	assert.equal($("tr[data-id='1'] #username .edit").is(':enabled'), true);
+	assert.equal($("tr[data-id='1'] #balance .edit").is(':enabled'), true);
+	assert.equal($("tr[data-id='1'] #profit .edit").is(':enabled'), true);
 });
 
 QUnit.test("error thrown if balance or profit non-numeric", function (assert) {

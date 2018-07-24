@@ -11,7 +11,12 @@ from bets.models import Affiliate
 
 def populate():
     affiliate = [
-        {"name": "Bet365"} ]
+        {"name": "Bet365", 'url': 'http://www.bet365.com', 'freebet': '10'},
+        {"name": "Victor Chandler", 'url': 'http://www.vcbet.com', 'freebet': '50'},
+        {"name": "Ladbrokes", 'url': 'http://www.ladbrokes.com', 'freebet': '15'},
+        {"name": "Coral", 'url': 'http://www.coral.com', 'freebet': '25'},
+        {"name": "Betfred", 'url': 'http://www.betfred.com', 'freebet': '5'},
+        {"name": "Sportsbet", 'url': 'http://www.sportsbet.com', 'freebet': '100'}]
 
     for a in affiliate:
         p = add_aff(a["name"])

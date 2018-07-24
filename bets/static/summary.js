@@ -13,6 +13,7 @@ window.BetsSummary.initialize = function () {
 				if(el == 'summary_name') {
 					var affiliate = 'summary_name';
 					var tab = '';
+					$(this).attr('placeholder', '');
 				} else {
 					var id = $(this).closest('tr').attr('data-id');
 					var affiliate = $(this).closest('tr').attr('data-name');
@@ -50,28 +51,20 @@ window.BetsSummary.initialize = function () {
 	
 	$('.banked').click( function() {
 		var summary_id = $('[name="bookie-summary"]').attr('data-id');
-		var affiliate_name = $(this).parent().parent().attr('data-name');
-		var id = $(this).parent().parent().attr("data-id");
-		
+		var affiliate_name = $(this).closest('tr').attr('data-name');
+		var id = $(this).closest('tr').attr("data-id");
 		if($(this).is(":checked")) {
-			$("tr[data-id='"+id+"'] .input").prop("disabled", true);
-			$("tr[data-id='"+id+"'] .edit").prop("disabled", true);
-			$("tr[data-id='"+id+"'] .status").prop("disabled", true);
-			
+			$("tr[data-id='"+id+"'] .input,tr[data-id='"+id+"'] .edit,tr[data-id='"+id+"'] .status").prop("disabled", true);
 			update_function(summary_id, affiliate_name, 'banked', 'True')
 		}
 		else {
-			if($("tr[data-id='"+id+"'] .input").val() == "") {
-				$("tr[data-id='"+id+"'] .input").prop("disabled", false);
-				$("tr[data-id='"+id+"'] .edit").prop("disabled", false);
-				$("tr[data-id='"+id+"'] .edit").hide();
-			} else {
-				$("tr[data-id='"+id+"'] .input").prop("disabled", true);
-				$("tr[data-id='"+id+"'] .edit").prop("disabled", false);
-				$("tr[data-id='"+id+"'] .edit").show();
-			}
-			$("tr[data-id='"+id+"'] .status").prop("disabled", false);
+			$("tr[data-id='"+id+"'] .edit,tr[data-id='"+id+"'] .status").prop("disabled", false);
 			update_function(summary_id, affiliate_name, 'banked', 'False')
+			$("tr[data-id='"+id+"'] .input").each(function() {
+				if($(this).val() == "") {
+					$(this).prop("disabled", false);
+				}
+			});
 		}		
 	});
 };

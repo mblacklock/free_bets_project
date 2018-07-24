@@ -52,7 +52,7 @@ class FunctionalTest(StaticLiveServerTestCase):
     @wait
     def clickCheckbox(self, rowID):
         check = self.findElement(rowID, 'banked')
-        check.find_element_by_class_name('banked').click()
+        check.find_element_by_class_name('banked').send_keys(Keys.SPACE)
         
         row = self.browser.find_element_by_css_selector('tr[data-id="'+rowID+'"]')
         self.checkboxIsEnabled(row, 'input', False)
@@ -62,7 +62,7 @@ class FunctionalTest(StaticLiveServerTestCase):
     @wait
     def unclickCheckbox(self, rowID):
         check = self.findElement(rowID, 'banked')
-        check.find_element_by_class_name('banked').click()
+        check.find_element_by_class_name('banked').send_keys(Keys.SPACE)
         
         row = self.browser.find_element_by_css_selector('tr[data-id="'+rowID+'"]')
         self.checkboxIsEnabled(row, 'edit', True)
