@@ -17,9 +17,11 @@ from django.contrib import admin
 from django.urls import path, include
 
 from bets import urls as bets_urls, views as bets_views
+from market import urls as market_urls
 
 urlpatterns = [
     path('', bets_views.home_page, name='home'),
     path('admin/', admin.site.urls),
     path('summary/', include(bets_urls)),
+    path('market/', include(market_urls)),
 ]

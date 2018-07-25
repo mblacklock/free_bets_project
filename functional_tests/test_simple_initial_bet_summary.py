@@ -149,6 +149,10 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
         self.assertIn('edith66', values)
         self.assertIn('20.57', values)
         self.assertIn('-12.90', values)
+        # Bank is clicked, so the first row is disabled
+        row = self.browser.find_element_by_css_selector('tr[data-id="1"]')
+        input_list = row.find_elements_by_css_selector('.input')
+        [self.assertFalse(item.is_enabled()) for item in input_list]       
 
         # and does not contain any of Francis' list
         self.assertNotIn('francis27', values)

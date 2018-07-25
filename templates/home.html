@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
-{% block title %}Start a new account{% endblock %}
+{% block title %}Free Bets Maximizer{% endblock %}
 	
-{% block heading %}Start a new account{% endblock %}
+{% block heading %}Start a new account or market{% endblock %}
 
 {% block body %}
 	<form action="" method="POST">
 		{% csrf_token %}
         <input type="submit" name="new_summary" value="Create new account" />
+		<input type="submit" name="new_market" value="Get Market" />
     </form>
 {% endblock %}
