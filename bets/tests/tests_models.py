@@ -63,7 +63,10 @@ class AffiliateAndItemModelTest(TestCase):
             item = Item(affiliate=affiliate, summary=summary)
             item.balance = Decimal('-1.00')
             item.full_clean()
-    
+
+    def test_affiliate_slug_created(self):
+        affiliate = Affiliate.objects.create(name = 'Random Affiliate Name')
+        self.assertEqual(affiliate.slug, 'random-affiliate-name')
 
 class SummaryModelTest(TestCase):
 

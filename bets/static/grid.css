@@ -1,0 +1,26 @@
+body {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+hr {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.form-control:disabled {
+	border: none;
+	background-color: transparent;
+}
+
+#banked {
+	color: transparent;
+}
+
+.positive {
+	color: green;
+}
+
+.negative {
+	color: red;
+}

@@ -6,9 +6,13 @@
 {% block heading %}Start a new account or market{% endblock %}
 
 {% block body %}
-	<form action="" method="POST">
+	<form action="/summary/create_new" method="POST">
 		{% csrf_token %}
         <input type="submit" name="new_summary" value="Create new account" />
+    </form>
+	
+	<form action="/market/create_new" method="POST">
+		{% csrf_token %}
 		<input type="submit" name="new_market" value="Get Market" />
     </form>
 {% endblock %}

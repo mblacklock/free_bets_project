@@ -27,11 +27,12 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
 
         # Edith see that the newly created summary has an input box to enter a title
         # She enters a name and hits enter, it updates and is replaced by an edit button
-        self.enterSummaryName("Edith's Summary")
+        name = self.browser.find_element_by_id('summary_name')
+        self.enterInput(name, "Edith's Summary")
         
         # She clicks edit and is able to change her summary name
-        self.clickEditSummaryName("Edith's Summary")
-        self.enterSummaryName("Bombedith's Summary")
+        self.clickEdit(name, "Edith's Summary")
+        self.enterInput(name, "Bombedith's Summary")
             
         # She notices a table of bookmakers
         table = self.browser.find_element_by_tag_name('table')
@@ -43,44 +44,42 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
         # Edith notices an input box for her username for the first bookie. She enters her username
         # When she hits enter, the page updates, and now the page lists her username
         # The input text box is replaced by an edit button
-        self.enterInput('1', 'username', 'edith66')        
+        row = self.findRow('1')
+        el = row.find_element_by_id('username')
+        self.enterInput(el, 'edith66')
 
         # Edith clicks on it and the label is replaced by an input box, prepopulated with her username
-        self.clickEdit('1', 'username', 'edith66')
+        self.clickEdit(el, 'edith66')
 
         # She changes her username and it updates
-        self.enterInput('1', 'username', 'bombedith21')
+        self.enterInput(el, 'bombedith21')
         
-        # Edith then notices a status dropdown box, it has several options
-        select_box = self.findElement('1', 'status').find_element_by_class_name('status')
-        options = [x for x in select_box.find_elements_by_tag_name("option")]
-        self.assertNotEqual(len(options),0)
-
+        # Edith then notices a status dropdown box, it has several options        
         # She selects one of the options and the status changes
-        self.changeStatus('1', 'initial', 'Initial Bet')
-
-
+        self.changeSelectInRow(row, 'initial')
+        
         # Edith then notices balance and profit input boxes.        
         # She notes they work the same as the username box
-        self.enterInput('1', 'balance', '20.57')
-        self.clickEdit('1', 'balance', '20.57')
-        self.enterInput('1', 'balance', '18.67')
+        el = row.find_element_by_id('balance')
+        self.enterInput(el, '20.57')
+        self.clickEdit(el, '20.57')
+        self.enterInput(el, '18.67')
         
-        self.enterInput('1', 'profit', '-12.90')
-        self.clickEdit('1', 'profit', '-12.90')
-        self.enterInput('1', 'profit', '1.45')
+        el = row.find_element_by_id('profit')
+        self.enterInput(el, '-12.90')
+        self.clickEdit(el, '-12.90')
+        self.enterInput(el, '1.45')
         
         # There is also a checkbox labelled banked
         # Edith clicks it and all boxes are greyed out (except the checkbox)
-        self.clickCheckbox('1')
+        self.clickBanked(row)
         
         # The other rows are unaffected
-        row = self.browser.find_element_by_css_selector('tr[data-id="2"]')
-        elements = row.find_elements_by_class_name('input')
-        [self.assertEqual(element.is_enabled(), True) for element in elements]
+        row = self.findRow('2')
+        self.checkElemsAreEnabled(row, 'input', True)
         
         # She clicks it again and all boxes are as before (except the checkbox)
-        self.unclickCheckbox('1')
+        self.unclickBanked(self.findRow('1'))
         
         # She goes to sleep, delighted
 
@@ -89,12 +88,16 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
         # Edith starts a new summary and edits the first row
         self.browser.get(self.live_server_url)
         self.browser.find_element_by_name('new_summary').click()
-        
-        self.enterInput('1', 'username', 'edith66')
-        self.enterInput('1', 'balance', '20.57')
-        self.enterInput('1', 'profit', '-12.90')
-        self.changeStatus('1', 'initial', 'Initial Bet')
-        self.clickCheckbox('1')
+
+        row = self.findRow('1')
+        el = row.find_element_by_id('username')
+        self.enterInput(el, 'edith66')
+        el = row.find_element_by_id('balance')
+        self.enterInput(el, '20.57')
+        el = row.find_element_by_id('profit')
+        self.enterInput(el, '-12.90')
+        self.changeSelectInRow(row, 'initial')
+        self.clickBanked(row)
 
         # She notices that her list has a unique URL
         edith_list_url = self.browser.current_url
@@ -119,10 +122,14 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
         self.assertNotIn('-12.90', values)
 
         # Francis starts a new summary by filling in the second row.
-        self.enterInput('2', 'username', 'francis27')
-        self.enterInput('2', 'balance', '11.23')
-        self.enterInput('2', 'profit', '8.68')
-        self.changeStatus('2', 'deposit', 'Deposit')
+        row = self.findRow('2')
+        el = row.find_element_by_id('username')
+        self.enterInput(el, 'francis27')
+        el = row.find_element_by_id('balance')
+        self.enterInput(el, '11.23')
+        el = row.find_element_by_id('profit')
+        self.enterInput(el, '8.68')
+        self.changeSelectInRow(row, 'deposit')
 
         # Francis gets his own unique URL
         francis_list_url = self.browser.current_url
@@ -148,11 +155,7 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
         values = [item.get_attribute("value") for item in input_list]
         self.assertIn('edith66', values)
         self.assertIn('20.57', values)
-        self.assertIn('-12.90', values)
-        # Bank is clicked, so the first row is disabled
-        row = self.browser.find_element_by_css_selector('tr[data-id="1"]')
-        input_list = row.find_elements_by_css_selector('.input')
-        [self.assertFalse(item.is_enabled()) for item in input_list]       
+        self.assertIn('-12.90', values) 
 
         # and does not contain any of Francis' list
         self.assertNotIn('francis27', values)

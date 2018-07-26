@@ -44,29 +44,21 @@ class FunctionalTest(StaticLiveServerTestCase):
     def initiateDatabase(self):
         aff1 = Affiliate.objects.create(name='Aff1')
         aff2 = Affiliate.objects.create(name='Aff2')
-    
-    def findElement(self, rowID, element):
-        row = self.browser.find_element_by_css_selector('tr[data-id="'+rowID+'"]')
-        return row.find_element_by_id(element)
+
+    ###### GET ELEMENTS ######
 
     @wait
-    def clickCheckbox(self, rowID):
-        check = self.findElement(rowID, 'banked')
-        check.find_element_by_class_name('banked').send_keys(Keys.SPACE)
-        
-        row = self.browser.find_element_by_css_selector('tr[data-id="'+rowID+'"]')
-        self.checkboxIsEnabled(row, 'input', False)
-        self.checkboxIsEnabled(row, 'edit', False)
-        self.checkboxIsEnabled(row, 'status', False)
+    def findRow(self, rowID):
+        return self.browser.find_element_by_css_selector('tr[data-id="'+rowID+'"]')
 
     @wait
-    def unclickCheckbox(self, rowID):
-        check = self.findElement(rowID, 'banked')
-        check.find_element_by_class_name('banked').send_keys(Keys.SPACE)
-        
-        row = self.browser.find_element_by_css_selector('tr[data-id="'+rowID+'"]')
-        self.checkboxIsEnabled(row, 'edit', True)
-        self.checkboxIsEnabled(row, 'status', True)
+    def getSelectBox(self, parent):
+        select_box = parent.find_element_by_class_name('select')
+        options = [x for x in select_box.find_elements_by_tag_name("option")]
+        self.assertNotEqual(len(options),0)
+        return select_box
+
+    ##### CHECK ELEMENTS #####
   
     @wait
     def checkIsDisplayed(self, element, item, state):
@@ -76,79 +68,77 @@ class FunctionalTest(StaticLiveServerTestCase):
         )
 
     @wait
-    def checkIsChecked(self, item):
+    def checkIsChecked(self, element, state):
         self.assertEqual(
-            element.find_elements_by_class_name(item).is_selected()
+            element.is_selected()
             , state
         )
 
     @wait
-    def checkboxIsEnabled(self, row, item, state):
-        elements = row.find_elements_by_class_name(item)
+    def checkElemsAreEnabled(self, parent, item, state):
+        elements = parent.find_elements_by_class_name(item)
         [self.assertEqual(element.is_enabled(), state) for element in elements]
 
     @wait
-    def checkInputIsEnabled(self, element, item, state):
+    def checkIsEnabled(self, element, item, state):
         self.assertEqual(
             element.find_element_by_class_name(item).is_enabled()
             , state
         )
 
+    ##### CHANGE ELEMENTS#####
+    
     @wait
-    def enterInput(self, rowID, element, text):
-        el = self.findElement(rowID, element)
-        el.find_element_by_class_name('input').clear()
-        el.find_element_by_class_name('input').send_keys(text)
-        el.find_element_by_class_name('input').send_keys(Keys.ENTER)
+    def enterInput(self, element, text):
+        element.find_element_by_class_name('input').clear()
+        element.find_element_by_class_name('input').send_keys(text)
+        element.find_element_by_class_name('input').send_keys(Keys.ENTER)
         
-        self.checkInputIsEnabled(el, 'input', False)
-        self.checkIsDisplayed(el, 'edit', True)
+        self.checkIsEnabled(element, 'input', False)
+        self.checkIsDisplayed(element, 'edit', True)
         self.assertEqual(
-           el.find_element_by_class_name('input').get_attribute('value')
+           element.find_element_by_class_name('input').get_attribute('value')
                , text
         )
 
     @wait
-    def enterSummaryName(self, text):
-        name = self.browser.find_element_by_css_selector('#summary_name')
-        name.find_element_by_class_name('input').clear()
-        name.find_element_by_class_name('input').send_keys(text)
-        name.find_element_by_class_name('input').send_keys(Keys.ENTER)
-        self.checkInputIsEnabled(name, 'input', False)
-        self.checkIsDisplayed(name, 'edit', True)
-        self.assertEqual(
-           name.find_element_by_class_name('input').get_attribute('value')
-               , text
-        )
+    def clickEdit(self, element, text):
+        element.find_element_by_class_name('edit').click()
 
-    @wait
-    def clickEdit(self, rowID, element, text):
-        el = self.findElement(rowID, element)
-        el.find_element_by_class_name('edit').click()
-
-        self.checkIsDisplayed(el, 'edit', False)
-        self.checkInputIsEnabled(el, 'input', True)
+        self.checkIsDisplayed(element, 'edit', False)
+        self.checkIsEnabled(element, 'input', True)
         self.assertEqual(
-            el.find_element_by_class_name('input').get_attribute('value')
+            element.find_element_by_class_name('input').get_attribute('value')
             ,text
         )
 
     @wait
-    def clickEditSummaryName(self, text):
-        name = self.browser.find_element_by_css_selector('#summary_name')
-        name.find_element_by_class_name('edit').click()
+    def clickBanked(self, row):
+        check = row.find_element_by_id('banked').find_element_by_class_name('banked')
+        check.send_keys(Keys.SPACE)
 
-        self.checkIsDisplayed(name, 'edit', False)
-        self.checkInputIsEnabled(name, 'input', True)
-        self.assertEqual(
-            name.find_element_by_class_name('input').get_attribute('value')
-            ,text
-        )
+        self.checkIsChecked(check, True)
+        self.checkElemsAreEnabled(row, 'input', False)
+        self.checkElemsAreEnabled(row, 'edit', False)
+        self.checkElemsAreEnabled(row, 'status', False)    
 
     @wait
-    def changeStatus(self, rowID, status, statusText):
-        select_box = self.findElement(rowID, 'status').find_element_by_class_name('status')
+    def unclickBanked(self, row):
+        check = row.find_element_by_id('banked').find_element_by_class_name('banked')
+        check.send_keys(Keys.SPACE)
 
-        select_box.find_element_by_css_selector('option[value="'+status+'"]').click()
-        self.assertEqual(Select(select_box).first_selected_option.text, statusText)
+        self.checkIsChecked(check, False)        
+        self.checkElemsAreEnabled(row, 'edit', True)
+        self.checkElemsAreEnabled(row, 'status', True)
+
+    @wait
+    def changeSelectBox(self, select_box, option):
+        select_box.find_element_by_css_selector('option[value="'+option+'"]').click()
+        self.assertEqual(Select(select_box).first_selected_option.get_attribute("value") , option)
+
+    @wait
+    def changeSelectInRow(self, row, option):
+        el = row.find_element_by_id('status')
+        select_box = self.getSelectBox(el)
+        self.changeSelectBox(select_box, option)
         

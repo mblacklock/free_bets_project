@@ -14,7 +14,8 @@ class ItemValidationTest(FunctionalTest):
         self.browser.get(self.live_server_url)
         self.browser.find_element_by_name('new_summary').click()
 
-        el = self.findElement('1', 'balance')
+        row = self.findRow('1')
+        el = row.find_element_by_id('balance')
         el.find_element_by_class_name('input').clear()
         el.find_element_by_class_name('input').send_keys('non-numeric')
         el.find_element_by_class_name('input').send_keys(Keys.ENTER)
@@ -26,5 +27,5 @@ class ItemValidationTest(FunctionalTest):
         # She corrects the error and resubmits. The error disappears
         # And she can submit it successfully
         
-        self.enterInput('1', 'balance', '-10.43')
+        self.enterInput(el, '-10.43')
         self.checkIsDisplayed(body, 'alert-warning', False)

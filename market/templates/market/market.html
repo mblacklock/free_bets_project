@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Market{% endblock %}
+	
+{% block heading %}Market{% endblock %}
+
+{% block body %}
+
+	<div id='bookie' class="input-group my-5 col-4">
+		<label>Bookie:</label>
+		<select class="select custom-select" style="width:auto;">
+			{% for affiliate in affiliates %}
+				<option value="{{ affiliate.slug }}">{{ affiliate.name }}</option>
+			{% endfor %}
+		</select>
+	</div>
+	
+	<div id='bet_type' class="input-group my-5 col-4">
+		<label>Initial/Free Bet:</label>
+		<select class="select custom-select" style="width:auto;">
+			<option value="initial">Initial Bet</option>
+			<option value="free">Free Bet</option>
+		</select>
+	</div>
+	
+	<div id='stake' class="input-group my-5 col-4">
+		<label>Bet Stake:</label>
+		<input class="input form-control" type="text">
+	</div>
+	
+	<div id='runners' class="input-group my-5 col-4">
+		<label>Number of Market Outcomes:</label>
+		<select class="select custom-select" style="width:auto;">
+			{% with ''|center:30 as range %}
+			{% for _ in range %}
+				<option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+			{% endfor %}
+			{% endwith %}
+		</select>
+	</div>
+	
+	<div>
+		<ul id='market' class="list-group list-group-flush">
+			<li class="list-group-item">Cras justo odio</li>
+		</ul>
+
+{% endblock %}

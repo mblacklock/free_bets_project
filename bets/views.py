@@ -5,10 +5,7 @@ from bets.models import Affiliate, Item, Summary
 
 # Create your views here.
 
-def home_page(request):
-    if request.method == 'POST':
-        return redirect('/summary/create_new')
-        
+def home_page(request):        
     return render(request, 'home.html')
 
 def view_summary(request, summary_id):

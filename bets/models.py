@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from decimal import *
+from django.template.defaultfilters import slugify
 
 # Create your models here.
 
@@ -10,6 +11,11 @@ class Affiliate(models.Model):
     name = models.CharField(max_length=30)
     url = models.URLField(max_length=200)
     freebet = models.IntegerField(default=0)
+    slug = models.SlugField(unique=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)        
+        super(Affiliate, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name

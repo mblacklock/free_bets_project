@@ -41,12 +41,15 @@ window.BetsSummary.initialize = function () {
 			$(tab + "#"+el+" .input").prop('disabled', false);		
 	});
 	
-	$('.status').change(function() {
-		var summary_id = $('[name="bookie-summary"]').attr('data-id');
-		var affiliate_name = $(this).parent().parent().attr('data-name');
-		var id = $(this).parent().parent().attr("data-id");
-		
-		update_function(summary_id, affiliate_name, 'status', $(this).val())
+	$('.select').change(function() {
+		el = $(this).parent().attr('id');
+		if (el == 'status') {
+			var summary_id = $('[name="bookie-summary"]').attr('data-id');
+			var affiliate_name = $(this).closest('tr').attr('data-name');
+			var id = $(this).closest('tr').attr("data-id");
+			
+			update_function(summary_id, affiliate_name, 'status', $(this).val())
+		}
 	});
 	
 	$('.banked').click( function() {
