@@ -49,14 +49,13 @@ class NewMarketTest(FunctionalTest):
         
         # She notices a list of market items appears
         # and has the same number of items as selected
-        list_ = self.browser.find_element_by_id('market')
+        market_list = self.browser.find_element_by_id('market')
+        items = market_list.find_elements_by_tag_name("li")
         self.assertEqual(
-            list_.get_attribute('name'),
-            'market'
+            len(items),
+            10
         )
 
-
-        self.fail('Finish the test!')
         # Edith notices an input box for the bookie odds for the first runner. She enters a decimal
 
         # She sees there are input boxes for the lay price of each runner

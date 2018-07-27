@@ -42,7 +42,17 @@
 	
 	<div>
 		<ul id='market' class="list-group list-group-flush">
-			<li class="list-group-item">Cras justo odio</li>
 		</ul>
+	</div>
 
+{% endblock %}
+
+{% block scripts %}
+	<script src="{% static 'market.js' %}"></script>
+
+	<script>
+		$(document).ready(function () {
+			window.Market.initialize();
+		});
+	</script>
 {% endblock %}

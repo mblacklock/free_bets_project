@@ -12,99 +12,30 @@
   </style>
 </head>
 <body>
-  <div id="qunit"></div>
-  <div id="qunit-fixture">
+	<div id="qunit"></div>
+	<div id="qunit-fixture">
   
-	<div id='summary_name' class="input-group my-5 col-3">
-		<input class="input form-control" type="text" placeholder="Summary Name">
-		<button class="edit btn btn-light hidden" type="button">
-			<i class="far fa-edit"></i>edit
-		</button>
+		<div id='runners' class="input-group my-5 col-4">
+			<label>Number of Market Outcomes:</label>
+			<select class="select custom-select" style="width:auto;">
+				<option value='1'>1</option>
+				<option value='2'>2</option>
+				<option value='3'>3</option>
+				<option value='4'>4</option>
+				<option value='5'>5</option>				
+			</select>
+		</div>
+	
+		<div>
+			<ul id='market' class="list-group list-group-flush">
+			</ul>
+		</div>
+	
+	</div>
 	</div>
   
-	<div class="alert-warning hidden">Error text</div>
-	<table name="bookie-summary">
-		<tr data-id="1">
-			<td>Bet365</td>
-			<td>25</td> 
-			<td id='username' class="input-group">
-				<input class="input form-control" type="text" 
-					placeholder="username">
-				<button class="edit btn btn-light hidden" type="button">
-					<i class="far fa-edit"></i>edit
-				</button>
-			</td>
-			<td id='status'>
-				<select class="status form-control" style="width:auto;">
-					<option value="signup">Signup</option>
-					<option value="deposit">Deposit</option>
-					<option value="initial">Initial Bet</option>
-					<option value="free">Free Bet</option>
-					<option value="complete">Complete</option>
-				</select>
-			</td>
-			<td id='balance'>
-				<input class="input form-control" type="text" 
-					placeholder="">
-				<button class="edit btn btn-light hidden" type="button">
-					<i class="far fa-edit"></i>edit
-				</button>
-			</td>
-			<td id='profit'>
-				<input class="input" />
-				<p class="text" hidden></p>
-				<button class="edit" class="btn btn-primary btn-sm" type="button" hidden>
-					edit
-				</button>
-			</td>
-			<td id='banked'>
-				<input type="checkbox" class="banked" />
-			</td>
-		</tr>
-		<tr data-id="2">
-			<td>Bet365</td>
-			<td>25</td> 
-			<td id='username' class="input-group">
-				<input class="input form-control" type="text" 
-					placeholder="username">
-				<button class="edit btn btn-light hidden" type="button">
-					<i class="far fa-edit"></i>edit
-				</button>
-			</td>
-			<td id='status'>
-				<select class="status">
-					<option value="signup">Signup</option>
-					<option value="deposit">Deposit</option>
-					<option value="initial">Initial Bet</option>
-					<option value="free">Free Bet</option>
-					<option value="complete">Complete</option>
-				</select>
-			</td>
-			<td id='balance'>
-				<input class="input" />
-				<p class="text" hidden></p>
-				<button class="edit" class="btn btn-primary btn-sm" type="button" hidden>
-					edit
-				</button>
-			</td>
-			<td id='profit'>
-				<input class="input" />
-				<p class="text" hidden></p>
-				<button class="edit" class="btn btn-primary btn-sm" type="button" hidden>
-					edit
-				</button>
-			</td>
-			<td id='banked'>
-				<input type="checkbox" class="banked" />
-			</td>
-		</tr>
-	</table>
-	
-  </div>
-  
   <script src="../../../static/jquery-3.3.1.min.js"></script>
-  <script src="../summary.js"></script>
-  <script src="../summary-ajax.js"></script>
+  <script src="../market.js"></script>
   <script src="qunit-2.6.1.js"></script>
 
   <script>
@@ -115,252 +46,49 @@ QUnit.test("smoke test", function (assert) {
   assert.equal(1, 1, "Maths works!");
 });
 
-QUnit.test("username input should be disabled on enter", function (assert) {
-	window.BetsSummary.initialize();
-	var e = jQuery.Event("keypress");
-	e.which = 13; // # Some key code value
-	$("tr[data-id='1'] #username .input").trigger(e);
+QUnit.test("runners change populates market table", function (assert) {
+	window.Market.initialize();
 	
-	assert.equal($("tr[data-id='1'] #username .input").is(':disabled'), true);
+	$("#runners .select").val('5').change();
+	
+	assert.equal($('#market li').length, 5);
 });
 
-QUnit.test("username input should NOT be disabled on any other keypress", function (assert) {
-	window.BetsSummary.initialize();
-	var e = jQuery.Event("keypress");
-	e.which = 12; // # Some key code value
-	$("tr[data-id='1'] #username .input").trigger(e);
+QUnit.test("runners increase has correct length", function (assert) {
+	window.Market.initialize();
 	
-	assert.equal($("tr[data-id='1'] #username .input").is(':disabled'), false);
+	$("#runners .select").val('3').change();
+	$("#runners .select").val('5').change();
+	
+	assert.equal($('#market li').length, 5);
 });
 
-QUnit.test("username value should equal value on enter", function (assert) {
-	window.BetsSummary.initialize();
-	var e = jQuery.Event("keypress");
-	e.which = 13; // # Some key code value
-	$("tr[data-id='1'] #username .input").val('testuser');
-	$("tr[data-id='1'] #username .input").trigger(e);
+QUnit.test("runners increase has correct names", function (assert) {
+	window.Market.initialize();
 	
-	assert.equal($("tr[data-id='1'] #username .input").val(), 'testuser');
+	$("#runners .select").val('3').change();
+	$("#runners .select").val('5').change();
+	
+	assert.equal($('#market li:nth-child(4)').text(), 'Runner 4');
 });
 
-QUnit.test("username edit button should be initially hidden", function (assert) {
-	window.BetsSummary.initialize();
-	assert.equal($("tr[data-id='1'] #username .edit").is(':visible'), false);
+QUnit.test("runners decrease has correct length", function (assert) {
+	window.Market.initialize();
+	
+	$("#runners .select").val('5').change();
+	$("#runners .select").val('3').change();
+	
+	assert.equal($('#market li').length, 3);
 });
 
-QUnit.test("username edit button should be visible on enter", function (assert) {
-	window.BetsSummary.initialize();
-	var e = jQuery.Event("keypress");
-	e.which = 13; // # Some key code value
-	$("tr[data-id='1'] #username .input").trigger(e);
+QUnit.test("original runners remain after another change", function (assert) {
+	window.Market.initialize();
 	
-	assert.equal($("tr[data-id='1'] #username .edit").is(':visible'), true);
-});
-
-QUnit.test("username edit button should be hidden when clicked", function (assert) {
-	window.BetsSummary.initialize();
-	$("tr[data-id='1'] #username .edit").show();
-	$("tr[data-id='1'] #username .edit").click();
+	$("#runners .select").val('5').change();
+	$("#market li").first().text('Temp');
+	$("#runners .select").val('3').change();
 	
-	assert.equal($("tr[data-id='1'] #username .edit").is(':visible'), false);
-});
-
-QUnit.test("username input value should be updated when edit btn clicked", function (assert) {
-	window.BetsSummary.initialize();	
-	$("tr[data-id='1'] #username .input").val('testuser');
-	$("tr[data-id='1'] #username .edit").click();
-	
-	assert.equal($("tr[data-id='1'] #username .input").val(), 'testuser');
-});
-
-QUnit.test("username input should be enabled when edit btn clicked", function (assert) {
-	window.BetsSummary.initialize();
-	$("tr[data-id='1'] #username .input").prop('diasabled', true);
-	$("tr[data-id='1'] #username .edit").click();
-	
-	assert.equal($("tr[data-id='1'] #username .input").is(':disabled'), false);
-});
-
-QUnit.test("username 1 input should NOT affect 2", function (assert) {
-	window.BetsSummary.initialize();
-	var e = jQuery.Event("keypress");
-	e.which = 13; // # Some key code value
-	$("tr[data-id='1'] #username .input").val('testuser');
-	$("tr[data-id='1'] #username .input").trigger(e);
-	
-	assert.notEqual($("tr[data-id='2'] #username .input").val(), 'testuser');
-	assert.equal($("tr[data-id='2'] #username .input").is(':disabled'), false);
-	assert.equal($("tr[data-id='2'] #username .edit").is(':visible'), false);
-	
-});
-
-QUnit.test("username 1 edit button click does not affect 2", function (assert) {
-	window.BetsSummary.initialize();
-	$("tr[data-id='1'] #username .input").val('testuser');
-	$("tr[data-id='1'] #username .edit").click();
-	
-	assert.notEqual($("tr[data-id='2'] #username .input").val(), 'testuser');
-	
-});
-
-QUnit.test("balance input should be disabled on enter", function (assert) {
-	window.BetsSummary.initialize();
-	var e = jQuery.Event("keypress");
-	e.which = 13; // # Some key code value
-	$("tr[data-id='1'] #balance .input").val('13');
-	$("tr[data-id='1'] #balance .input").trigger(e);
-	
-	assert.equal($("tr[data-id='1'] #balance .input").is(':disabled'), true);
-});
-
-QUnit.test("edit buttons disabled when banked clicked", function (assert) {
-	window.BetsSummary.initialize();	
-	$("tr[data-id='1'] #username .edit").show();
-	$("tr[data-id='1'] #profit .edit").show();
-	$("tr[data-id='1'] #balance .edit").show();
-	
-	$("tr[data-id='1'] .banked").click();
-	
-	assert.equal($("tr[data-id='1'] .banked").is(':checked'), true);
-	assert.equal($("tr[data-id='1'] #username .edit").is(':disabled'), true);
-	assert.equal($("tr[data-id='1'] #balance .edit").is(':disabled'), true);
-	assert.equal($("tr[data-id='1'] #profit .edit").is(':disabled'), true);
-});
-
-QUnit.test("input boxes disabled when banked clicked", function (assert) {
-	window.BetsSummary.initialize();	
-	$("tr[data-id='1'] #username .input").prop('enabled', true);
-	$("tr[data-id='1'] #profit .input").prop('enabled', true);
-	$("tr[data-id='1'] #balance .input").prop('enabled', true);
-	
-	$("tr[data-id='1'] .banked").click();
-	
-	assert.equal($("tr[data-id='1'] #username .input").is(':disabled'), true);
-	assert.equal($("tr[data-id='1'] #balance .input").is(':disabled'), true);
-	assert.equal($("tr[data-id='1'] #profit .input").is(':disabled'), true);
-});
-
-QUnit.test("status dropdown disabled when banked clicked", function (assert) {
-	window.BetsSummary.initialize();	
-	$("tr[data-id='1'] #status .status").show();
-	
-	$("tr[data-id='1'] .banked").click();
-	
-	assert.equal($("tr[data-id='1'] #status .status").is(':disabled'), true);
-});
-
-QUnit.test("other rows not affected when banked clicked", function (assert) {
-	window.BetsSummary.initialize();	
-	$("tr[data-id='1'] #username .input").prop('enabled', true);
-	$("tr[data-id='2'] #username .input").prop('enabled', true);
-	
-	$("tr[data-id='1'] .banked").click();
-	
-	assert.equal($("tr[data-id='1'] #username .input").is(':disabled'), true);
-	assert.equal($("tr[data-id='2'] #username .input").is(':disabled'), false);
-});
-
-QUnit.test("edit buttons reenable when banked unclicked", function (assert) {
-	window.BetsSummary.initialize();	
-	$("tr[data-id='1'] #username .edit").prop('disabled', true);
-	$("tr[data-id='1'] #profit .edit").prop('disabled', true);
-	$("tr[data-id='1'] #balance .edit").prop('disabled', true);
-	$("tr[data-id='1'] .banked").prop('checked', true);
-	
-	$("tr[data-id='1'] .banked").click();
-	
-	assert.equal($("tr[data-id='1'] .banked").is(':checked'), false);
-	assert.equal($("tr[data-id='1'] #username .edit").is(':enabled'), true);
-	assert.equal($("tr[data-id='1'] #balance .edit").is(':enabled'), true);
-	assert.equal($("tr[data-id='1'] #profit .edit").is(':enabled'), true);
-});
-
-QUnit.test("edit buttons reenable when banked unclicked", function (assert) {
-	window.BetsSummary.initialize();	
-	$("tr[data-id='1'] #username .edit").prop('disabled', true);
-	$("tr[data-id='1'] #profit .edit").prop('disabled', true);
-	$("tr[data-id='1'] #balance .edit").prop('disabled', true);
-	$("tr[data-id='1'] .banked").prop('checked', true);
-	
-	$("tr[data-id='1'] .banked").click();
-	
-	assert.equal($("tr[data-id='1'] .banked").is(':checked'), false);
-	assert.equal($("tr[data-id='1'] #username .edit").is(':enabled'), true);
-	assert.equal($("tr[data-id='1'] #balance .edit").is(':enabled'), true);
-	assert.equal($("tr[data-id='1'] #profit .edit").is(':enabled'), true);
-});
-
-QUnit.test("error thrown if balance or profit non-numeric", function (assert) {
-	window.BetsSummary.initialize();
-	var e = jQuery.Event("keypress");
-	e.which = 13; // # 
-	$("tr[data-id='1'] #profit .input").val('A');
-	$("tr[data-id='1'] #profit .input").trigger(e);
-	
-	assert.equal($('.alert-warning').is(':visible'), true);
-});
-
-QUnit.test("input box stays enabled if balance or profit non-numeric", function (assert) {
-	window.BetsSummary.initialize();
-	var e = jQuery.Event("keypress");
-	e.which = 13; // # 
-	$("tr[data-id='1'] #balance .input").val('A');
-	$("tr[data-id='1'] #balance .input").trigger(e);
-	
-	assert.equal($("tr[data-id='1'] #balance .input").is(':enabled'), true);
-});
-
-QUnit.test("errors should be hidden if successfully submitted", function (assert) {
-	window.BetsSummary.initialize();
-	$('.has-error').show();
-	var e = jQuery.Event("keypress");
-	e.which = 13; // # 
-	$("tr[data-id='1'] #balance .input").val('123');
-	$("tr[data-id='1'] #balance .input").trigger(e); 
-	assert.equal($('.has-error').is(':visible'), false);
-});
-
-QUnit.test("summary_name input should be disabled on enter", function (assert) {
-	window.BetsSummary.initialize();
-	var e = jQuery.Event("keypress");
-	e.which = 13; // # Some key code value
-	$("#summary_name .input").val();
-	$("#summary_name .input").trigger(e);
-	
-	assert.equal($("#summary_name .input").is(':disabled'), true);
-});
-
-QUnit.test("summary_name value should equal value on enter", function (assert) {
-	window.BetsSummary.initialize();
-	var e = jQuery.Event("keypress");
-	e.which = 13; // # Some key code value
-	$("#summary_name .input").val('test');
-	$("#summary_name .input").trigger(e);
-	
-	assert.equal($("#summary_name .input").val(), 'test');
-});
-
-QUnit.test("summary_name edit button should be hidden when clicked", function (assert) {
-	window.BetsSummary.initialize();
-	$("#summary_name .edit").show();
-	$("#summary_name .edit").click();
-	
-	assert.equal($("#summary_name .edit").is(':visible'), false);
-});
-
-QUnit.test("summary_name input should be enabled on click", function (assert) {
-	window.BetsSummary.initialize();
-	$("#summary_name .edit").click();
-	
-	assert.equal($("#summary_name .input").is(':disabled'), false);
-});
-
-QUnit.test("summary_name value should equal value on click", function (assert) {
-	window.BetsSummary.initialize();
-	$("#summary_name .input").val('test');
-	$("#summary_name .edit").click();
-
-	assert.equal($("#summary_name .input").val(), 'test');
+	assert.equal($('#market li').first().text(), 'Temp');
 });
 
 
