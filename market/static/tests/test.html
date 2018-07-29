@@ -14,10 +14,25 @@
 <body>
 	<div id="qunit"></div>
 	<div id="qunit-fixture">
+	
+		<label for='type_select'>Initial/Free Bet:</label>
+		<div id='bet_type' class="input-group my-2 col-2">
+			<select class="select custom-select" id='type_select' style="width:auto;">
+				<option disabled selected value class='hidden'> - </option>
+				<option value="initial">Initial Bet</option>
+				<option value="free">Free Bet</option>
+			</select>
+		</div>
+	
+		<label for='stake-input'>Bet Stake:</label>
+		<div id='stake' class="input-group my-5 col-4">
+			<input class="input form-control" id='stake-input' type="text">
+		</div>
   
 		<div id='runners' class="input-group my-5 col-4">
 			<label>Number of Market Outcomes:</label>
 			<select class="select custom-select" style="width:auto;">
+				<option disabled selected value class='hidden'> - </option>
 				<option value='1'>1</option>
 				<option value='2'>2</option>
 				<option value='3'>3</option>
@@ -25,10 +40,30 @@
 				<option value='5'>5</option>				
 			</select>
 		</div>
+		
+		<div class="type-error alert alert-warning hidden">Error: Select a bet type above</div>
 	
 		<div>
 			<ul id='market' class="list-group list-group-flush">
+				<li class='list-group-item row d-flex text-center'>
+					<h6 class='text list-group-item-heading col-4 text-left'>Runner Name</h6>
+					<h6 class='text list-group-item-heading col-2'>Bookie Odds</h6>
+					<h6 class='text list-group-item-heading col-2'>Betfair Lay Odds</h6>
+					<h6 class='text list-group-item-heading col-2'>Lay Stake</h6>
+					<h6 class='text list-group-item-heading col-2'>Profit/Loss</h6>
+				</li>
 			</ul>
+			<li id='runner-template' class='runner hidden list-group-item row text-center align-items-center'>
+				<span class='text col-4 text-left'></span>
+				<div class='col-2'>
+					<input class="bookie_odds input form-control offset-3 col-6" type="text">
+				</div>
+				<div class='col-2'>
+					<input class="lay_odds input form-control offset-3 col-6" type="text">
+				</div>
+				<span class="lay_stake col-2"></span>
+				<span class="profit_loss col-2"></span>
+			</li>
 		</div>
 	
 	</div>
@@ -46,12 +81,27 @@ QUnit.test("smoke test", function (assert) {
   assert.equal(1, 1, "Maths works!");
 });
 
+QUnit.test("no runners are initially displayed", function (assert) {
+	window.Market.initialize();
+	
+	assert.notOk($('#market .runner').length);
+	assert.equal($('#runner-template').is(':visible'), false);
+});
+
 QUnit.test("runners change populates market table", function (assert) {
 	window.Market.initialize();
 	
 	$("#runners .select").val('5').change();
 	
-	assert.equal($('#market li').length, 5);
+	assert.equal($('#market .runner').length, 5);
+});
+
+QUnit.test("runners change are visible", function (assert) {
+	window.Market.initialize();
+	
+	$("#runners .select").val('1').change();	
+	
+	assert.equal($('#market .runner').is(':visible'), true);
 });
 
 QUnit.test("runners increase has correct length", function (assert) {
@@ -60,7 +110,7 @@ QUnit.test("runners increase has correct length", function (assert) {
 	$("#runners .select").val('3').change();
 	$("#runners .select").val('5').change();
 	
-	assert.equal($('#market li').length, 5);
+	assert.equal($('#market .runner').length, 5);
 });
 
 QUnit.test("runners increase has correct names", function (assert) {
@@ -69,7 +119,7 @@ QUnit.test("runners increase has correct names", function (assert) {
 	$("#runners .select").val('3').change();
 	$("#runners .select").val('5').change();
 	
-	assert.equal($('#market li:nth-child(4)').text(), 'Runner 4');
+	assert.equal($('#market .runner:eq(3) span').text(), 'Runner 4');
 });
 
 QUnit.test("runners decrease has correct length", function (assert) {
@@ -78,19 +128,144 @@ QUnit.test("runners decrease has correct length", function (assert) {
 	$("#runners .select").val('5').change();
 	$("#runners .select").val('3').change();
 	
-	assert.equal($('#market li').length, 3);
+	assert.equal($('#market .runner').length, 3);
 });
 
 QUnit.test("original runners remain after another change", function (assert) {
 	window.Market.initialize();
 	
 	$("#runners .select").val('5').change();
-	$("#market li").first().text('Temp');
+	$("#market .runner:first span").text('Temp');
 	$("#runners .select").val('3').change();
 	
-	assert.equal($('#market li').first().text(), 'Temp');
+	assert.equal($('#market .runner:first span').first().text(), 'Temp');
 });
 
+QUnit.test("runners have correct id", function (assert) {
+	window.Market.initialize();
+	
+	$("#runners .select").val('1').change();
+	
+	assert.equal($('#market .runner:first').attr('id'), 'runner-1');
+});
+
+QUnit.test("runners have bookie_odds input box", function (assert) {
+	window.Market.initialize();
+	
+	$("#runners .select").val('1').change();
+	
+	assert.ok($('#market .runner:first .bookie_odds').length);
+});
+
+QUnit.test("runners have lay_odds input box", function (assert) {
+	window.Market.initialize();
+	
+	$("#runners .select").val('1').change();
+	
+	assert.ok($('#market .runner:first .lay_odds').length);
+});
+
+QUnit.test("error thrown on keypress if bet_type not selected", function (assert) {
+	window.Market.initialize();
+	
+	$("#runners .select").val('1').change();
+	
+	$("#stake .input").val('10');
+	$("#runner-1 .bookie_odds").val('12.5');
+	$("#runner-1 .lay_odds").val('13');
+	$("#stake .input").trigger('input');
+	
+	assert.equal($('.type-error').is(':visible'), true);
+});
+
+QUnit.test("error disappears when bet_type is selected", function (assert) {
+	window.Market.initialize();
+	
+	$('.type-error').show();
+	$('#bet_type .select').val('initial').change();
+	
+	assert.equal($('.type-error').is(':visible'), false);
+});
+
+QUnit.test("stake keypress updates lay_stake", function (assert) {
+	window.Market.initialize();
+	var curr_txt = $("#runner-1 .lay_stake").text();
+	$("#runners .select").val('1').change();
+	$('#bet_type .select').val('initial');
+	
+	$("#stake .input").val('10');
+	$("#runner-1 .bookie_odds").val('12.5');
+	$("#runner-1 .lay_odds").val('13');
+	$("#stake .input").trigger('input');
+	
+	console.log($("#runner-1 .lay_stake").text());
+	
+	assert.notEqual($("#runner-1 .lay_stake").text(), curr_txt);
+});
+
+QUnit.test("bookie_odds keypress updates profit_loss", function (assert) {
+	window.Market.initialize();
+	var curr_txt = $("#runner-1 .profit_loss").text();
+	$("#runners .select").val('1').change();
+	$('#bet_type .select').val('initial');
+	
+	$("#stake .input").val('10');
+	$("#runner-1 .bookie_odds").val('12.5');
+	$("#runner-1 .lay_odds").val('13');
+	$("#runner-1 .bookie_odds").trigger('input');
+	
+	console.log($("#runner-1 .profit_loss").text());
+	
+	assert.notEqual($("#runner-1 .profit_loss").text(), curr_txt);
+});
+
+QUnit.test("highest profit_loss is highlighted", function (assert) {
+	window.Market.initialize();
+	$("#runners .select").val('2').change();
+	$('#bet_type .select').val('initial');
+	
+	$("#stake .input").val('10');
+	$("#runner-1 .bookie_odds").val('12.5');
+	$("#runner-1 .lay_odds").val('13');
+	$("#runner-2 .bookie_odds").val('10.05');
+	$("#runner-2 .lay_odds").val('10');
+	$("#runner-2 .bookie_odds").trigger('input');
+	
+	assert.ok($(".runner.list-group-item-success").length);
+});
+
+QUnit.test("equal highest profit_loss are highlighted", function (assert) {
+	window.Market.initialize();
+	$("#runners .select").val('2').change();
+	$('#bet_type .select').val('initial');
+	
+	$("#stake .input").val('10');
+	$("#runner-1 .bookie_odds").val('12.5');
+	$("#runner-1 .lay_odds").val('13');
+	$("#runner-2 .bookie_odds").val('12.5');
+	$("#runner-2 .lay_odds").val('13');
+	$("#runner-2 .bookie_odds").trigger('input');
+	
+	assert.equal($(".runner.list-group-item-success").length, 2);
+});
+
+QUnit.test("highest profit_loss changes when new added", function (assert) {
+	window.Market.initialize();
+	$("#runners .select").val('2').change();
+	$('#bet_type .select').val('initial');
+	
+	$("#stake .input").val('10');
+	$("#runner-1 .bookie_odds").val('12.5');
+	$("#runner-1 .lay_odds").val('13').trigger('input');
+	assert.ok($("#runner-1").hasClass('list-group-item-success'));
+	
+	$("#runner-2 .bookie_odds").val('10.05');
+	$("#runner-2 .lay_odds").val('10');
+	$("#runner-2 .bookie_odds").trigger('input');
+	
+	assert.ok($("#runner-2.list-group-item-success").length);
+	assert.equal($(".runner.list-group-item-success").length, 1);
+});
 
   </script>
 </body>

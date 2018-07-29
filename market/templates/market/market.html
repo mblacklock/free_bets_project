@@ -6,44 +6,72 @@
 {% block heading %}Market{% endblock %}
 
 {% block body %}
-
-	<div id='bookie' class="input-group my-5 col-4">
-		<label>Bookie:</label>
-		<select class="select custom-select" style="width:auto;">
-			{% for affiliate in affiliates %}
-				<option value="{{ affiliate.slug }}">{{ affiliate.name }}</option>
-			{% endfor %}
-		</select>
-	</div>
 	
-	<div id='bet_type' class="input-group my-5 col-4">
-		<label>Initial/Free Bet:</label>
-		<select class="select custom-select" style="width:auto;">
-			<option value="initial">Initial Bet</option>
-			<option value="free">Free Bet</option>
-		</select>
-	</div>
+	<form class='form-inline mt-5'>
+		{% if affiliates %}
+		<div id='bookie' class=" form-group input-group my-5 col-md-6">
+			<label for='bookie_select'>Bookie:</label>
+			<select class="select custom-select" id='bookie_select' style="width:auto;">
+				{% for affiliate in affiliates %}
+					<option value="{{ affiliate.slug }}">{{ affiliate.name }}</option>
+				{% endfor %}
+			</select>
+		</div>
+		{% endif %}
+		
+		<label for='type_select'>Initial/Free Bet:</label>
+		<div id='bet_type' class="input-group my-2 col-md-2">
+			<select class="select custom-select" id='type_select' style="width:auto;">
+				<option disabled selected value class='hidden'> -- select -- </option>
+				<option value="initial">Initial Bet</option>
+				<option value="free">Free Bet</option>
+			</select>
+		</div>
+		
+		<label for='stake-input'>Bet Stake:</label>
+		<div id='stake' class="input-group my-2 col-md-2">
+			<input class="input form-control" id='stake-input' type="text">
+		</div>
+	</form>
 	
-	<div id='stake' class="input-group my-5 col-4">
-		<label>Bet Stake:</label>
-		<input class="input form-control" type="text">
-	</div>
+	<form class='form-inline'>
+		<label for='runners_select'>Number of Market Outcomes:</label>
+		<div id='runners' class="input-group my-5 col-1">
+			<select class="select custom-select" id='runners_select' style="width:auto;">
+				<option disabled selected value class='hidden'> - </option>
+				{% with ''|center:30 as range %}
+				{% for _ in range %}
+					<option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+				{% endfor %}
+				{% endwith %}
+			</select>
+		</div>
+	</form>
 	
-	<div id='runners' class="input-group my-5 col-4">
-		<label>Number of Market Outcomes:</label>
-		<select class="select custom-select" style="width:auto;">
-			{% with ''|center:30 as range %}
-			{% for _ in range %}
-				<option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
-			{% endfor %}
-			{% endwith %}
-		</select>
-	</div>
-	
+	<div class="type-error alert alert-warning hidden">Error: Select a bet type above</div>
 	<div>
 		<ul id='market' class="list-group list-group-flush">
+			<li class='list-group-item row d-flex text-center'>
+				<h6 class='text list-group-item-heading col-4 text-left'>Runner Name</h6>
+				<h6 class='text list-group-item-heading col-2'>Bookie Odds</h6>
+				<h6 class='text list-group-item-heading col-2'>Betfair Lay Odds</h6>
+				<h6 class='text list-group-item-heading col-2'>Lay Stake</h6>
+				<h6 class='text list-group-item-heading col-2'>Profit/Loss</h6>
+			</li>
 		</ul>
+		<li id='runner-template' class='runner hidden list-group-item row text-center align-items-center'>
+			<span class='text col-4 text-left'></span>
+			<div class='col-2'>
+				<input class="bookie_odds input form-control offset-2 col-8" type="text">
+			</div>
+			<div class='col-2'>
+				<input class="lay_odds input form-control offset-2 col-8" type="text">
+			</div>
+			<span class="lay_stake col-2"></span>
+			<span class="profit_loss col-2"></span>
+		</li>
 	</div>
+
 
 {% endblock %}
 

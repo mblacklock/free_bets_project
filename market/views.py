@@ -8,5 +8,4 @@ def new_market(request):
     return redirect('market_manual')
 
 def market_manual(request):
-    affiliates = Affiliate.objects.all()
-    return render(request, 'market/market.html', {'affiliates': affiliates})
+    return render(request, 'market/market.html')
