@@ -1,18 +1,45 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
+{% block css %}
+	<!-- Custom styles for this template -->
+    <link href="{% static 'signin.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block title %}Free Bets Maximizer{% endblock %}
 	
-{% block heading %}Start a new account or market{% endblock %}
-
+{% block heading %}
+	<img class="my-4" src="{% static 'images/logo.svg' %}" alt="" width="200" height="100"></br>
+	Sign in, or start a new account or market
+{% endblock %}
 {% block body %}
-	<form action="/summary/create_new" method="POST">
-		{% csrf_token %}
-        <input type="submit" name="new_summary" value="Create new account" />
-    </form>
+{% block navbar %}{% endblock %}
+
+	<div class='text-center'>
+		<div class='row my-3'>
+			<form class="form-signin form-inline">
+				<input type="email" id="inputEmail" class="form-control mb-2 mr-sm-2" placeholder="Email address" required autofocus disabled>
+				<button class="btn btn-outline-secondary mb-2 mr-sm-2" type="submit" disabled>Sign in</button>
+			</form>
+		</div>
 	
-	<form action="/market/create_new" method="POST">
-		{% csrf_token %}
-		<input type="submit" name="new_market" value="Get Market" />
-    </form>
+
+		<div class='row mb-3'>
+			<div class='offset-4 col-4'>
+				<form action="{% url 'new_summary' %}" method="POST">
+					{% csrf_token %}
+					<input class='btn btn-lg btn-outline-secondary btn-block' type="submit" name="new_market" value="Create Account Summary" />
+				</form>
+			</div>
+		</div>
+		<div class='row mb-3'>
+			<div class='offset-4 col-4'>
+				<form action="{% url 'market_manual' %}" method="POST">
+					{% csrf_token %}
+					<input class='btn btn-lg btn-outline-secondary btn-block' type="submit" name="new_market" value="Create Arbitrage Market" />
+				</form>
+				<p class="mt-5 mb-3 text-muted">&copy; 2018</p>
+			</div>
+		</div>
+	</div>
 {% endblock %}

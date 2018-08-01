@@ -7,7 +7,7 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Free Bets Maximizer - {% block title %}{% endblock %}</title>
+		<title>Free Bet Maximizer - {% block title %}{% endblock %}</title>
 		<link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 		<link href="{% static 'base.css' %}" rel="stylesheet">
@@ -15,8 +15,39 @@
 	</head>
 	
     <body>
+	
+		{% block navbar %}
+			<nav class="navbar navbar-expand-lg navbar-light bg-light rounded mb-4">
+				<a class="navbar-brand" href="{% url 'home' %}">
+					<img src="{% static 'images/logo-stamp.svg' %}" width="40" height="40" alt="">
+					Free Bet Maximizer
+				</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+				  <span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="collapse navbar-collapse" id="navbarsExample09">
+				  <ul class="navbar-nav mr-auto">
+					<li class="nav-item">
+					  <a class="nav-link" href="{% url 'home' %}">Home</a>
+					</li>
+					<li class="nav-item">
+					  <a class="nav-link" href="{% url 'new_summary' %}">New Account Summary</a>
+					</li>
+					<li class="nav-item">
+					  <a class="nav-link" href="{% url 'market_manual' %}">New Arbitrage Market</a>
+					</li>
+				  </ul>
+				  <form class="form-inline my-2 my-md-0">
+					<input class="form-control mr-sm-2" type="text" placeholder="Enter email to log in" disabled>
+					<button class="btn btn-outline-secondary my-2 my-sm-0" type="submit" disabled>Log In</button>
+				  </form>
+				</div>
+			</nav>
+		{% endblock %}
+		
 		<div class="container">
-			<h2>Free Bets Maximizer - {% block heading %}{% endblock %}</h2>
+			<h2>{% block heading %}{% endblock %}</h2>
 			
 			{% block body %}{% endblock %}
 			
