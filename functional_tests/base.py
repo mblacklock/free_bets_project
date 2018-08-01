@@ -132,7 +132,8 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.checkIsChecked(check, True)
         self.checkElemsAreEnabled(row, 'input', False)
         self.checkElemsAreEnabled(row, 'edit', False)
-        self.checkElemsAreEnabled(row, 'status', False)    
+        self.checkElemsAreEnabled(row, 'status', False)
+        self.checkElemsAreEnabled(row, 'action', False) 
 
     @wait
     def unclickBanked(self, row):

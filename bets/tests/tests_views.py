@@ -30,6 +30,17 @@ class NewSummaryViewIntegratedTest(TestCase):
         new_item = Item.objects.first()
         self.assertEqual(new_item.affiliate, aff1)
 
+    def test_action_redirects_to_affiliate_when_signup_or_deposit(self):
+        aff1 = Affiliate.objects.create(name='Aff1', url='https://example.com/')
+        aff2 = Affiliate.objects.create(name='Aff2')
+        self.client.post('/summary/create_new')
+        item = Item.objects.first()
+
+        response = self.client.get(f'/summary/action/{item.id}/signup')
+    
+        self.assertRedirects(response, aff1.url, fetch_redirect_response=False)
+        
+
 class AjaxViewsTests(TestCase):
 
     def test_update_username_updates_username(self):

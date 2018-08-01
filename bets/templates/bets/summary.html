@@ -30,6 +30,7 @@
 				<th>Status</th>
 				<th>Balance</th>
 				<th>Profit</th>
+				<th>Next Action</th>
 				<th>Banked</th>
 			</tr>
 		</thead>
@@ -93,6 +94,22 @@
 							<i class="far fa-edit"></i>
 						</button>
 					</div>
+				</td>
+				<td>
+					<form class='action_form' action="{% url 'action' item_id=item.id %}" method="POST" {% if item.status == 'signup' or item.status == 'deposit' %}target="_blank"{% endif %}>
+						{% csrf_token %}
+						<button class="action btn btn-outline-secondary btn-block {% if item.status == 'complete' %}hidden{% endif %}" type="submit"
+						{% if item.banked %}disabled{% endif %} name='action' value="{{item.status}}">
+							{% if item.status == 'signup' or item.status == 'deposit' %}
+								Go to {{item.affiliate.name}}
+							{% else %}
+							{% if item.status == 'initial' or item.status == 'free' %}
+								Create Arb Market
+							{% endif %}
+							{% endif %}
+							<i class="fas fa-arrow-right"></i>
+						</button>
+					</form>
 				</td>
 				<td>
 					<div id="banked" class="custom-control custom-checkbox">

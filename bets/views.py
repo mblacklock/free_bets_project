@@ -18,7 +18,6 @@ def new_summary(request):
     summary = Summary.create_new()
     return redirect(str(summary.get_absolute_url()))
 
-
 def update_ajax(request, param):
     item = None
     if request.method == 'GET':
@@ -50,5 +49,16 @@ def update_ajax(request, param):
                 return HttpResponse(summary)
 
         return HttpResponse(None)
+
+def action(request, item_id):
+    if request.method == 'POST':
+        status = request.POST['action']
+        item = Item.objects.get(id=item_id)
+        if status == 'signup' or status == 'deposit':
+            return redirect(item.affiliate.url)
+        elif status == 'initial' or status == 'free':
+            return redirect('market_manual', item_id= item.id, bet_type= status)
+    return redirect('home')
+            
                 
             

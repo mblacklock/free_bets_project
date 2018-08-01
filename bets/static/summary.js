@@ -48,7 +48,9 @@ window.BetsSummary.initialize = function () {
 			var affiliate_name = $(this).closest('tr').attr('data-name');
 			var id = $(this).closest('tr').attr("data-id");
 			
-			update_function(summary_id, affiliate_name, 'status', $(this).val())
+			var curr_status = $(this).val();
+			update_function(summary_id, affiliate_name, 'status', curr_status);
+			update_action_button(id, curr_status, affiliate_name);
 		}
 	});
 	
@@ -57,11 +59,11 @@ window.BetsSummary.initialize = function () {
 		var affiliate_name = $(this).closest('tr').attr('data-name');
 		var id = $(this).closest('tr').attr("data-id");
 		if($(this).is(":checked")) {
-			$("tr[data-id='"+id+"'] .input,tr[data-id='"+id+"'] .edit,tr[data-id='"+id+"'] .status").prop("disabled", true);
+			$("tr[data-id='"+id+"'] .input,tr[data-id='"+id+"'] .edit,tr[data-id='"+id+"'] .select, tr[data-id='"+id+"'] .action").prop("disabled", true);
 			update_function(summary_id, affiliate_name, 'banked', 'True')
 		}
 		else {
-			$("tr[data-id='"+id+"'] .edit,tr[data-id='"+id+"'] .status").prop("disabled", false);
+			$("tr[data-id='"+id+"'] .edit,tr[data-id='"+id+"'] .select, tr[data-id='"+id+"'] .action").prop("disabled", false);
 			update_function(summary_id, affiliate_name, 'banked', 'False')
 			$("tr[data-id='"+id+"'] .input").each(function() {
 				if($(this).val() == "") {
@@ -71,3 +73,19 @@ window.BetsSummary.initialize = function () {
 		}		
 	});
 };
+
+function update_action_button(id, curr_status, affiliate_name) {
+	$("tr[data-id='"+id+"'] .action").val(curr_status);
+	$("tr[data-id='"+id+"'] .action").removeClass('hidden');
+	if (curr_status == 'signup' | curr_status == 'deposit'){
+		$("tr[data-id='"+id+"'] .action_form").prop("target", '_blank');
+		$("tr[data-id='"+id+"'] .action").html('Go to '+ affiliate_name + ' <i class="fas fa-arrow-right"></i>');
+	}
+	else if (curr_status == 'initial' | curr_status == 'free'){
+		$("tr[data-id='"+id+"'] .action_form").prop("target", "_self");
+		$("tr[data-id='"+id+"'] .action").html('Create Arb Market <i class="fas fa-arrow-right"></i>');
+	}
+	else if (curr_status == 'complete') {
+		$("tr[data-id='"+id+"'] .action").addClass('hidden');
+	}
+}

@@ -55,7 +55,8 @@ function createList(id, n) {
 				.removeClass('hidden')
 		});
 	} else if (n < len) {
-		$('#market li').slice(-(len - n)).remove()
+		$('#market li').slice(-(len - n)).remove();
+		highlightMaximum(getText($('#market .profit_loss')));
 	}
 }
 	

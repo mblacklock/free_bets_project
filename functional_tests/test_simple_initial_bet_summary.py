@@ -1,6 +1,7 @@
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium import webdriver
+from unittest import skip
 
 import time
 
@@ -14,16 +15,18 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
         # to check out its homepage
         self.browser.get(self.live_server_url)
 
+        # She notices the page title and header mention free bets
+        self.assertIn('Free Bet', self.browser.title)
+
         # She sees a create account button and clicks it
         self.browser.find_element_by_name('new_summary').click()
 
         # She notices that her account summary has a unique URL
         self.assertRegex(self.browser.current_url, '/summary/.+')
         
-        # She notices the page title and header mention free bets
-        self.assertIn('Free Bets', self.browser.title)
+        # She notices the header mentions an account summary
         header_text = self.browser.find_element_by_tag_name('h2').text  
-        self.assertIn('Free Bets', header_text)
+        self.assertIn('Summary', header_text)
 
         # Edith see that the newly created summary has an input box to enter a title
         # She enters a name and hits enter, it updates and is replaced by an edit button
@@ -41,6 +44,14 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
             'bookie-summary'
         )
 
+        # There is a next action button at the end that says sign up.
+        row = self.findRow('1')
+        el = row.find_element_by_class_name('action')
+        self.assertEqual(
+            el.get_attribute('value'),
+            'signup'
+            )
+
         # Edith notices an input box for her username for the first bookie. She enters her username
         # When she hits enter, the page updates, and now the page lists her username
         # The input text box is replaced by an edit button
@@ -57,6 +68,17 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
         # Edith then notices a status dropdown box, it has several options        
         # She selects one of the options and the status changes
         self.changeSelectInRow(row, 'initial')
+
+        # The next action button now says create arbitrage market
+        el = row.find_element_by_class_name('action')
+        self.assertEqual(
+            el.get_attribute('value'),
+            'initial'
+            )
+        self.assertEqual(
+            el.text,
+            'Create Arb Market'
+            )
         
         # Edith then notices balance and profit input boxes.        
         # She notes they work the same as the username box

@@ -6,31 +6,32 @@
 {% block heading %}Manual Arbitrage Market{% endblock %}
 
 {% block body %}
+
+	{% if item %}
+		<div class="form-inline mt-5 ml-3">
+			<a class="btn btn-outline-secondary" href="{% url 'view_summary' summary_id=item.summary.id %}">Back to Summary</a>
+		</div>
+	{% endif %}
 	
 	<form class='form-inline mt-5' action="javascript:void(0);">
-		{% if affiliates %}
-		<div id='bookie' class=" form-group input-group my-5 col-md-6">
-			<label for='bookie_select'>Bookie:</label>
-			<select class="select custom-select" id='bookie_select' style="width:auto;">
-				{% for affiliate in affiliates %}
-					<option value="{{ affiliate.slug }}">{{ affiliate.name }}</option>
-				{% endfor %}
-			</select>
-		</div>
+		{% if item %}
+			<div id='bookie' class="my-2 col-md-3">
+				<a class="btn btn-outline-secondary btn-block" target="_blank" href="{{ item.affiliate.url }}">Go to {{ item.affiliate.name }}</a>
+			</div>
 		{% endif %}
 		
 		<label for='type_select'>Initial/Free Bet:</label>
 		<div id='bet_type' class="input-group my-2 col-md-2">
 			<select class="select custom-select" id='type_select' style="width:auto;">
-				<option disabled selected value class='hidden'> -- select -- </option>
-				<option value="initial">Initial Bet</option>
-				<option value="free">Free Bet</option>
+				<option disabled {% if not bet_type %}selected{% endif %} value class='hidden'> -- select -- </option>
+				<option {% if bet_type == 'initial' %}selected{% endif %} value="initial">Initial Bet</option>
+				<option {% if bet_type == 'free' %}selected{% endif %} value="free">Free Bet</option>
 			</select>
 		</div>
 		
 		<label for='stake-input'>Bet Stake:</label>
 		<div id='stake' class="input-group my-2 col-md-2">
-			<input class="input form-control" id='stake-input' type="text">
+			<input class="input form-control" id='stake-input' type="text" {% if item %}value='{{item.affiliate.freebet}}'{% endif %}>
 		</div>
 	</form>
 	

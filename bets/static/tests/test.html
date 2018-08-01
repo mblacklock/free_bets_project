@@ -24,7 +24,7 @@
   
 	<div class="alert-warning hidden">Error text</div>
 	<table name="bookie-summary">
-		<tr data-id="1">
+		<tr data-id="1" data-name="Bet365">
 			<td>Bet365</td>
 			<td>25</td> 
 			<td id='username' class="input-group">
@@ -35,7 +35,7 @@
 				</button>
 			</td>
 			<td id='status'>
-				<select class="status form-control" style="width:auto;">
+				<select class="select form-control" style="width:auto;">
 					<option value="signup">Signup</option>
 					<option value="deposit">Deposit</option>
 					<option value="initial">Initial Bet</option>
@@ -57,11 +57,18 @@
 					edit
 				</button>
 			</td>
+			<td>
+				<form class='action_form' action="#">
+					<button class="action btn btn-light" type="button" value="signup">
+						Go To Bet365
+					</button>
+				</form>
+			</td>
 			<td id='banked'>
 				<input type="checkbox" class="banked" />
 			</td>
 		</tr>
-		<tr data-id="2">
+		<tr data-id="2" data-name="Bet365">
 			<td>Bet365</td>
 			<td>25</td> 
 			<td id='username' class="input-group">
@@ -72,7 +79,7 @@
 				</button>
 			</td>
 			<td id='status'>
-				<select class="status">
+				<select class="select">
 					<option value="signup">Signup</option>
 					<option value="deposit">Deposit</option>
 					<option value="initial">Initial Bet</option>
@@ -93,6 +100,12 @@
 				<button class="edit" class="btn btn-primary btn-sm" type="button" hidden>
 					edit
 				</button>
+			</td>
+			<td>
+				<form action="#">
+					<button class="action btn btn-light" type="button" value="signup">
+					</button>
+				</form>
 			</td>
 			<td id='banked'>
 				<input type="checkbox" class="banked" />
@@ -242,11 +255,11 @@ QUnit.test("input boxes disabled when banked clicked", function (assert) {
 
 QUnit.test("status dropdown disabled when banked clicked", function (assert) {
 	window.BetsSummary.initialize();	
-	$("tr[data-id='1'] #status .status").show();
+	$("tr[data-id='1'] #status .select").show();
 	
 	$("tr[data-id='1'] .banked").click();
 	
-	assert.equal($("tr[data-id='1'] #status .status").is(':disabled'), true);
+	assert.equal($("tr[data-id='1'] #status .select").is(':disabled'), true);
 });
 
 QUnit.test("other rows not affected when banked clicked", function (assert) {
@@ -363,6 +376,52 @@ QUnit.test("summary_name value should equal value on click", function (assert) {
 	assert.equal($("#summary_name .input").val(), 'test');
 });
 
+QUnit.test("status change alters action value", function (assert) {
+	window.BetsSummary.initialize();
+	$("tr[data-id='1'] .select").val('initial').change();
+
+	assert.equal($("tr[data-id='1'] .action").val(), 'initial');
+});
+
+QUnit.test("status change alters action text", function (assert) {
+	window.BetsSummary.initialize();
+	$("tr[data-id='1'] .select").val('initial').change();
+
+	assert.equal($("tr[data-id='1'] .action").text(), 'Create Arb Market');
+});
+
+QUnit.test("status change alters action target", function (assert) {
+	window.BetsSummary.initialize();
+	$("tr[data-id='1'] .select").val('initial').change();
+
+	assert.notEqual($("tr[data-id='1'] .action_form").prop('target'), '_blank');
+	$("tr[data-id='1'] .select").val('deposit').change();
+
+	assert.equal($("tr[data-id='1'] .action_form").prop('target'), '_blank');
+});
+
+QUnit.test("status to complete hides action", function (assert) {
+	window.BetsSummary.initialize();
+	$("tr[data-id='1'] .select").val('complete').change();
+
+	assert.equal($("tr[data-id='1'] .action").is(':visible'), false);
+});
+
+QUnit.test("bank clicked disables action", function (assert) {
+	window.BetsSummary.initialize();
+	$("tr[data-id='1'] .banked").click();
+
+	assert.equal($("tr[data-id='1'] .action").is(':disabled'), true);
+});
+
+QUnit.test("bank unclicked enables action", function (assert) {
+	window.BetsSummary.initialize();
+	$("tr[data-id='1'] .action").prop('disabled', true);
+	$("tr[data-id='1'] .banked").prop('checked', true);
+	$("tr[data-id='1'] .banked").click();
+
+	assert.equal($("tr[data-id='1'] .action").is(':disabled'), false);
+});
 
   </script>
 </body>
