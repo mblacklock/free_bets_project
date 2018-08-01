@@ -7,7 +7,7 @@
 
 {% block body %}
 	
-	<form class='form-inline mt-5'>
+	<form class='form-inline mt-5' action="javascript:void(0);">
 		{% if affiliates %}
 		<div id='bookie' class=" form-group input-group my-5 col-md-6">
 			<label for='bookie_select'>Bookie:</label>
@@ -61,11 +61,11 @@
 		</ul>
 		<li id='runner-template' class='runner hidden list-group-item row text-center align-items-center'>
 			<span class='text col-4 text-left'></span>
-			<div class='col-2'>
-				<input class="bookie_odds input form-control offset-2 col-8" type="text">
+			<div class='bookie_odds col-2'>
+				<input class="input form-control offset-2 col-8" type="text">
 			</div>
-			<div class='col-2'>
-				<input class="lay_odds input form-control offset-2 col-8" type="text">
+			<div class='lay_odds col-2'>
+				<input class="input form-control offset-2 col-8" type="text">
 			</div>
 			<span class="lay_stake col-2"></span>
 			<span class="profit_loss col-2"></span>

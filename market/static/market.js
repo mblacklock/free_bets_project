@@ -17,8 +17,8 @@ window.Market.initialize = function () {
 			runners = $('#market .runner');
 			$.each(runners, function()
 			{
-				bookie_odds = parseFloat($(this).find('.bookie_odds').val());
-				lay_odds = parseFloat($(this).find('.lay_odds').val());
+				bookie_odds = parseFloat($(this).find('.bookie_odds .input').val());
+				lay_odds = parseFloat($(this).find('.lay_odds .input').val());
 				if (bet_type == 'initial') {
 					lay_stake = ((bookie_odds - 1)*bet_stake + bet_stake)/(0.95 + (lay_odds - 1));
 					profit_loss = (bet_stake*(bookie_odds - 1)) - (lay_stake*(lay_odds - 1));

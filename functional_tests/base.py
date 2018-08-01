@@ -86,18 +86,30 @@ class FunctionalTest(StaticLiveServerTestCase):
             , state
         )
 
+    @wait
+    def checkRunnerValues(self, runner, lay_stake, profit_loss):
+        self.assertEqual(runner.find_element_by_class_name('lay_stake').text,
+                         lay_stake
+                         )
+        self.assertEqual(runner.find_element_by_class_name('profit_loss').text,
+                         profit_loss
+                         )
+        
+
     ##### CHANGE ELEMENTS#####
     
     @wait
-    def enterInput(self, element, text):
-        element.find_element_by_class_name('input').clear()
-        element.find_element_by_class_name('input').send_keys(text)
-        element.find_element_by_class_name('input').send_keys(Keys.ENTER)
+    def enterInput(self, element, text, check=True):
+        item = element.find_element_by_class_name('input')
+        item.clear()
+        item.send_keys(text)
+        item.send_keys(Keys.ENTER)
         
-        self.checkIsEnabled(element, 'input', False)
-        self.checkIsDisplayed(element, 'edit', True)
+        if check:
+            self.checkIsEnabled(element, 'input', False)
+            self.checkIsDisplayed(element, 'edit', True)
         self.assertEqual(
-           element.find_element_by_class_name('input').get_attribute('value')
+           item.get_attribute('value')
                , text
         )
 

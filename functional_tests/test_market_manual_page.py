@@ -25,8 +25,7 @@ class NewMarketTest(FunctionalTest):
         # There is an input box titled 'bet stake'
         # Edith enters a value and it updates
         stake = self.browser.find_element_by_id('stake')
-        stake.find_element_by_class_name('input').clear()
-        stake.find_element_by_class_name('input').send_keys('10')
+        self.enterInput(stake, '10', False)
 
         # There is a dropdown for number of market items
         # Edith selects the number and the option updates
@@ -45,8 +44,7 @@ class NewMarketTest(FunctionalTest):
         # Edith notices an input box for the bookie odds for the first runner. She enters a decimal
         runner = market_list.find_element_by_id('runner-1')
         bookie_odds = runner.find_element_by_class_name('bookie_odds')
-        bookie_odds.clear()
-        bookie_odds.send_keys('10.05')
+        self.enterInput(bookie_odds, '10.05', False)
 
         # Oops, an error is thrown about a missing bet type
         self.assertEqual(
@@ -70,59 +68,28 @@ class NewMarketTest(FunctionalTest):
         # She sees there are input boxes for the lay price of each runner
         # As she is typing, the page updates, and the lay stake and profit/loss values updates.
         lay_odds = runner.find_element_by_class_name('lay_odds')
-        lay_odds.clear()
-        lay_odds.send_keys('10')
-
-        lay_stake = runner.find_element_by_class_name('lay_stake')
-        self.assertEqual(lay_stake.text,
-                         '10.10'
-                         )
-
-        profit_loss = runner.find_element_by_class_name('profit_loss')
-        self.assertEqual(profit_loss.text,
-                         '-0.40'
-                         )
+        self.enterInput(lay_odds, '10.00', False)
+        self.checkRunnerValues(runner, '10.10', '-0.40')
         
         # This does not effect the other runners
         runner = market_list.find_element_by_id('runner-2')
-        lay_stake = runner.find_element_by_class_name('lay_stake')
-        self.assertEqual(lay_stake.text,
-                         'NaN'
-                         )
+        self.checkRunnerValues(runner, 'NaN', 'NaN')
 
         # Edith changes the bet type to 'free bet' and the option updates
         self.changeSelectBox(bet_type_select, 'free')
 
         # The lay_stake and profit_loss values update
         runner = market_list.find_element_by_id('runner-1')
-        lay_stake = runner.find_element_by_class_name('lay_stake')
-        self.assertEqual(lay_stake.text,
-                         '9.10'
-                         )
-
-        profit_loss = runner.find_element_by_class_name('profit_loss')
-        self.assertEqual(profit_loss.text,
-                         '8.64'
-                         )
+        self.checkRunnerValues(runner, '9.10', '8.64')
 
         # Edith enters the odds for the second runner and it updates the P/L value
         runner = market_list.find_element_by_id('runner-2')
         bookie_odds = runner.find_element_by_class_name('bookie_odds')
-        bookie_odds.clear()
-        bookie_odds.send_keys('12.5')
+        self.enterInput(bookie_odds, '12.5', False)
         lay_odds = runner.find_element_by_class_name('lay_odds')
-        lay_odds.clear()
-        lay_odds.send_keys('13')
+        self.enterInput(lay_odds, '13', False)
 
-        lay_stake = runner.find_element_by_class_name('lay_stake')
-        self.assertEqual(lay_stake.text,
-                         '8.88'
-                         )
-
-        profit_loss = runner.find_element_by_class_name('profit_loss')
-        self.assertEqual(profit_loss.text,
-                         '8.44'
-                         )
+        self.checkRunnerValues(runner, '8.88', '8.44')
 
         # The runner with the highest P/L is highlighted
         highlighted = self.browser.find_element_by_class_name('list-group-item-success').find_element_by_class_name('profit_loss')
