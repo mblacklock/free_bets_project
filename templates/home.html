@@ -17,9 +17,11 @@
 
 	<div class='text-center'>
 		<div class='row my-3'>
-			<form class="form-signin form-inline">
-				<input type="email" id="inputEmail" class="form-control mb-2 mr-sm-2" placeholder="Email address" required autofocus disabled>
-				<button class="btn btn-outline-secondary mb-2 mr-sm-2" type="submit" disabled>Sign in</button>
+			<form class="form-signin form-inline" method="POST" action="#">
+				{% csrf_token %}
+				<label for="email">Enter email to retrieve saved account summaries</label>
+				<input name="email" type="email" class="form-control mb-2 mr-sm-2" placeholder="Email address" required autofocus>
+				<button class="btn btn-outline-secondary mb-2 mr-sm-2" type="submit">Sign in</button>
 			</form>
 		</div>
 	

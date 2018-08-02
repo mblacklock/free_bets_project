@@ -44,7 +44,10 @@ INSTALLED_APPS = [
     # MY APPS #
     'bets',
     'market',
+    'accounts',
 ]
+
+AUTH_USER_MODEL = 'accounts.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
