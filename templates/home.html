@@ -16,13 +16,17 @@
 {% block navbar %}{% endblock %}
 
 	<div class='text-center'>
-		<div class='row my-3'>
-			<form class="form-signin form-inline" method="POST" action="#">
-				{% csrf_token %}
-				<label for="email">Enter email to retrieve saved account summaries</label>
-				<input name="email" type="email" class="form-control mb-2 mr-sm-2" placeholder="Email address" required autofocus>
-				<button class="btn btn-outline-secondary mb-2 mr-sm-2" type="submit">Sign in</button>
-			</form>
+		<div class='login row my-3'>
+			{% if user.email %}
+				<span>Logged in as {{ user.email }} <a href="{% url 'logout' %}">Log out</a></span>
+			{% else %}
+				<form class="form-signin form-inline" method="POST" action="{% url 'send_login_email' %}">
+					{% csrf_token %}
+					<label for="email">Enter email to retrieve saved account summaries</label>
+					<input name="email" type="email" class="form-control mb-2 mr-sm-2" placeholder="Email address" required autofocus>
+					<button class="btn btn-outline-secondary mb-2 mr-sm-2" type="submit">Sign in</button>
+				</form>
+			{% endif %}
 		</div>
 	
 
@@ -43,5 +47,18 @@
 				<p class="mt-5 mb-3 text-muted">&copy; 2018</p>
 			</div>
 		</div>
+		{% if messages %}
+        <div class="row">
+			<div class="col-md-8">
+			{% for message in messages %}
+			  {% if message.level_tag == 'success' %}
+				<div class="alert alert-success">{{ message }}</div>
+			  {% else %}
+				<div class="alert alert-warning">{{ message }}</div>
+			  {% endif %}
+			{% endfor %}
+			</div>
+		</div>
+		{% endif %}
 	</div>
 {% endblock %}

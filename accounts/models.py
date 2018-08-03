@@ -5,7 +5,7 @@ import uuid
 # Create your models here.
 
 class User(models.Model):
-    email = models.EmailField(unique=True)
+    email = models.EmailField(primary_key=True)
 
     REQUIRED_FIELDS = []
     USERNAME_FIELD = 'email'
