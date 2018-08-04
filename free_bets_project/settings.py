@@ -18,6 +18,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 BETS_TEMPLATE_DIR = os.path.join(BASE_DIR, 'bets', 'templates')
 MARKET_TEMPLATE_DIR = os.path.join(BASE_DIR, 'markets', 'templates')
+ACCOUNTS_TEMPLATE_DIR = os.path.join(BASE_DIR, 'accounts', 'templates')
 
 
 # Quick-start development settings - unsuitable for production
@@ -67,7 +68,8 @@ ROOT_URLCONF = 'free_bets_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATE_DIR, BETS_TEMPLATE_DIR, MARKET_TEMPLATE_DIR],
+        'DIRS': [TEMPLATE_DIR, BETS_TEMPLATE_DIR,
+                 MARKET_TEMPLATE_DIR, ACCOUNTS_TEMPLATE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

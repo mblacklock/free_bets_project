@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.contrib import auth, messages
 
@@ -13,12 +14,16 @@ def send_login_email(request):
     url = request.build_absolute_uri(  
         reverse('login') + '?token=' + str(token.uid)
     )
-    message_body = f'Use this link to log in:\n\n{url}'
+    
+    msg_plain = f'Use this link to log in:\n\n{url}'
+    msg_html = render_to_string('accounts/login_email.html', {'url': url})
+    
     send_mail(
-        'Your login link for Superlists',
-        message_body,
-        'noreply@superlists',
-        [email]
+        'Your login link for Free Bet Maximizer',
+        msg_plain,
+        'noreply@freebetmaximizer',
+        [email],
+        html_message=msg_html,
     )
     messages.success(
         request,
