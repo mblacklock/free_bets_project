@@ -94,8 +94,19 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.assertEqual(runner.find_element_by_class_name('profit_loss').text,
                          profit_loss
                          )
-        
 
+    @wait
+    def check_logged_in(self, email):
+        self.browser.find_element_by_link_text('Log out')
+        login_section = self.browser.find_element_by_css_selector('.login')
+        self.assertIn(email, login_section.text)
+
+    @wait
+    def check_logged_out(self, email):
+        self.browser.find_element_by_name('email')
+        login_section = self.browser.find_element_by_css_selector('.login')
+        self.assertNotIn(email, login_section.text)
+        
     ##### CHANGE ELEMENTS#####
     
     @wait
