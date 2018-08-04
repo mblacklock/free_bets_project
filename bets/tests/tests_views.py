@@ -36,7 +36,7 @@ class NewSummaryViewIntegratedTest(TestCase):
         self.client.post('/summary/create_new')
         item = Item.objects.first()
 
-        response = self.client.get(f'/summary/action/{item.id}/signup')
+        response = self.client.post(f'/summary/action/{item.id}', {'action' : 'signup'})
     
         self.assertRedirects(response, aff1.url, fetch_redirect_response=False)
         

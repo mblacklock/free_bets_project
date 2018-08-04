@@ -54,4 +54,4 @@ class LoginTest(FunctionalTest):
             lambda: self.browser.find_element_by_name('email')
         )
         login_section = self.browser.find_element_by_css_selector('.login')
-        self.assertNotIn(TEST_EMAIL, navbar.text)
+        self.assertNotIn(TEST_EMAIL, login_section.text)
