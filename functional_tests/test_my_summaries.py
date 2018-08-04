@@ -4,6 +4,8 @@ from django.contrib.sessions.backends.db import SessionStore
 from .base import FunctionalTest
 User = get_user_model()
 
+import time
+
 
 class MyListsTest(FunctionalTest):
 
@@ -23,11 +25,43 @@ class MyListsTest(FunctionalTest):
         ))
 
     def test_logged_in_users_lists_are_saved_as_my_lists(self):
-        email = 'edith@example.com'
-        self.browser.get(self.live_server_url)
-        self.check_logged_out(email)
-
         # Edith is a logged-in user
-        self.create_pre_authenticated_session(email)
+        self.create_pre_authenticated_session('edith@example.com')
+
+        # She goes to the home page and creates a new summary
         self.browser.get(self.live_server_url)
-        self.check_logged_in(email)
+        self.browser.find_element_by_class_name('new_summary').click()
+        name = self.browser.find_element_by_id('summary_name')
+        self.enterInput(name, "Edith's Summary")
+
+        # She notices a "My Accounts" link, for the first time.
+        self.browser.find_element_by_link_text('My Account Summaries').click()
+
+        # She sees that her summary is in there, named accordingly
+        self.wait_for(
+            lambda: self.browser.find_element_by_link_text("Edith's Summary")
+        )
+
+        # She decides to start another summary, just to see
+        self.browser.get(self.live_server_url)
+        self.browser.find_element_by_class_name('new_summary').click()
+        name = self.browser.find_element_by_id('summary_name')
+        self.enterInput(name, "Edith's Second Summary")
+        second_list_url = self.browser.current_url
+
+        # Under "my lists", her new list appears
+        self.browser.find_element_by_link_text('My Account Summaries').click()
+        self.wait_for(
+            lambda: self.browser.find_element_by_link_text("Edith's Second Summary")
+        )
+        self.browser.find_element_by_link_text("Edith's Second Summary").click()
+        self.wait_for(
+            lambda: self.assertEqual(self.browser.current_url, second_list_url)
+        )
+
+        # She logs out.  The "My lists" option disappears
+        self.browser.find_element_by_link_text('Log Out').click()
+        self.wait_for(lambda: self.assertEqual(
+            self.browser.find_elements_by_link_text('My Account Summaries'),
+            []
+        ))

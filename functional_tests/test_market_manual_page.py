@@ -15,7 +15,7 @@ class NewMarketTest(FunctionalTest):
         self.browser.get(self.live_server_url)
 
         # She sees a create market button and clicks it
-        self.browser.find_element_by_name('new_market').click()
+        self.browser.find_element_by_class_name('new_market').click()
         
         # She notices the page title and header mention a market
         self.assertIn('Market', self.browser.title)

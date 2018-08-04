@@ -97,7 +97,7 @@ class FunctionalTest(StaticLiveServerTestCase):
 
     @wait
     def check_logged_in(self, email):
-        self.browser.find_element_by_link_text('Log out')
+        self.browser.find_element_by_link_text('Log Out')
         login_section = self.browser.find_element_by_css_selector('.login')
         self.assertIn(email, login_section.text)
 

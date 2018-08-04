@@ -23,4 +23,5 @@ urlpatterns = [
     path('<summary_id>/', views.view_summary, name='view_summary'),
     path('update/<param>', views.update_ajax, name='update_ajax'),
     path('action/<item_id>', views.action, name='action'),
+    path('users/<email>/', views.my_summaries, name='my_summaries'),
 ]

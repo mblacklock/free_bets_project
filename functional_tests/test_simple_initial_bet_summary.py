@@ -19,7 +19,7 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
         self.assertIn('Free Bet', self.browser.title)
 
         # She sees a create account button and clicks it
-        self.browser.find_element_by_name('new_summary').click()
+        self.browser.find_element_by_class_name('new_summary').click()
 
         # She notices that her account summary has a unique URL
         self.assertRegex(self.browser.current_url, '/summary/.+')
@@ -109,7 +109,7 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
         self.initiateDatabase()
         # Edith starts a new summary and edits the first row
         self.browser.get(self.live_server_url)
-        self.browser.find_element_by_name('new_summary').click()
+        self.browser.find_element_by_class_name('new_summary').click()
 
         row = self.findRow('1')
         el = row.find_element_by_id('username')
@@ -135,7 +135,7 @@ class NewVisitorAccountSummaryTest(FunctionalTest):
         # Francis visits the home page and starts a new summary.
         # There is no sign of Edith's summary
         self.browser.get(self.live_server_url)
-        self.browser.find_element_by_name('new_summary').click()
+        self.browser.find_element_by_class_name('new_summary').click()
         
         input_list = self.browser.find_elements_by_css_selector('.input')
         values = [item.get_attribute("value") for item in input_list]

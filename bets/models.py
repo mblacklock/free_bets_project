@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from decimal import *
 from django.template.defaultfilters import slugify
+from django.conf import settings
 
 # Create your models here.
 
@@ -22,6 +23,7 @@ class Affiliate(models.Model):
 
 class Summary(models.Model):
     name = models.CharField(max_length=30, default='', blank=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.CASCADE)
     
     def get_absolute_url(self):
         return reverse('view_summary', args=[self.id])

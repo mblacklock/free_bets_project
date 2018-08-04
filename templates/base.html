@@ -27,21 +27,30 @@
 				</button>
 
 				<div class="collapse navbar-collapse" id="navbarsExample09">
-				  <ul class="navbar-nav mr-auto">
-					<li class="nav-item">
-					  <a class="nav-link" href="{% url 'home' %}">Home</a>
-					</li>
-					<li class="nav-item">
-					  <a class="nav-link" href="{% url 'new_summary' %}">New Account Summary</a>
-					</li>
-					<li class="nav-item">
-					  <a class="nav-link" href="{% url 'market_manual' %}">New Arbitrage Market</a>
-					</li>
-				  </ul>
-				  <form class="form-inline my-2 my-md-0">
-					<input class="form-control mr-sm-2" type="text" placeholder="Enter email to log in" disabled>
-					<button class="btn btn-outline-secondary my-2 my-sm-0" type="submit" disabled>Log In</button>
-				  </form>
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item">
+						  <a class="nav-link" href="{% url 'home' %}">Home</a>
+						</li>
+						<li class="nav-item">
+						  <a class="new_summary nav-link" href="{% url 'new_summary' %}">New Account Summary</a>
+						</li>
+						<li class="nav-item">
+						  <a class="new_market nav-link" href="{% url 'market_manual' %}">New Arbitrage Market</a>
+						</li>
+					{% if user.email %}
+						<li class="navbar-item"><a class="nav-link" href="{% url 'my_summaries' user.email %}">My Account Summaries</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="navbar-item my-2">Logged in as {{ user.email }}</li>
+						<li><a class="nav-link" href="{% url 'logout' %}">Log Out</a></li>
+					</ul>
+					{% else %}
+					</ul>
+					<form class="navbar-form navbar-right" method="POST" action="{% url 'send_login_email' %}">
+						<input name="email" type="email" class="form-control mr-sm-2" type="text" placeholder="Enter email to log in">
+						<button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Log In</button>
+					</form>
+					{% endif %}					
 				</div>
 			</nav>
 		{% endblock %}

@@ -12,7 +12,7 @@ class ItemValidationTest(FunctionalTest):
         # Edith goes to the home page and accidentally tries to submit
         # a non-numeric value in balance. She hits Enter input box
         self.browser.get(self.live_server_url)
-        self.browser.find_element_by_name('new_summary').click()
+        self.browser.find_element_by_class_name('new_summary').click()
 
         row = self.findRow('1')
         el = row.find_element_by_id('balance')

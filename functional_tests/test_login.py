@@ -43,7 +43,7 @@ class LoginTest(FunctionalTest):
         self.check_logged_in(email=TEST_EMAIL)
 
         # Now she logs out
-        self.browser.find_element_by_link_text('Log out').click()
+        self.browser.find_element_by_link_text('Log Out').click()
 
         # She is logged out
         self.check_logged_out(email=TEST_EMAIL)

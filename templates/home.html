@@ -10,43 +10,49 @@
 	
 {% block heading %}
 	<img class="my-4" src="{% static 'images/logo.svg' %}" alt="" width="200" height="100"></br>
-	Sign in, or start a new account or market
+	{% if user.email %}Retrieve your saved account summaries{% else %}Sign in{% endif %}, or start a new account or market
 {% endblock %}
 {% block body %}
 {% block navbar %}{% endblock %}
 
 	<div class='text-center'>
-		<div class='login row my-3'>
-			{% if user.email %}
-				<span>Logged in as {{ user.email }} <a href="{% url 'logout' %}">Log out</a></span>
-			{% else %}
-				<form class="form-signin form-inline" method="POST" action="{% url 'send_login_email' %}">
-					{% csrf_token %}
-					<label for="email">Enter email to retrieve saved account summaries</label>
-					<input name="email" type="email" class="form-control mb-2 mr-sm-2" placeholder="Email address" required autofocus>
-					<button class="btn btn-outline-secondary mb-2 mr-sm-2" type="submit">Sign in</button>
-				</form>
-			{% endif %}
-		</div>
-	
-
+		{% if user.email %}
+			<div class='login row my-3'>
+				<div class='offset-2 col-8'>
+					<h5 align="center">Logged in as {{ user.email }}</h5>
+				</div>
+				<div class='offset-4 col-4 my-2'>
+					<a class="btn btn-outline-secondary btn-block mb-2 mr-sm-2" href="{% url 'logout' %}">Log Out</a>
+				</div>
+			</div>
+			<div class='row mb-3'>
+				<div class='offset-4 col-4'>
+					<a class="btn btn-outline-secondary btn-block btn-lg mb-2 mr-sm-2" href="{% url 'my_summaries' user.email %}">My Account Summaries</a>
+				</div>
+			</div>
+		{% else %}
+			<div class='login row my-3'>
+				<div class='offset-2 col-8'>
+					<form class="form-signin form-inline" method="POST" action="{% url 'send_login_email' %}">
+						{% csrf_token %}
+						<label for="email">Retrieve your account summaries:</label>
+						<input name="email" type="email" class="form-control mb-2 mr-sm-2" placeholder="Email address" required autofocus>
+						<button class="btn btn-outline-secondary mb-2 mr-sm-2" type="submit">Log In</button>
+					</form>
+				</div>
+			</div>
+		{% endif %}
 		<div class='row mb-3'>
 			<div class='offset-4 col-4'>
-				<form action="{% url 'new_summary' %}" method="POST">
-					{% csrf_token %}
-					<input class='btn btn-lg btn-outline-secondary btn-block' type="submit" name="new_summary" value="Create Account Summary" />
-				</form>
+				<a class="new_summary btn btn-outline-secondary btn-block btn-lg mb-2 mr-sm-2" href="{% url 'new_summary' %}">Create Account Summary</a>
 			</div>
 		</div>
 		<div class='row mb-3'>
 			<div class='offset-4 col-4'>
-				<form action="{% url 'market_manual' %}" method="POST">
-					{% csrf_token %}
-					<input class='btn btn-lg btn-outline-secondary btn-block' type="submit" name="new_market" value="Create Arbitrage Market" />
-				</form>
-				<p class="mt-5 mb-3 text-muted">&copy; 2018</p>
+				<a class="new_market btn btn-outline-secondary btn-block btn-lg mb-2 mr-sm-2" href="{% url 'market_manual' %}">Create Arbitrage Market</a>
 			</div>
 		</div>
+		<p class="mt-5 mb-3 text-muted">&copy; 2018</p>
 		{% if messages %}
         <div class="row">
 			<div class="col-md-8">

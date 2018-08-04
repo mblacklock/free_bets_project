@@ -12,7 +12,7 @@ class ReturnVisitorAccountSummaryTest(FunctionalTest):
         self.initiateDatabase()
         # Edith creates a summary page
         self.browser.get(self.live_server_url)
-        self.browser.find_element_by_name('new_summary').click()
+        self.browser.find_element_by_class_name('new_summary').click()
         edith_list_url = self.browser.current_url
         
         name = self.browser.find_element_by_id('summary_name')

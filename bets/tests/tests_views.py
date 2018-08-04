@@ -1,5 +1,8 @@
 from django.test import TestCase
 
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
 from bets.models import Affiliate, Item, Summary
 
 # Create your tests here.
@@ -39,7 +42,13 @@ class NewSummaryViewIntegratedTest(TestCase):
         response = self.client.post(f'/summary/action/{item.id}', {'action' : 'signup'})
     
         self.assertRedirects(response, aff1.url, fetch_redirect_response=False)
-        
+
+    def test_summary_owner_is_saved_if_user_is_authenticated(self):
+        user = User.objects.create(email='a@b.com')
+        self.client.force_login(user)  
+        self.client.post('/summary/create_new')
+        summary = Summary.objects.first()
+        self.assertEqual(summary.owner, user)        
 
 class AjaxViewsTests(TestCase):
 
@@ -82,3 +91,16 @@ class AjaxViewsTests(TestCase):
         self.client.get(f'/summary/update/summary_name', {'summary_id': summary.id, 'affiliate_name': 'summary_name', 'value': 'test'})
         
         self.assertEqual(Summary.objects.first().name, 'test')
+
+class MyListsTest(TestCase):
+
+    def test_my_lists_url_renders_my_lists_template(self):
+        User.objects.create(email='a@b.com')
+        response = self.client.get('/summary/users/a@b.com/')
+        self.assertTemplateUsed(response, 'bets/my_summaries.html')
+
+    def test_passes_correct_owner_to_template(self):
+        User.objects.create(email='wrong@owner.com')
+        correct_user = User.objects.create(email='a@b.com')
+        response = self.client.get('/summary/users/a@b.com/')
+        self.assertEqual(response.context['owner'], correct_user)

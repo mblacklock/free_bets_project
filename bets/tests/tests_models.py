@@ -1,5 +1,7 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 from decimal import *
 
@@ -88,3 +90,12 @@ class SummaryModelTest(TestCase):
         second_saved_item = saved_items[1]
         self.assertEqual(first_saved_item.affiliate, aff1)
         self.assertEqual(second_saved_item.affiliate, aff2)
+
+    def test_summaries_can_have_owners(self):
+        user = User.objects.create(email='a@b.com')
+        summary = Summary.objects.create(owner=user)
+        self.assertIn(summary, user.summary_set.all())
+
+    def test_summary_owner_is_optional(self):
+        Summary.objects.create()  # should not raise
+    

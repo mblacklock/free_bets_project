@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 from bets.models import Affiliate, Item, Summary
 
@@ -16,6 +18,11 @@ def view_summary(request, summary_id):
 
 def new_summary(request):
     summary = Summary.create_new()
+    
+    if request.user.is_authenticated:
+        summary.owner = request.user
+        summary.save()
+        
     return redirect(str(summary.get_absolute_url()))
 
 def update_ajax(request, param):
@@ -59,6 +66,10 @@ def action(request, item_id):
         elif status == 'initial' or status == 'free':
             return redirect('market_manual', item_id= item.id, bet_type= status)
     return redirect('home')
+
+def my_summaries(request, email):
+    owner = User.objects.get(email=email)
+    return render(request, 'bets/my_summaries.html', {'owner': owner})
             
                 
             
