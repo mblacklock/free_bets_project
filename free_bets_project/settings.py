@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-import dotenv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,9 +25,8 @@ ACCOUNTS_TEMPLATE_DIR = os.path.join(BASE_DIR, 'accounts', 'templates')
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 ##### TURN ON SECURITY FOR PRODUCTION #####
-from dotenv import load_dotenv
-project_folder = os.path.expanduser('~/free-bets-project')
-load_dotenv(os.path.join(project_folder, '.env'))
+from dotenv import read_dotenv
+read_dotenv(os.path.join(BASE_DIR, '.env'))
 if 'DJANGO_DEBUG_FALSE' in os.environ:
     DEBUG = False
     SECRET_KEY = os.environ['DJANGO_SECRET_KEY']  
