@@ -46,8 +46,8 @@
 					</ul>
 					{% else %}
 					</ul>
-					<form class="navbar-form navbar-right" method="POST" action="{% url 'send_login_email' %}">
-						<input name="email" type="email" class="form-control mr-sm-2" type="text" placeholder="Enter email to log in">
+					<form class="form-inline my-2 my-lg-0" method="POST" action="{% url 'send_login_email' %}">
+						<input class="form-control mr-sm-2" name="email" type="email" type="text" placeholder="Enter email to log in">
 						<button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Log In</button>
 					</form>
 					{% endif %}					
