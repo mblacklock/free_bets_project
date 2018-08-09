@@ -42,8 +42,8 @@ class FunctionalTest(StaticLiveServerTestCase):
         return fn()
     ######################################
     def initiateDatabase(self):
-        aff1 = Affiliate.objects.create(name='Aff1')
-        aff2 = Affiliate.objects.create(name='Aff2')
+        aff1 = Affiliate.objects.create(name='Aff1', url='http://www.aff1.com/')
+        aff2 = Affiliate.objects.create(name='Aff2', url='http://www.aff2.com/')
 
     ###### GET ELEMENTS ######
 
