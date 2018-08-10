@@ -3,13 +3,22 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.contrib import auth, messages
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 from accounts.models import Token
+from bets.models import Summary
 
 # Create your views here.
 
 def send_login_email(request):
     email = request.POST['email']
+    if 'summary_id' in request.POST and request.POST['summary_id'] != 'None': 
+        summary = Summary.objects.get(id=request.POST['summary_id'])
+        user = User.objects.get_or_create(email=email)[0]
+        summary.owner = user
+        summary.save()
+   
     token = Token.objects.create(email=email)
     url = request.build_absolute_uri(  
         reverse('login') + '?token=' + str(token.uid)
@@ -35,4 +44,6 @@ def login(request):
     user = auth.authenticate(uid=request.GET.get('token'))
     if user:
         auth.login(request, user)
-    return redirect('/')
+        return redirect('my_summaries', email=user.email)
+    else:
+        return redirect('/')

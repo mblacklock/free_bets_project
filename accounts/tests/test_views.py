@@ -1,13 +1,17 @@
 from django.test import TestCase
 from unittest.mock import patch, call
 
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
 from accounts.models import Token
+from bets.models import Summary
 
 class SendLoginEmailViewTest(TestCase):
 
     def test_redirects_to_home_page(self):
         response = self.client.post('/accounts/send_login_email', data={
-            'email': 'edith@example.com'
+            'email': 'edith@example.com',
         })
         self.assertRedirects(response, '/')
 
@@ -18,7 +22,7 @@ class SendLoginEmailViewTest(TestCase):
     @patch('accounts.views.send_mail')
     def test_sends_mail_to_address_from_post(self, mock_send_mail):
         self.client.post('/accounts/send_login_email', data={
-            'email': 'edith@example.com'
+            'email': 'edith@example.com',
         })
 
         self.assertEqual(mock_send_mail.called, True)
@@ -29,7 +33,7 @@ class SendLoginEmailViewTest(TestCase):
 
     def test_adds_success_message(self):
         response = self.client.post('/accounts/send_login_email', data={
-            'email': 'edith@example.com'
+            'email': 'edith@example.com',
         }, follow=True)
 
         message = list(response.context['messages'])[0]
@@ -41,7 +45,7 @@ class SendLoginEmailViewTest(TestCase):
 
     def test_creates_token_associated_with_email(self):
         self.client.post('/accounts/send_login_email', data={
-            'email': 'edith@example.com'
+            'email': 'edith@example.com',
         })
         token = Token.objects.first()
         self.assertEqual(token.email, 'edith@example.com')
@@ -58,12 +62,26 @@ class SendLoginEmailViewTest(TestCase):
         (subject, body, from_email, to_list), kwargs = mock_send_mail.call_args
         self.assertIn(expected_url, body)
 
+    def test_creates_user_if_summary_exists(self):
+        summary = Summary.create_new()
+        self.client.post('/accounts/send_login_email', data={
+            'email': 'edith@example.com',
+            'summary_id': summary.id
+        })
+        user = User.objects.first()
+        self.assertEqual(user.email, 'edith@example.com')
+
+    def test_user_is_owner_if_summary_exists(self):
+        summary = Summary.create_new()
+        self.client.post('/accounts/send_login_email', data={
+            'email': 'edith@example.com',
+            'summary_id': summary.id
+        })
+        summary = Summary.objects.get(id=summary.id)
+        self.assertEqual(summary.owner.email, 'edith@example.com')
+
 @patch('accounts.views.auth')  
 class LoginViewTest(TestCase):
-
-    def test_email_click_redirects_to_home_page(self, mock_auth):
-        response = self.client.get('/accounts/login?token=abcd123')
-        self.assertRedirects(response, '/')
 
     def test_calls_authenticate_with_uid_from_get_request(self, mock_auth):  
         self.client.get('/accounts/login?token=abcd123')

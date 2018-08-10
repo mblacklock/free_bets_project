@@ -41,15 +41,21 @@
 						<li class="navbar-item"><a class="nav-link" href="{% url 'my_summaries' user.email %}">My Account Summaries</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li class="navbar-item my-2">Logged in as {{ user.email }}</li>
+						<li class="login navbar-item my-2">Logged in as {{ user.email }}</li>
 						<li><a class="nav-link" href="{% url 'logout' %}">Log Out</a></li>
 					</ul>
 					{% else %}
 					</ul>
-					<form class="navbar-form navbar-right" method="POST" action="{% url 'send_login_email' %}">
-						<input name="email" type="email" class="form-control mr-sm-2" type="text" placeholder="Enter email to log in">
-						<button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Log In</button>
-					</form>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="login">
+						<form class="navbar-form form-signin form-inline" method="POST" action="{% url 'send_login_email' %}">
+							{% if summary %}<input type="hidden" name="summary_id" value="{{ summary.id }}" />{% endif %}
+							<input name="email" type="email" class="form-control mr-sm-2" type="text" placeholder="Enter email to log in">
+							<button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Log In</button>
+							{% csrf_token %}
+						</form>
+						</li>
+					</ul>
 					{% endif %}					
 				</div>
 			</nav>
@@ -57,6 +63,19 @@
 		
 		<div class="container">
 			<h2>{% block heading %}{% endblock %}</h2>
+			{% if messages %}
+			<div class="row">
+				<div class="offset-2 col-md-8">
+				{% for message in messages %}
+				  {% if message.level_tag == 'success' %}
+					<div class="alert alert-success">{{ message }}</div>
+				  {% else %}
+					<div class="alert alert-warning">{{ message }}</div>
+				  {% endif %}
+				{% endfor %}
+				</div>
+			</div>
+			{% endif %}
 			
 			{% block body %}{% endblock %}
 			

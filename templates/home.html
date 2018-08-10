@@ -53,18 +53,5 @@
 			</div>
 		</div>
 		<p class="mt-5 mb-3 text-muted">&copy; 2018</p>
-		{% if messages %}
-        <div class="row">
-			<div class="offset-2 col-md-8">
-			{% for message in messages %}
-			  {% if message.level_tag == 'success' %}
-				<div class="alert alert-success">{{ message }}</div>
-			  {% else %}
-				<div class="alert alert-warning">{{ message }}</div>
-			  {% endif %}
-			{% endfor %}
-			</div>
-		</div>
-		{% endif %}
 	</div>
 {% endblock %}
