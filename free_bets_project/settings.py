@@ -24,13 +24,25 @@ ACCOUNTS_TEMPLATE_DIR = os.path.join(BASE_DIR, 'accounts', 'templates')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
+##### TURN ON SECURITY FOR PRODUCTION #####
+from dotenv import read_dotenv
+read_dotenv(os.path.join(BASE_DIR, '.env'))
+if 'DJANGO_DEBUG_FALSE' in os.environ:
+    DEBUG = False
+    SECRET_KEY = os.environ['DJANGO_SECRET_KEY']  
+    ALLOWED_HOSTS = [os.environ['SITENAME']]  
+else:
+    DEBUG = True  
+    SECRET_KEY = 'y)_1httoiy0o9x68cao+hszh(6v8)mi06kw@00-0as(fsy(c9&'
+    ALLOWED_HOSTS = []
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'y)_1httoiy0o9x68cao+hszh(6v8)mi06kw@00-0as(fsy(c9&'
+#SECRET_KEY = 'y)_1httoiy0o9x68cao+hszh(6v8)mi06kw@00-0as(fsy(c9&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
 
-ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = []
 
 
 # Application definition

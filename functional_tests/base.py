@@ -5,6 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 import time, os
 
+#from .server_tools import reset_database
 from bets.models import Affiliate
 
 MAX_WAIT = 5
@@ -29,7 +30,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         staging_server = os.environ.get('STAGING_SERVER')  
         if staging_server:
             self.live_server_url = 'http://' + staging_server
-            reset_database(self.staging_server)
+            #reset_database(self.staging_server)
 
     def tearDown(self):
         self.browser.refresh()
@@ -42,8 +43,8 @@ class FunctionalTest(StaticLiveServerTestCase):
         return fn()
     ######################################
     def initiateDatabase(self):
-        aff1 = Affiliate.objects.create(name='Aff1')
-        aff2 = Affiliate.objects.create(name='Aff2')
+        aff1 = Affiliate.objects.create(name='Aff1', url='http://www.aff1.com/')
+        aff2 = Affiliate.objects.create(name='Aff2', url='http://www.aff2.com/')
 
     ###### GET ELEMENTS ######
 

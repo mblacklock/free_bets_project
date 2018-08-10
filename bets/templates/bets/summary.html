@@ -11,6 +11,11 @@
 {% block heading %}Accounts Summary{% endblock %}
 
 {% block body %}
+	{% if not user.email %}
+	<div class="alert alert-info" role="alert">
+		Log in above to save this Free Bet Maxmimizer account.
+	</div>
+	{% endif %}
 	<div id='summary_name' class="input-group my-5 col-4">
 		<input class="input form-control" type="text" placeholder="Summary Name"
 			value={% if summary.name == '' %}""{% else %}"{{ summary.name }}" disabled{% endif %}>

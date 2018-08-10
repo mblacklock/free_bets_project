@@ -46,16 +46,12 @@
 					</ul>
 					{% else %}
 					</ul>
-					<ul class="nav navbar-nav navbar-right">
-						<li class="login">
-						<form class="navbar-form form-signin form-inline" method="POST" action="{% url 'send_login_email' %}">
-							{% if summary %}<input type="hidden" name="summary_id" value="{{ summary.id }}" />{% endif %}
-							<input name="email" type="email" class="form-control mr-sm-2" type="text" placeholder="Enter email to log in">
-							<button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Log In</button>
-							{% csrf_token %}
-						</form>
-						</li>
-					</ul>
+					<form class="login form-inline my-2 my-lg-0" method="POST" action="{% url 'send_login_email' %}">
+						{% if summary %}<input type="hidden" name="summary_id" value="{{ summary.id }}" />{% endif %}
+						<input class="form-control mr-sm-2" name="email" type="email" type="text" placeholder="Enter email to log in">
+						<button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Log In</button>
+						{% csrf_token %}
+					</form>
 					{% endif %}					
 				</div>
 			</nav>
