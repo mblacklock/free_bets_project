@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles %}
-
+{% load comments %}
 {% load wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}template-blogpage{% endblock %}
@@ -52,6 +52,9 @@
 			{% endfor %}
 		</div>
 	{% endif %}
+	
+	{% render_comment_list for page %}
+	{% render_comment_form for page %}
 
     <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>
 

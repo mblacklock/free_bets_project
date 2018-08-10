@@ -34,5 +34,6 @@ urlpatterns = [
     path('accounts/', include(accounts_urls)),
     path('blog_admin/', include(wagtailadmin_urls)),
     path('documents/', include(wagtaildocs_urls)),
-    path(r'blog/', include(wagtail_urls)),
+    path('blog/', include(wagtail_urls)),
+    path('comments/', include('django_comments.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

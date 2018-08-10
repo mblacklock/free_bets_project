@@ -55,11 +55,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # used by comments
+    'django.contrib.sites',
     # MY APPS #
     'bets',
     'market',
     'accounts',
     'blog',
+    # 3rd party apps
+    'django_comments',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -190,3 +194,7 @@ WAGTAIL_SITE_NAME = 'My Example Site'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 MEDIA_URL = '/media/'
+
+###### Comments ##########
+
+SITE_ID = 1
