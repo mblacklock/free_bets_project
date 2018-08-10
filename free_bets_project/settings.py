@@ -19,6 +19,7 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 BETS_TEMPLATE_DIR = os.path.join(BASE_DIR, 'bets', 'templates')
 MARKET_TEMPLATE_DIR = os.path.join(BASE_DIR, 'markets', 'templates')
 ACCOUNTS_TEMPLATE_DIR = os.path.join(BASE_DIR, 'accounts', 'templates')
+BLOG_TEMPLATE_DIR = os.path.join(BASE_DIR, 'blog', 'templates')
 
 
 # Quick-start development settings - unsuitable for production
@@ -58,6 +59,7 @@ INSTALLED_APPS = [
     'bets',
     'market',
     'accounts',
+    'blog',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -81,7 +83,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [TEMPLATE_DIR, BETS_TEMPLATE_DIR,
-                 MARKET_TEMPLATE_DIR, ACCOUNTS_TEMPLATE_DIR],
+                 MARKET_TEMPLATE_DIR, ACCOUNTS_TEMPLATE_DIR,
+                 BLOG_TEMPLATE_DIR,],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -157,3 +160,33 @@ EMAIL_HOST_USER = 'matthewblacklock@gmail.com'
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+########## WAGTAIL ##########
+
+INSTALLED_APPS += [
+    'wagtail.contrib.forms',
+    'wagtail.contrib.redirects',
+    'wagtail.embeds',
+    'wagtail.sites',
+    'wagtail.users',
+    'wagtail.snippets',
+    'wagtail.documents',
+    'wagtail.images',
+    'wagtail.search',
+    'wagtail.admin',
+    'wagtail.core',
+
+    'modelcluster',
+    'taggit',
+    ]
+
+MIDDLEWARE += [
+    'wagtail.core.middleware.SiteMiddleware',
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
+    ]
+
+WAGTAIL_SITE_NAME = 'My Example Site'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+MEDIA_URL = '/media/'

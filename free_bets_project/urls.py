@@ -15,10 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 from bets import urls as bets_urls, views as bets_views
 from market import urls as market_urls
 from accounts import urls as accounts_urls
+
+from wagtail.admin import urls as wagtailadmin_urls
+from wagtail.documents import urls as wagtaildocs_urls
+from wagtail.core import urls as wagtail_urls
 
 urlpatterns = [
     path('', bets_views.home_page, name='home'),
@@ -26,4 +32,7 @@ urlpatterns = [
     path('summary/', include(bets_urls)),
     path('market/', include(market_urls)),
     path('accounts/', include(accounts_urls)),
-]
+    path('blog_admin/', include(wagtailadmin_urls)),
+    path('documents/', include(wagtaildocs_urls)),
+    path(r'blog/', include(wagtail_urls)),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

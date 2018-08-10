@@ -15,19 +15,30 @@ TEST_EMAIL = 'edith@example.com'
 class MyListsTest(FunctionalTest):
 
     def create_pre_authenticated_session(self, email):
-        user = User.objects.create(email=email)
-        session = SessionStore()
-        session[SESSION_KEY] = user.pk 
-        session[BACKEND_SESSION_KEY] = settings.AUTHENTICATION_BACKENDS[0]
-        session.save()
-        ## to set a cookie we need to first visit the domain.
-        ## 404 pages load the quickest!
-        self.browser.get(self.live_server_url + "/404_no_such_url/")
-        self.browser.add_cookie(dict(
-            name=settings.SESSION_COOKIE_NAME,
-            value=session.session_key, 
-            path='/',
+##        user = User.objects.create(email=email)
+##        session = SessionStore()
+##        session[SESSION_KEY] = user.pk 
+##        session[BACKEND_SESSION_KEY] = settings.AUTHENTICATION_BACKENDS[0]
+##        session.save()
+##        ## to set a cookie we need to first visit the domain.
+##        ## 404 pages load the quickest!
+##        self.browser.get(self.live_server_url + "/404_no_such_url/")
+##        self.browser.add_cookie(dict(
+##            name=settings.SESSION_COOKIE_NAME,
+##            value=session.session_key, 
+##            path='/',
+##        ))
+        self.browser.get(self.live_server_url)
+        self.browser.find_element_by_name('email').send_keys(TEST_EMAIL)
+        self.browser.find_element_by_name('email').send_keys(Keys.ENTER)
+        self.wait_for(lambda: self.assertIn(
+            'Check your email',
+            self.browser.find_element_by_tag_name('body').text
         ))
+        email = mail.outbox[0]
+        url_search = re.search(r'http://.+/.+$', email.body)
+        url = url_search.group(0)
+        self.browser.get(url)
 
     def test_logged_in_users_lists_are_saved_as_my_lists(self):
         # Edith is a logged-in user
