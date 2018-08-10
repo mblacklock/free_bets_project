@@ -55,15 +55,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # used by comments
-    'django.contrib.sites',
     # MY APPS #
     'bets',
     'market',
     'accounts',
     'blog',
-    # 3rd party apps
-    'django_comments',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -198,3 +194,16 @@ MEDIA_URL = '/media/'
 ###### Comments ##########
 
 SITE_ID = 1
+INSTALLED_APPS += (
+    'fluent_comments',  # must be before django_comments
+    'crispy_forms',
+    'django_comments',
+    'django.contrib.sites',
+    'widget_tweaks',
+)
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+COMMENTS_APP = 'fluent_comments'
+
+FLUENT_COMMENTS_EXCLUDE_FIELDS = ('email', 'url')

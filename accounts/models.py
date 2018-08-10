@@ -16,6 +16,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     password = models.CharField(default='a', max_length=28)
+
+    def get_full_name(self):
+        return None
     
 class Token(models.Model):
     email = models.EmailField()

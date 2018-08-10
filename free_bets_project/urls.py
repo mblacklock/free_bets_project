@@ -32,8 +32,8 @@ urlpatterns = [
     path('summary/', include(bets_urls)),
     path('market/', include(market_urls)),
     path('accounts/', include(accounts_urls)),
+    path('blog/comments/', include('fluent_comments.urls')),
     path('blog_admin/', include(wagtailadmin_urls)),
     path('documents/', include(wagtaildocs_urls)),
     path('blog/', include(wagtail_urls)),
-    path('comments/', include('django_comments.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 {% load staticfiles %}
-{% load comments %}
+{% load comments static %}
 {% load wagtailcore_tags wagtailimages_tags %}
 
+
+{% block css %}
+	<link rel="stylesheet" type="text/css" href="{% static 'fluent_comments/css/ajaxcomments.css' %}" />
+    <link href="{% static 'comment.css' %}" rel="stylesheet">
+{% endblock %}
+	
 {% block body_class %}template-blogpage{% endblock %}
 
 {% block body %}
@@ -52,10 +58,21 @@
 			{% endfor %}
 		</div>
 	{% endif %}
-	
-	{% render_comment_list for page %}
+	{% get_comment_count for page as comment_count %}
+	<div class='form-inline col-8 offset-2 pt-4'>
+		<h4 class='col-2'>Comments</h4>
+		<h5 class='col-4 offset-6'>{{ comment_count }} comments</h5>
+	</div>
+	<ul class="list-group list-group-flush col-8 offset-2 my-3">
+		{% render_comment_list for page %}
+	</ul>
+	<h4 class='offset-2 py-2'>Leave a comment</h4>
 	{% render_comment_form for page %}
 
     <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>
 
+{% endblock %}
+
+{% block scripts %}
+	<script type="text/javascript" src="{% static 'fluent_comments/js/ajaxcomments.js' %}"></script>
 {% endblock %}
