@@ -12,52 +12,56 @@
 {% block body_class %}template-blogpage{% endblock %}
 
 {% block body %}
+
     <h1>{{ page.title }}</h1>
-    <p class="meta">{{ page.date }}</p>
+	<hr>
+    <p class="meta">Posted on {{ page.date }}</p>
+	<hr>
 	
 	{% with categories=page.categories.all %}
 		{% if categories %}
-			<h3>Posted in:</h3>
 			<ul>
+				<li style="display: inline">Categories: </li>
 				{% for category in categories %}
 					<li style="display: inline">
-						{% image category.icon fill-32x32 style="vertical-align: middle" %}
-						{{ category.name }}
+						<strong class="d-inline-block mb-2 text-primary">{{ category.name }}</strong>
 					</li>
 				{% endfor %}
 			</ul>
 		{% endif %}
 	{% endwith %}
+	
+	<div class="text-center">
+	{% with page.main_image as main_image %}
+		{% if main_image %}{% image main_image max-1151x250 class="img-fluid rounded" %}{% endif %}
+	{% endwith %}
+	</div>
 
-    <div class="intro">{{ page.intro }}</div>
+    <hr>
+
+	<div class="one_line my-2"><strong>{{ page.one_line }}</strong></div>
+    <div class="intro my-2 text-justify">{{ page.intro }}</div>
 
     {% with blocks=self.body %}
 		{% for block in blocks %}
+		<div class="row my-3">
 			{% if block.block_type == 'heading' %}
-				<h2>{{ block.value }}</h2>
-			{% else %}
-			   <section class="block-{{ block.block_type }}">
+				<h4>{{ block.value }}</h4>
+			{% elif block.block_type == 'image' %}
+			   <div class="mx-auto d-block block-{{ block.block_type }}">
+				   {% image block.value max-1151x250 class="img-fluid rounded" %}
+			   </div>
+			{% elif block.block_type == 'paragraph' %}
+			   <div class="text-justify block-{{ block.block_type }}">
 				   {{ block }}
-			   </section>
+			   </div>
+			{% else %}
+				   {{ block }}
 			{% endif %}
+		</div>
 		{% endfor %}
 	{% endwith %}
 	
-	{% for item in page.gallery_images.all %}
-        <div style="float: left; margin: 10px">
-            {% image item.image fill-320x240 %}
-            <p>{{ item.caption }}</p>
-        </div>
-    {% endfor %}
-	
-	{% if page.tags.all.count %}
-		<div class="tags">
-			<h3>Tags</h3>
-			{% for tag in page.tags.all %}
-				<a href="{% slugurl 'tags' %}?tag={{ tag }}"><button type="button">{{ tag }}</button></a>
-			{% endfor %}
-		</div>
-	{% endif %}
 	{% get_comment_count for page as comment_count %}
 	<div class='form-inline col-8 offset-2 pt-4'>
 		<h4 class='col-2'>Comments</h4>

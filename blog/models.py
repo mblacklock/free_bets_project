@@ -38,6 +38,15 @@ class BlogIndexPage(Page):
         context = super().get_context(request)
         blogpages = self.get_children().live().order_by('-first_published_at')
         context['blogpages'] = blogpages
+        # Featured (items 2 and 3)
+        featured = blogpages[1:3]
+        context['featured'] = featured
+        # Not featured (not in the first 3)
+        none_featured = blogpages[3:]
+        context['none_featured'] = none_featured
+        # Most popular (3 highest views (not implemented))
+        popular = blogpages[2:4]
+        context['popular'] = popular
         return context
 
 class BlogPageTag(TaggedItemBase):
@@ -50,6 +59,7 @@ class BlogPageTag(TaggedItemBase):
 class BlogPage(Page):
     author = models.CharField(max_length=255)
     date = models.DateField("Post date")
+    one_line = models.CharField(max_length=100)
     intro = models.CharField(max_length=250)
     body = StreamField([
         ('heading', blocks.CharBlock(classname="full title")),
@@ -74,6 +84,7 @@ class BlogPage(Page):
             FieldPanel('tags'),
             FieldPanel('categories', widget=forms.CheckboxSelectMultiple),
         ], heading="Blog information"),
+        FieldPanel('one_line'),
         FieldPanel('intro'),
         StreamFieldPanel('body'),
         InlinePanel('gallery_images', label="Gallery images"),

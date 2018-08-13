@@ -76,6 +76,14 @@
 			{% block body %}{% endblock %}
 			
 		</div>
+		
+		{% block footer %}
+			<footer class="footer">
+				<div class=" w100 bg-light text-center" style="height:50px;">
+					<span class="my-5 text-muted">&copy; 2018</span>
+				</div>
+			</footer>
+		{% endblock footer %}
 		<!-- Placed at the end of the document so the pages load faster -->
 		<script src="{% static 'jquery-3.3.1.min.js' %}"></script>
 		<script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
