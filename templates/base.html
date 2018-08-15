@@ -31,20 +31,24 @@
 						<li class="nav-item">
 						  <a class="nav-link" href="{% url 'home' %}">Home</a>
 						</li>
-						<li class="nav-item">
+						<li class="hidden nav-item">
 						  <a class="new_summary nav-link" href="{% url 'new_summary' %}">New Account Summary</a>
 						</li>
 						<li class="nav-item">
-						  <a class="new_market nav-link" href="{% url 'market_manual' %}">New Arbitrage Market</a>
+						  <a class="new_market nav-link" href="{% url 'market_manual' %}">Arbitrage Market</a>
 						</li>
-						<li class="nav-item dropdown">
+						<!-- Blog_only --->
+						<li class="nav-item">
+						  <a class="odds_converter nav-link" href="{% url 'odds_converter' %}">Odds Converter</a>
+						</li>
+						<!-- <li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							  Tools
 							</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 							  <a class="dropdown-item odds_converter" href="{% url 'odds_converter' %}">Odds Converter</a>
 							</div>
-						</li>
+						</li> -->
 					{% if user.email %}
 						<li class="navbar-item"><a class="nav-link" href="{% url 'my_summaries' user.email %}">My Account Summaries</a></li>
 					</ul>
@@ -54,7 +58,7 @@
 					</ul>
 					{% else %}
 					</ul>
-					<form class="login form-inline my-2 my-lg-0" method="POST" action="{% url 'send_login_email' %}">
+					<form class="hidden login form-inline my-2 my-lg-0" method="POST" action="{% url 'send_login_email' %}">
 						{% if summary %}<input type="hidden" name="summary_id" value="{{ summary.id }}" />{% endif %}
 						<input class="form-control mr-sm-2" name="email" type="email" type="text" placeholder="Enter email to log in">
 						<button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Log In</button>
