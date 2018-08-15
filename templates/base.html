@@ -37,6 +37,14 @@
 						<li class="nav-item">
 						  <a class="new_market nav-link" href="{% url 'market_manual' %}">New Arbitrage Market</a>
 						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							  Tools
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							  <a class="dropdown-item odds_converter" href="{% url 'odds_converter' %}">Odds Converter</a>
+							</div>
+						</li>
 					{% if user.email %}
 						<li class="navbar-item"><a class="nav-link" href="{% url 'my_summaries' user.email %}">My Account Summaries</a></li>
 					</ul>

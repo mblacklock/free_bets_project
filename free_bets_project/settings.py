@@ -20,6 +20,7 @@ BETS_TEMPLATE_DIR = os.path.join(BASE_DIR, 'bets', 'templates')
 MARKET_TEMPLATE_DIR = os.path.join(BASE_DIR, 'markets', 'templates')
 ACCOUNTS_TEMPLATE_DIR = os.path.join(BASE_DIR, 'accounts', 'templates')
 BLOG_TEMPLATE_DIR = os.path.join(BASE_DIR, 'blog', 'templates')
+TOOLS_TEMPLATE_DIR = os.path.join(BASE_DIR, 'betting_tools', 'templates')
 
 
 # Quick-start development settings - unsuitable for production
@@ -60,6 +61,7 @@ INSTALLED_APPS = [
     'market',
     'accounts',
     'blog',
+    'betting_tools',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -84,7 +86,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [TEMPLATE_DIR, BETS_TEMPLATE_DIR,
                  MARKET_TEMPLATE_DIR, ACCOUNTS_TEMPLATE_DIR,
-                 BLOG_TEMPLATE_DIR,],
+                 BLOG_TEMPLATE_DIR,TOOLS_TEMPLATE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

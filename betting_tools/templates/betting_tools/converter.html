@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Odds Converter{% endblock %}
+	
+{% block heading %}Odds Converter Tool{% endblock %}
+
+{% block body %}
+	<div class="my-5">
+		<ul id='converter' class="list-group list-group-flush my-3">
+			<li class='list-group-item row d-flex text-center'>
+				<h6 class='list-group-item-heading col-4'>Fractional Odds</h6>
+				<h6 class='list-group-item-heading col-4'>Decimal Odds</h6>
+				<h6 class='list-group-item-heading col-4'>Percentage Chance (%)</h6>
+			</li>
+			<li class='list-group-item row d-flex align-items-center'>
+				<div class='bookie_odds col-4'>			
+					<input class="fraction text-center form-control offset-4 col-4" type="text">
+				</div>
+				<div class='bookie_odds col-4'>			
+					<input class="decimal text-center form-control offset-4 col-4" type="text">
+				</div>
+				<div class='bookie_odds col-4'>			
+					<input class="percent text-center form-control offset-4 col-4" type="text">
+				</div>
+			</li>
+		</ul>
+	</div>
+	
+	<div class="alert alert-primary text-center" role="alert">
+	  Enter fractional or decimal odds or a percentage above to convert
+	</div>
+
+	<hr class="my-5">
+	<h4>Common Odds</h4>
+	<div>
+		<ul id='typical_conversions' class="list-group list-group-flush my-3">
+			<li class='list-group-item row d-flex text-center'>
+				<h6 class='list-group-item-heading col-4'>Fractional Odds</h6>
+				<h6 class='list-group-item-heading col-4'>Decimal Odds</h6>
+				<h6 class='list-group-item-heading col-4'>Percentage Chance (%)</h6>
+			</li>
+			<li class='list-group-item row d-flex align-items-center'>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">1/10</p>
+				</div>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">1.1</p>
+				</div>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">90.9</p>
+				</div>
+			</li>
+			<!--- New Row --->
+			<li class='list-group-item row d-flex align-items-center'>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">1/5</p>
+				</div>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">1.2</p>
+				</div>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">83.3</p>
+				</div>
+			</li>
+			<!--- New Row --->
+			<li class='list-group-item row d-flex align-items-center'>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">1/2</p>
+				</div>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">1.5</p>
+				</div>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">66.7</p>
+				</div>
+			</li>
+			<!--- New Row --->
+			<li class='list-group-item row d-flex align-items-center'>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">Evs. (1/1)</p>
+				</div>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">2.0</p>
+				</div>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">50</p>
+				</div>
+			</li>
+			<!--- New Row --->
+			<li class='list-group-item row d-flex align-items-center'>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">2/1</p>
+				</div>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">3</p>
+				</div>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">33.3</p>
+				</div>
+			</li>
+			<!--- New Row --->
+			<li class='list-group-item row d-flex align-items-center'>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">3/2</p>
+				</div>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">2.5</p>
+				</div>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">40</p>
+				</div>
+			</li>
+			<!--- New Row --->
+			<li class='list-group-item row d-flex align-items-center'>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">3/1</p>
+				</div>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">4</p>
+				</div>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">25</p>
+				</div>
+			</li>
+			<!--- New Row --->
+			<li class='list-group-item row d-flex align-items-center'>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">10/1</p>
+				</div>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">11</p>
+				</div>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">9.1</p>
+				</div>
+			</li>
+			<!--- New Row --->
+			<li class='list-group-item row d-flex align-items-center '>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">25/1</p>
+				</div>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">26</p>
+				</div>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">3.8</p>
+				</div>
+			</li>
+			<!--- New Row --->
+			<li class='list-group-item row d-flex align-items-center'>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">100/1</p>
+				</div>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">101</p>
+				</div>
+				<div class='bookie_odds col-4'>			
+					<p class="text-center offset-4 col-4" type="text">1</p>
+				</div>
+			</li>
+		</ul>
+	</div>
+	
+{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block scripts %}
+	<script src="{% static 'converter.js' %}"></script>
+
+	<script>
+		$(document).ready(function () {
+			window.Converter.initialize();
+		});
+	</script>
+{% endblock %}

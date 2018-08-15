@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 from bets import urls as bets_urls, views as bets_views
 from market import urls as market_urls
 from accounts import urls as accounts_urls
+from betting_tools import urls as tools_urls
 
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
@@ -32,6 +33,8 @@ urlpatterns = [
     path('summary/', include(bets_urls)),
     path('market/', include(market_urls)),
     path('accounts/', include(accounts_urls)),
+    path('betting_tools/', include(tools_urls)),
+    ###### BLOG ######
     path('blog/comments/', include('fluent_comments.urls')),
     path('blog_admin/', include(wagtailadmin_urls)),
     path('documents/', include(wagtaildocs_urls)),

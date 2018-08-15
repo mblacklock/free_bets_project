@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Javascript tests</title>
+  <link rel="stylesheet" href="qunit-2.6.1.css">
+  <style>
+	.hidden {
+		display: none; 
+	}
+  </style>
+</head>
+<body>
+	<div id="qunit"></div>
+	<div id="qunit-fixture">
+	
+		<div>
+			<ul id='converter' class="list-group list-group-flush">
+				<li class='list-group-item row d-flex text-center'>
+					<h6 class='list-group-item-heading col-4 text-left'>Fractional Odds</h6>
+					<h6 class='list-group-item-heading col-4'>Decimal Odds</h6>
+					<h6 class='list-group-item-heading col-4'>Percentage Chance (%)</h6>
+				</li>
+				<li class='list-group-item row text-center align-items-center'>
+					<input class="fraction form-control col-4" type="text">
+					<input class="decimal form-control col-4" type="text">
+					<input class="percent form-control col-4" type="text">
+				</li>
+			</ul>
+		</div>
+	
+	</div>
+	</div>
+  
+  <script src="../../../static/jquery-3.3.1.min.js"></script>
+  <script src="../converter.js"></script>
+  <script src="qunit-2.6.1.js"></script>
+
+  <script>
+
+console.log('qunit tests start');
+
+QUnit.test("smoke test", function (assert) {
+  assert.equal(1, 1, "Maths works!");
+});
+
+QUnit.test("no values are initially displayed", function (assert) {
+	window.Converter.initialize();
+	
+	assert.equal($('.fraction').val(), '');
+	assert.equal($('.decimal').val(), '');
+	assert.equal($('.percent').val(), '');
+});
+
+QUnit.test("enter fractional changes others", function (assert) {
+	window.Converter.initialize();
+	
+	$(".fraction").val('15/2').trigger('input');
+	
+	assert.equal($('.fraction').val(), '15/2');
+	assert.equal($('.decimal').val(), '8.5');
+	assert.equal($('.percent').val(), '11.8');
+});
+
+QUnit.test("not fractional does not change others", function (assert) {
+	window.Converter.initialize();
+	
+	$(".fraction").val('15').trigger('input');
+	
+	assert.equal($('.decimal').val(), '');
+	assert.equal($('.percent').val(), '');
+});
+
+QUnit.test("change from fractional to not fractional clears others", function (assert) {
+	window.Converter.initialize();
+	$(".fraction").val('15/2').trigger('input');
+	$(".fraction").val('15').trigger('input');
+	
+	assert.equal($('.decimal').val(), '');
+	assert.equal($('.percent').val(), '');
+});
+
+QUnit.test("too many ///s fractional does not change others", function (assert) {
+	window.Converter.initialize();
+	
+	$(".fraction").val('15//2').trigger('input');
+	
+	assert.equal($('.decimal').val(), '');
+	assert.equal($('.percent').val(), '');
+});
+
+QUnit.test("not numeric fractional does not change others", function (assert) {
+	window.Converter.initialize();
+	
+	$(".fraction").val('a/b').trigger('input');
+	
+	assert.equal($('.decimal').val(), '');
+	assert.equal($('.percent').val(), '');
+});
+
+QUnit.test("enter decimal changes others", function (assert) {
+	window.Converter.initialize();
+	
+	$(".decimal").val('5.5').trigger('input');
+	
+	assert.equal($('.fraction').val(), '4.5/1');
+	assert.equal($('.percent').val(), '18.2');
+});
+
+QUnit.test("non-numeric decimal does not change others", function (assert) {
+	window.Converter.initialize();
+	
+	$(".decimal").val('5.5/1').trigger('input');
+	
+	assert.equal($('.fraction').val(), '');
+	assert.equal($('.percent').val(), '');
+});
+
+QUnit.test("enter percent changes others", function (assert) {
+	window.Converter.initialize();
+	
+	$(".percent").val('30').trigger('input');
+	
+	assert.equal($('.fraction').val(), '2.33/1');
+	assert.equal($('.decimal').val(), '3.33');
+});
+
+QUnit.test("non-numeric percent does not change others", function (assert) {
+	window.Converter.initialize();
+	
+	$(".percent").val('5.5/1').trigger('input');
+	
+	assert.equal($('.fraction').val(), '');
+	assert.equal($('.decimal').val(), '');
+});
+
+  </script>
+</body>
+</html>
