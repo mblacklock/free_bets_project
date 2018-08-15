@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.flatpages import views
 
 from bets import urls as bets_urls, views as bets_views
 from market import urls as market_urls
@@ -39,4 +40,7 @@ urlpatterns = [
     path('blog_admin/', include(wagtailadmin_urls)),
     path('documents/', include(wagtaildocs_urls)),
     path('blog/', include(wagtail_urls)),
+    ###### FLATPAGES #####
+    path('privacy-policy/', views.flatpage, {'url': '/privacy-policy/'}, name='privacy'),
+    path('cookie-policy/', views.flatpage, {'url': '/cookie-policy/'}, name='cookie'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
