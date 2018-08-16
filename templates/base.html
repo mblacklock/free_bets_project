@@ -11,6 +11,7 @@
 		<link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 		<link href="{% static 'base.css' %}" rel="stylesheet">
+		<link href="{% static 'sticky-footer.css' %}" rel="stylesheet">
 		{% block css %}{% endblock %}
 	</head>
 	
@@ -91,11 +92,12 @@
 		
 		{% block footer %}
 			<footer class="footer">
-				<div class="w100 bg-light text-center" style="height:50px;">
+				<div class="w100 bg-light text-center">
 					<ul class="list-inline">
 					  <li class="list-inline-item text-muted">&copy; 2018</span>
 					  <li class="list-inline-item"><a href="{% url 'privacy' %}" class="privacy text-muted">Privacy Policy</a></li>
 					  <li class="list-inline-item"><a href="{% url 'cookie' %}" class="cookie text-muted">Cookie Policy</a></li>
+					  <li class="list-inline-item"><a href="{% url 'contact' %}" class="cookie text-muted">Contact Us</a></li>
 					</ul>
 				</div>
 			</footer>

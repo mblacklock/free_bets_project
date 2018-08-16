@@ -23,6 +23,7 @@ from bets import urls as bets_urls, views as bets_views
 from market import urls as market_urls
 from accounts import urls as accounts_urls
 from betting_tools import urls as tools_urls
+from blog import views as blog_views
 
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
@@ -35,6 +36,8 @@ urlpatterns = [
     path('market/', include(market_urls)),
     path('accounts/', include(accounts_urls)),
     path('betting_tools/', include(tools_urls)),
+    path('contact/', blog_views.contact_form, name='contact'),
+    path('contact_thanks/', blog_views.contact_thanks, name='contact_thanks'),
     ###### BLOG ######
     path('blog/comments/', include('fluent_comments.urls')),
     path('blog_admin/', include(wagtailadmin_urls)),

@@ -45,7 +45,7 @@ class BlogIndexPage(Page):
         none_featured = blogpages[3:]
         context['none_featured'] = none_featured
         # Most popular (3 highest views (not implemented))
-        popular = blogpages[2:4]
+        popular = blogpages[:2]
         context['popular'] = popular
         return context
 
