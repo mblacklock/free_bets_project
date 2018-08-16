@@ -30,7 +30,8 @@ from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.core import urls as wagtail_urls
 
 urlpatterns = [
-    path('', bets_views.home_page, name='home'),
+    path('', bets_views.blog_redirect, name='blog_redirect'),
+    path('home/', bets_views.home_page, name='home'),
     path('admin/', admin.site.urls),
     path('summary/', include(bets_urls)),
     path('market/', include(market_urls)),

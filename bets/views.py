@@ -8,7 +8,9 @@ from bets.models import Affiliate, Item, Summary
 # Create your views here.
 
 def home_page(request):        
-    #return render(request, 'home.html')
+    return render(request, 'home.html')
+
+def blog_redirect(request): 
     return redirect('/blog/') # blog_only
     
 def view_summary(request, summary_id):
