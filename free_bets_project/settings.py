@@ -211,3 +211,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 COMMENTS_APP = 'fluent_comments'
 
 FLUENT_COMMENTS_EXCLUDE_FIELDS = ('email', 'url')
+
+####### ANALYTICS ########
+INTERNAL_IPS = (
+    '127.0.0.1',
+)
