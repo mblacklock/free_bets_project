@@ -1,43 +1,51 @@
+import os
 import random
 from fabric.contrib.files import append, exists
 from fabric.api import cd, env, local, run
 
-REPO_URL = 'git@github.com:mblacklock/free_bets_project.git'  
+from dotenv import read_dotenv
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+REPO_URL = 'https://github.com/mblacklock/free_bets_project.git'
+
+def practice():
+    print(BASE_DIR)
+    read_dotenv(os.path.join(BASE_DIR, '.env'))
+    print(os.environ['EMAIL_PASSWORD'])
 
 def deploy():
-    if 'mblacklock' in env.host:
-        dev = True
-        virtualenv = 'free-bets-project-dev'
-    else:
-        dev = False
-        virtualenv = 'free-bets-project-prod'
-    _update_virtualenv(dev, virtualenv)
-    run(f'workon '+virtualenv)
+    read_dotenv(os.path.join(BASE_DIR, '.env'))
     
-    site_folder = f'/home/{env.user}/{env.host}'
+    virtualenv = 'free-bets-project-dev'
+    virtualenv_path = '/home/mblacklock/.virtualenvs/'+virtualenv
+    site_folder = f'/home/{env.user}/free_bets_project_dv/'
+    
     run(f'mkdir -p {site_folder}')  
     with cd(site_folder):  
         _get_latest_source()
+        _update_virtualenv(virtualenv, virtualenv_path)
         _create_or_update_dotenv()
         #_update_static_files()
-        _update_database()
+        _update_database(virtualenv, virtualenv_path)
+    run(f'touch /var/www/mblacklock_pythonanywhere_com_wsgi.py')
 
 def _get_latest_source():
     if exists('.git'):  
         run('git fetch')  
     else:
-        run(f'git clone {REPO_URL} .')  
+        run(f'git clone {REPO_URL} .')
     current_commit = local("git log -n 1 --format=%H", capture=True)  
     run(f'git reset --hard {current_commit}')
 
-def _update_virtualenv(dev, virtualenv):
-    if not exists('.virtualenv/'+virtualenv+'/bin/pip'):  
+def _update_virtualenv(virtualenv, virtualenv_path):
+    if not exists(virtualenv_path + '/bin/pip'):  
         run(f'mkvirtualenv '+virtualenv+' --python=/usr/bin/python3.6')
-    run('.virtualenv/'+virtualenv+'/bin/pip install -r requirements.txt') 
+    run(virtualenv_path + '/bin/pip install -r requirements.txt') 
 
 def _create_or_update_dotenv():
-    append('.env', 'DJANGO_DEBUG_FALSE=y')  
-    append('.env', f'SITENAME={env.host}')
+    append('.env', 'DJANGO_DEBUG_FALSE=Y')  
+    append('.env', 'SITENAME=mblacklock.pythonanywhere.com')
+    append('.env', 'EMAIL_PASSWORD='+os.environ['EMAIL_PASSWORD'])  
     current_contents = run('cat .env')  
     if 'DJANGO_SECRET_KEY' not in current_contents:  
         new_secret = ''.join(random.SystemRandom().choices(  
@@ -45,5 +53,5 @@ def _create_or_update_dotenv():
         ))
         append('.env', f'DJANGO_SECRET_KEY={new_secret}')
 
-def _update_database():
-    run('python manage.py migrate --noinput')
+def _update_database(virtualenv, virtualenv_path):
+    run(virtualenv_path + '/bin/python manage.py migrate --noinput')
