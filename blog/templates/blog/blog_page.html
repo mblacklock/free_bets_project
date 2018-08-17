@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% load comments static %}
 {% load wagtailcore_tags wagtailimages_tags %}
+{% load wagtailmath %}
 
 
 {% block css %}
@@ -55,6 +56,10 @@
 			   <div class="text-justify block-{{ block.block_type }}">
 				   {{ block }}
 			   </div>
+			{% elif block.block_type == 'equation' %}
+			   <div class="offset-3 col-6 block-{{ block.block_type }}">
+				   {{ block }}
+			   </div>
 			{% else %}
 				   {{ block }}
 			{% endif %}
@@ -82,4 +87,5 @@
 
 {% block scripts %}
 	<script type="text/javascript" src="{% static 'fluent_comments/js/ajaxcomments.js' %}"></script>
+	<script src="{% mathjax %}"></script>
 {% endblock %}

@@ -20,6 +20,8 @@ from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 from wagtail.embeds.blocks import EmbedBlock
 
+from wagtailmath.blocks import MathBlock
+
 from blog.blocks import TwoColumnBlock
 
 
@@ -67,6 +69,7 @@ class BlogPage(Page):
         ('image', ImageChooserBlock()),
         ('two_columns', TwoColumnBlock()),
         ('embedded_video', EmbedBlock(icon="media")),
+        ('equation', MathBlock()),
     ],null=True,blank=True)
     
     tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
