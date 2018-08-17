@@ -25,6 +25,7 @@
 			</div>
 			<div class="col-8 col-md-8 px-0">
 				<h1 class="display-4"><a class="text-white" href="{% pageurl post %}">{{ post.title }}</a></h1>
+				<div class="mb-1 text-white">{{ post.date }}</div>
 				<p class="lead my-3 text-justify">{{ post.intro }}</p>
 				<p class="lead mb-0"><a href="{% pageurl post %}" class="text-white font-weight-bold">Continue reading...</a></p>
 			</div>
@@ -53,7 +54,7 @@
 				  <a href="{% pageurl post %}">Continue reading</a>
 				</div>
 				{% with post.main_image as main_image %}
-					{% image main_image fill-200x250 class="img-fluid" %}
+					{% image main_image fill-200x200 class="img-fluid" %}
 				{% endwith %}
           </div>
         </div>
