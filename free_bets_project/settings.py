@@ -216,3 +216,9 @@ FLUENT_COMMENTS_EXCLUDE_FIELDS = ('email', 'url')
 INTERNAL_IPS = (
     '127.0.0.1',
 )
+
+####### WAGTAIL IMPORT EXPORT
+
+INSTALLED_APPS += (
+    'wagtailimportexport',
+    )

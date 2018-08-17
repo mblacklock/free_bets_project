@@ -8,7 +8,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 REPO_URL = 'https://github.com/mblacklock/free_bets_project.git'
 
-def deploy(VERSION):
+def deploy(VERSION='dev', BRANCH='master'):
     if VERSION == 'dev':
         print('Deploying development site...')
         SITENAME = 'mblacklock.pythonanywhere.com'
@@ -26,21 +26,21 @@ def deploy(VERSION):
     
     run(f'mkdir -p {site_folder}')  
     with cd(site_folder):  
-        _get_latest_source()
+        _get_latest_source(BRANCH)
         _update_virtualenv(virtualenv, virtualenv_path)
         _create_or_update_dotenv(SITENAME)
         #_update_static_files()
         _update_database(virtualenv, virtualenv_path)
     run(f'touch /var/www/' + WSGI_FILE)
 
-def _get_latest_source():
+def _get_latest_source(BRANCH):
     if exists('.git'):  
         run('git fetch')  
     else:
         run(f'git clone {REPO_URL} .')
     current_commit = local("git log -n 1 --format=%H", capture=True)  
     run(f'git reset --hard {current_commit}')
-    run('git checkout blog_only')
+    run('git checkout '+BRANCH)
 
 def _update_virtualenv(virtualenv, virtualenv_path):
     if not exists(virtualenv_path + '/bin/pip'):  

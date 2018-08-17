@@ -29,6 +29,8 @@ from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.core import urls as wagtail_urls
 
+from wagtailimportexport import urls as wagtailimportexport_urls
+
 urlpatterns = [
     path('', bets_views.blog_redirect, name='blog_redirect'),
     path('home/', bets_views.home_page, name='home'),
@@ -43,6 +45,7 @@ urlpatterns = [
     path('blog/comments/', include('fluent_comments.urls')),
     path('blog_admin/', include(wagtailadmin_urls)),
     path('documents/', include(wagtaildocs_urls)),
+    path('blog/', include(wagtailimportexport_urls)),
     path('blog/', include(wagtail_urls)),
     ###### FLATPAGES #####
     path('privacy-policy/', views.flatpage, {'url': '/privacy-policy/'}, name='privacy'),
