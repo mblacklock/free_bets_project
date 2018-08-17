@@ -15,8 +15,8 @@ def deploy(VERSION):
         WSGI_FILE = 'mblacklock_pythonanywhere_com_wsgi.py'
     elif VERSION == 'prod':
         print('Deploying production site...')
-        SITENAME = 'mblacklock.pythonanywhere.com'
-        WSGI_FILE = 'mblacklock_pythonanywhere_com_wsgi.py'
+        SITENAME = 'www.freebetmaximizer.com'
+        WSGI_FILE = 'www_freebetmaximizer_com_wsgi.py'
         
     read_dotenv(os.path.join(BASE_DIR, '.env'))
     
@@ -40,6 +40,7 @@ def _get_latest_source():
         run(f'git clone {REPO_URL} .')
     current_commit = local("git log -n 1 --format=%H", capture=True)  
     run(f'git reset --hard {current_commit}')
+    run('git checkout blog_only')
 
 def _update_virtualenv(virtualenv, virtualenv_path):
     if not exists(virtualenv_path + '/bin/pip'):  
