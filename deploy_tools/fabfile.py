@@ -15,8 +15,8 @@ def deploy(VERSION):
         WSGI_FILE = 'mblacklock_pythonanywhere_com_wsgi.py'
     elif VERSION == 'prod':
         print('Deploying production site...')
-        SITENAME = 'mblacklock.pythonanywhere.com'
-        WSGI_FILE = 'mblacklock_pythonanywhere_com_wsgi.py'
+        SITENAME = 'www.freebetmaximizer.com'
+        WSGI_FILE = 'www_freebetmaximizer_com_wsgi.py'
         
     read_dotenv(os.path.join(BASE_DIR, '.env'))
     
