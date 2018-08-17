@@ -50,7 +50,8 @@ def _update_virtualenv(virtualenv, virtualenv_path):
 def _create_or_update_dotenv(SITENAME):
     append('.env', 'DJANGO_DEBUG_FALSE=Y')  
     append('.env', 'SITENAME=' + SITENAME)
-    append('.env', 'EMAIL_PASSWORD=' + os.environ['EMAIL_PASSWORD'])  
+    append('.env', 'EMAIL_PASSWORD=' + os.environ['EMAIL_PASSWORD'])
+    append('.env', 'EMAIL_ADDRESS=' + os.environ['EMAIL_ADDRESS'])
     current_contents = run('cat .env')  
     if 'DJANGO_SECRET_KEY' not in current_contents:  
         new_secret = ''.join(random.SystemRandom().choices(  

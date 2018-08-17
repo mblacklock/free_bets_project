@@ -38,15 +38,6 @@ else:
     SECRET_KEY = 'y)_1httoiy0o9x68cao+hszh(6v8)mi06kw@00-0as(fsy(c9&'
     ALLOWED_HOSTS = []
 
-# SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = 'y)_1httoiy0o9x68cao+hszh(6v8)mi06kw@00-0as(fsy(c9&'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True
-
-#ALLOWED_HOSTS = []
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -160,7 +151,7 @@ STATIC_URL = '/static/'
 
 # Email Server
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'matthewblacklock@gmail.com'
+EMAIL_HOST_USER = os.environ.get('EMAIL_ADDRESS')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
