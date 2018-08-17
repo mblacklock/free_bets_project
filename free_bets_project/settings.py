@@ -32,7 +32,8 @@ read_dotenv(os.path.join(BASE_DIR, '.env'))
 if 'DJANGO_DEBUG_FALSE' in os.environ:
     DEBUG = False
     SECRET_KEY = os.environ['DJANGO_SECRET_KEY']  
-    ALLOWED_HOSTS = [os.environ['SITENAME']]  
+    ALLOWED_HOSTS = [os.environ['SITENAME']]
+    SECURE_SSL_REDIRECT = True
 else:
     DEBUG = True  
     SECRET_KEY = 'y)_1httoiy0o9x68cao+hszh(6v8)mi06kw@00-0as(fsy(c9&'
