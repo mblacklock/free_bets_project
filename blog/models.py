@@ -13,7 +13,8 @@ from wagtail.core.models import Page, Orderable
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.core import blocks
 from wagtail.admin.edit_handlers import (
-    FieldPanel, FieldRowPanel, InlinePanel, MultiFieldPanel, PageChooserPanel, StreamFieldPanel)
+    FieldPanel, FieldRowPanel, InlinePanel,
+    MultiFieldPanel, PageChooserPanel, StreamFieldPanel)
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
@@ -22,7 +23,7 @@ from wagtail.embeds.blocks import EmbedBlock
 
 from wagtailmath.blocks import MathBlock
 
-from blog.blocks import TwoColumnBlock
+from blog.blocks import ImageBlock, TwoColumnBlock
 
 
 class HomePage(Page):
@@ -70,6 +71,8 @@ class BlogPage(Page):
         ('two_columns', TwoColumnBlock()),
         ('embedded_video', EmbedBlock(icon="media")),
         ('equation', MathBlock()),
+        ('html', blocks.RawHTMLBlock()),
+        ('resizable_image', ImageBlock()),
     ],null=True,blank=True)
     
     tags = ClusterTaggableManager(through=BlogPageTag, blank=True)

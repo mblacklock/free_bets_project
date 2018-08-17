@@ -5,10 +5,14 @@ from wagtail.embeds.blocks import EmbedBlock
 from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel,MultiFieldPanel, \
     InlinePanel, PageChooserPanel, StreamFieldPanel
 
+from wagtailmath.blocks import MathBlock
+
 class ColumnBlock(blocks.StreamBlock):
     heading = blocks.CharBlock(classname="full title")
     paragraph = blocks.RichTextBlock()
     image = ImageChooserBlock()
+    equation = MathBlock()
+    html = blocks.RawHTMLBlock()
 
     class Meta:
         template = 'blog/blocks/column.html'
@@ -22,3 +26,16 @@ class TwoColumnBlock(blocks.StructBlock):
         template = 'blog/blocks/two_column_block.html'
         icon = 'placeholder'
         label = 'Two Columns'
+
+class ImageBlock(blocks.StructBlock):
+    image = ImageChooserBlock()
+    size = blocks.ChoiceBlock(choices=[
+        ('tiny', 'Tiny'),
+        ('small', 'Small'),
+        ('medium', 'Medium'),
+        ('large', 'Large'),
+        ('xl', 'XL'),
+    ])
+
+    class Meta:
+        template = 'blog/blocks/imageblock.html'

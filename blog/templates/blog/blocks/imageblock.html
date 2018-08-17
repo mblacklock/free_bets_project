@@ -1,0 +1,15 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<div class="mx-auto d-block block-{{ block.block_type }}">
+	{% if self.size == 'tiny' %}
+		{% image self.image height-100 class="my-2 img-fluid rounded" %}
+	{% elif self.size == 'small' %}
+		{% image self.image height-200 class="my-2 img-fluid rounded" %}
+	{% elif self.size == 'medium' %}
+		{% image self.image height-300 class="my-2 img-fluid rounded" %}
+	{% elif self.size == 'large' %}
+		{% image self.image height-400 class="my-2 img-fluid rounded" %}
+	{% elif self.size == 'xl' %}
+		{% image self.image height-500 class="my-2 img-fluid rounded" %}
+	{% endif %}
+</div>
