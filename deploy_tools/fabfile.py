@@ -35,7 +35,7 @@ def deploy(VERSION='dev', BRANCH='master'):
 
 def _get_latest_source(BRANCH):
     if exists('.git'):  
-        run('git fetch')  
+        run('git fetch origin '+BRANCH)  
     else:
         run(f'git clone {REPO_URL} .')
     current_commit = local("git log -n 1 --format=%H", capture=True)  
