@@ -213,3 +213,9 @@ INTERNAL_IPS = (
 INSTALLED_APPS += (
     'wagtailimportexport',
     )
+
+####### WAGTAIL MATH
+
+INSTALLED_APPS += (
+    'wagtailmath',
+    )
