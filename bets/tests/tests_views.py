@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
-from bets.models import Affiliate, Item, Summary
+from bets.models import Affiliate, Click, Item, Summary
 
 # Create your tests here.
 
@@ -41,7 +41,7 @@ class NewSummaryViewIntegratedTest(TestCase):
 
         response = self.client.post(f'/summary/action/{item.id}', {'action' : 'signup'})
     
-        self.assertRedirects(response, aff1.url, fetch_redirect_response=False)
+        self.assertRedirects(response, f'/summary/external/{item.affiliate.slug}', fetch_redirect_response=False)
 
     def test_summary_owner_is_saved_if_user_is_authenticated(self):
         user = User.objects.create(email='a@b.com')
@@ -104,3 +104,30 @@ class MyListsTest(TestCase):
         correct_user = User.objects.create(email='a@b.com')
         response = self.client.get('/summary/users/a@b.com/')
         self.assertEqual(response.context['owner'], correct_user)
+
+class AffiliateClickTest(TestCase):
+
+    def test_external_link_redirects_to_aff_url(self):
+        aff1 = Affiliate.objects.create(name='Aff1',url='https://example.com/')
+        response = self.client.post(f'/summary/external/{aff1.slug}')
+    
+        self.assertRedirects(response, aff1.url, fetch_redirect_response=False)
+
+    def test_click_creates_click_entry(self):
+        affiliate = Affiliate.objects.create(name='Aff1',url='https://example.com/')
+        self.client.post(f'/summary/external/{affiliate.slug}')
+        click = Click.objects.first()
+        click.affiliate = affiliate
+
+class TrackingPageTest(TestCase):
+
+    def test_uses_tracking_template(self):
+        response = self.client.get('/summary/tracking/')
+        self.assertTemplateUsed(response, 'bets/tracking.html')
+
+    def test_passes_correct_click_to_template(self):
+        aff1 = Affiliate.objects.create(name='Aff1',url='https://example.com/')
+        aff2 = Affiliate.objects.create(name='Aff2',url='https://example.com/')
+        correct_click = Click.objects.create(affiliate=aff1)
+        response = self.client.get('/summary/tracking/')
+        self.assertEqual(response.context['clicks'][0], correct_click)

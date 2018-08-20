@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 User = get_user_model()
 
-from bets.models import Affiliate, Item, Summary
+from bets.models import Affiliate, Click, Item, Summary
 
 # Create your views here.
 
@@ -62,7 +63,7 @@ def action(request, item_id):
         status = request.POST['action']
         item = Item.objects.get(id=item_id)
         if status == 'signup' or status == 'deposit':
-            return redirect(item.affiliate.url)
+            return redirect('affiliate_click', slug= item.affiliate.slug)
         elif status == 'initial' or status == 'free':
             return redirect('market_manual', item_id= item.id, bet_type= status)
     return redirect('home')
@@ -71,5 +72,16 @@ def my_summaries(request, email):
     owner = User.objects.get(email=email)
     return render(request, 'bets/my_summaries.html', {'owner': owner})
             
-                
+def affiliate_click(request, slug):
+    affiliate = get_object_or_404(Affiliate, slug=slug)
+    click = Click.objects.create(affiliate=affiliate)
+    if request.user.is_authenticated:
+        click.user = request.user
+        click.save()
+    
+    return redirect(affiliate.url)
+
+def tracking(request):
+    clicks = Click.objects.all()
+    return render(request, 'bets/tracking.html', {'clicks': clicks})
             

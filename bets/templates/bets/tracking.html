@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Affiliate Tracking Data{% endblock %}
+
+{% block heading %}Affiliate Tracking Data{% endblock %}
+
+{% block body %}
+	<ul class="list-group list-group-flush">
+	{% for click in clicks %}
+	  <li class="click list-group-item"><span class="affiliate_name">{{ click.affiliate.name }}</span></li>
+	 {% endfor %}
+	</ul>	
+{% endblock %}
+
+{% block footer %}{% endblock %}
+	
