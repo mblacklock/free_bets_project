@@ -39,7 +39,6 @@ class LoginTest(FunctionalTest):
 
         # she clicks it
         self.browser.get(url)
-        time.sleep(3)
 
         # she is logged in!
         self.check_logged_in(email=TEST_EMAIL)
