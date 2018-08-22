@@ -5,7 +5,7 @@ User = get_user_model()
 
 from decimal import *
 
-from bets.models import Affiliate, Item, Summary
+from bets.models import Affiliate, Click, Item, Summary
 
 # Create your tests here.
 
@@ -98,4 +98,16 @@ class SummaryModelTest(TestCase):
 
     def test_summary_owner_is_optional(self):
         Summary.objects.create()  # should not raise
+
+class ClickModelTest(TestCase):
+    
+    def test_click_can_have_owners(self):
+        aff1 = Affiliate.objects.create(name = 'Aff1')
+        user = User.objects.create(email='a@b.com')
+        click = Click.objects.create(affiliate=aff1, user=user)
+        self.assertIn(click, user.click_set.all())
+
+    def test_summary_owner_is_optional(self):
+        aff1 = Affiliate.objects.create(name = 'Aff1')
+        Click.objects.create(affiliate=aff1)  # should not raise
     

@@ -61,3 +61,8 @@ class Item(models.Model):
 
     def __str__(self):
         return self.affiliate.name
+
+class Click(models.Model):
+    affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.CASCADE)

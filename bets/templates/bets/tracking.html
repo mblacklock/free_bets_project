@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Affiliate Tracking Data{% endblock %}
+
+{% block heading %}Affiliate Tracking Data{% endblock %}
+
+{% block body %}
+	<ul class="list-group list-group-flush my-5">
+		<li class="row d-flex list-group-item">
+			<h6 class="list-group-item-heading col-4">Affiliate</h6>
+			<h6 class="list-group-item-heading col-4">Time</h6>
+			<h6 class="list-group-item-heading col-4">User</h6>
+		</li>
+	{% for click in clicks %}
+		<li class="click row d-flex list-group-item">
+			<span class="affiliate_name col-4">{{ click.affiliate.name }}</span>
+			<span class="timestamp col-4">{{ click.timestamp }}</span>
+			<span class="user col-4">{{ click.user.email }}</span>
+		</li>
+	 {% endfor %}
+	</ul>	
+{% endblock %}
+
+{% block footer %}{% endblock %}
+	
