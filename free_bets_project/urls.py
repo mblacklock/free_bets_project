@@ -27,6 +27,7 @@ from betting_tools import urls as tools_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.core import urls as wagtail_urls
+from wagtail.contrib.sitemaps.views import sitemap as wagtail_sitemap
 
 from wagtailimportexport import urls as wagtailimportexport_urls
 
@@ -38,6 +39,7 @@ urlpatterns = [
     path('accounts/', include(accounts_urls)),
     path('betting_tools/', include(tools_urls)),
     ###### BLOG ######
+    path('blog/sitemap.xml', wagtail_sitemap),
     path('blog/comments/', include('fluent_comments.urls')),
     path('blog_admin/', include(wagtailadmin_urls)),
     path('documents/', include(wagtaildocs_urls)),
