@@ -28,6 +28,7 @@ from blog import views as blog_views
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.core import urls as wagtail_urls
+from wagtail.contrib.sitemaps.views import sitemap as wagtail_sitemap
 
 from wagtailimportexport import urls as wagtailimportexport_urls
 
@@ -42,6 +43,7 @@ urlpatterns = [
     path('contact/', blog_views.contact_form, name='contact'),
     path('contact_thanks/', blog_views.contact_thanks, name='contact_thanks'),
     ###### BLOG ######
+    path('blog/sitemap.xml', wagtail_sitemap),
     path('blog/comments/', include('fluent_comments.urls')),
     path('blog_admin/', include(wagtailadmin_urls)),
     path('documents/', include(wagtaildocs_urls)),
