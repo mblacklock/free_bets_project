@@ -31,7 +31,7 @@ requests==2.19.1
 selenium==3.13.0
 six==1.11.0
 Unidecode==0.4.21
-urllib3==1.23
+urllib3==1.26.5
 wagtail==2.1.2
 wagtail-import-export==0.1
 webencodings==0.5.1
