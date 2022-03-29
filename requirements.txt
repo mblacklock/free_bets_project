@@ -20,7 +20,7 @@ draftjs-exporter==2.1.2
 Fabric3==1.14.post1
 html5lib==1.0.1
 idna==2.7
-paramiko==2.4.1
+paramiko==2.10.1
 Pillow==5.2.0
 pyasn1==0.4.4
 pycparser==2.18
